@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.09.07   	서준식     	 	NTCE_BGNDE, NTCE_ENDDE 컬럼 빈공간에 의한 비교 오류 때문에 Rtrim() 추가 
+  2011.09.21    서준식              BBSManageDAO.selectMaxNttId문에 COMMIT 될때까지 LOCK설정
+  2011.09.21    서준식              NTT_ID를 IDGENT서비스를 사용해서 생성하므로 BBSManageDAO.selectMaxNttId문은 실제 사용하지 않음
+  2011.10.24	윤경한		파일첨부가능 게시글인 경우 첫번째 첨부된 파일 확장자 아이콘 이미지를 목록에 보여주기 위해  
+  							BBSManageDAO.List 수정
+  2011.10.27	윤경한		COMTNBBS 테이블 칼럼 추가
+  							- FILEDOWNCNT	: 파일다운로드   횟수 (2011.10.31 제거)
+  							- NTT_CL_CODE	: 게시물 분류코드
+  							- PRESS_NM		: 언론사명
+  							- NEWS_DAY		: 보도일자
+  							- SOURCE_URL	: 출처			
+  							BBSManageDAO.insertBoardArticle 수정			
+  							BBSManageDAO.selectBoardArticleList 수정	
+  							BBSManageDAO.selectBoardArticle	수정
+  							resultMap id="boardDetail" 수정
+  							BBSManageDAO.updateBoardArticle 수정
+  							BBSManageDAO.updateFileDownCnt 추가
+  2011.11.01	윤경한		이전글/다음글 추가
+  							resultMap id="boardDetail" 수정
+  							BBSManageDAO.selectBoardArticle 수정
+  							BBSManageDAO.updateFileDownCnt 제거
+  2011.11.14	윤경한		최신글 게시글ID 가져오기 추가
+  							BBSManageDAO.selectRecentlyNttId
+  2011.11.15	윤경한		게시물 발행월, 블로그/트위터/페이스북 주소 추가
+  							resultMap id="boardDetail" 수정   		
+  							BBSManageDAO.selectBoardArticle 수정		
+  							BBSManageDAO.insertBoardArticle 수정		
+  							BBSManageDAO.updateBoardArticle 수정	  		
+  							resultMap id="boardList" 수정		
+  							BBSManageDAO.selectBoardArticleList 수정			
+  2011.11.17	윤경한		BBSManageDAO.selectRecentlyNttId 쿼리에 검색조건 추가		
+  2011.11.25	윤경한		게시물 등록일자 조건검색 추가
+  							BBSManageDAO.selectBoardArticleList 수정
+  2011.11.28	윤경한		뉴스레터 수신 대상자 추출쿼리 추가
+    						
+-->	
+<sqlMap namespace="Board">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="Board" type="egovframework.com.cop.bbs.service.Board"/>
+	<typeAlias  alias="BoardVO" type="egovframework.com.cop.bbs.service.BoardVO"/>
+
+ 	<!-- khyoon 2011.11.28 -->
+ 	<select id="BBSManageDAO.selectNewsletterTargetListCnt"  resultClass="java.lang.Long" >
+		<![CDATA[
+			SELECT NVL(COUNT(MBER_EMAIL_ADRES),0)
+			FROM COMTNGNRLMBER
+			WHERE MBER_STTUS = 'P'
+			  AND NEWSLETTER_YN = 'Y'
+		]]>
+	</select>
+	
+ 	<select id="BBSManageDAO.selectNewsletterTargetList"  resultClass="java.lang.String" >
+		<![CDATA[
+			SELECT MBER_EMAIL_ADRES
+			FROM COMTNGNRLMBER
+			WHERE MBER_STTUS = 'P'
+			  AND NEWSLETTER_YN = 'Y'
+		]]>
+	</select>	
+	<!-- ~khyoon -->
+
+	<resultMap id="boardList" class="egovframework.com.cop.bbs.service.BoardVO">
+		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
+		<result property="nttId" column="NTT_ID" columnIndex="2"/>
+		<result property="nttSj" column="NTT_SJ" columnIndex="3"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="4"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM" columnIndex="5"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="6"/>
+		<result property="inqireCo" column="RDCNT" columnIndex="7"/>
+		<result property="parnts" column="PARNTSCTT_NO" columnIndex="8"/>
+		<result property="replyAt" column="ANSWER_AT" columnIndex="9"/>		
+		<result property="replyLc" column="ANSWER_LC" columnIndex="10"/>
+		<result property="useAt" column="USE_AT" columnIndex="11"/>
+		<result property="atchFileId" column="ATCH_FILE_ID" columnIndex="12"/>
+		<result property="ntceBgnde" column="NTCE_BGNDE" columnIndex="13"/>
+		<result property="ntceEndde" column="NTCE_ENDDE" columnIndex="14"/>
+		<!-- khyoon 2011.10.27 게시물 분류코드명 추가 -->
+		<result property="nttClCodeNm" column="CODE_NM" columnIndex="15"/>
+		<!-- khyoon 2011.11.15 -->
+		<result property="nttCn" column="NTT_CN" columnIndex="16" jdbcType="CLOB"/>
+		<result property="pressNm" column="PRESS_NM" columnIndex="17"/>
+		<result property="sourceUrl" column="SOURCE_URL" columnIndex="18"/>
+		<result property="newsDay" column="NEWS_DAY" columnIndex="19"/>
+		<!-- ~khyoon -->
+	</resultMap>
+
+	<resultMap id="boardDetail" class="egovframework.com.cop.bbs.service.BoardVO">
+		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
+		<result property="nttId" column="NTT_ID" columnIndex="2"/>
+		<result property="nttSj" column="NTT_SJ" columnIndex="3"/>	
+		<result property="ntcrId" column="NTCR_ID" columnIndex="4"/>
+		<result property="ntcrNm" column="NTCR_NM" columnIndex="5"/>
+		<result property="nttNo" column="NTT_NO" columnIndex="6"/>
+		<result property="nttCn" column="NTT_CN" columnIndex="7" jdbcType="CLOB"/>
+		<result property="password" column="PASSWORD" columnIndex="8"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="9"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM" columnIndex="10"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="11"/>
+		<result property="ntceBgnde" column="NTCE_BGNDE" columnIndex="12"/>
+		<result property="ntceEndde" column="NTCE_ENDDE" columnIndex="13"/>
+		<result property="inqireCo" column="RDCNT" columnIndex="14"/>
+		<result property="useAt" column="USE_AT" columnIndex="15"/>
+		<result property="atchFileId" column="ATCH_FILE_ID" columnIndex="16"/>
+		<result property="parnts" column="PARNTSCTT_NO" columnIndex="17"/>
+		<result property="replyAt" column="ANSWER_AT" columnIndex="18"/>		
+		<result property="replyLc" column="ANSWER_LC" columnIndex="19"/>
+		<result property="sortOrdr" column="SORT_ORDR" columnIndex="19"/>
+		<result property="bbsTyCode" column="BBS_TY_CODE" columnIndex="20"/>
+		<result property="bbsAttrbCode" column="BBS_ATTRB_CODE" columnIndex="21"/>
+		<result property="replyPosblAt" column="REPLY_POSBL_AT" columnIndex="22"/>
+		<result property="fileAtchPosblAt" column="FILE_ATCH_POSBL_AT" columnIndex="23"/>
+		<result property="posblAtchFileNumber" column="ATCH_POSBL_FILE_NUMBER" columnIndex="24"/>
+		<result property="bbsNm" column="BBS_NM" columnIndex="25"/>
+		<result property="nttClPosblAt" column="NTT_CL_POSBL_AT" columnIndex="26"/>
+		<!-- khyoon 2011.10.27 -->
+		<result property="nttClCode" column="NTT_CL_CODE" columnIndex="27"/>
+		<result property="nttClCodeNm" column="CODE_NM" columnIndex="28"/>
+		<result property="pressNm" column="PRESS_NM" columnIndex="29"/>
+		<result property="sourceUrl" column="SOURCE_URL" columnIndex="30"/>
+		<result property="newsDay" column="NEWS_DAY" columnIndex="31"/>
+		<!-- khyoon 2011.11.15 -->
+		<result property="pubYear" column="PUB_YEAR" columnIndex="32"/>
+		<result property="pubMonth" column="PUB_MONTH" columnIndex="33"/>
+		<result property="blogUrl" column="BLOG_URL" columnIndex="34"/>
+		<result property="twitterUrl" column="TWITTER_URL" columnIndex="35"/>
+		<result property="facebookUrl" column="FACEBOOK_URL" columnIndex="36"/>
+	</resultMap>
+
+	<resultMap id="sortList" class="egovframework.com.cop.bbs.service.BoardVO">
+		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
+		<result property="nttId" column="NTT_ID" columnIndex="2"/>
+		<result property="sortOrdr" column="SORT_ORDR" columnIndex="3"/>
+		<result property="parnts" column="PARNTSCTT_NO" columnIndex="4"/>
+		<result property="nttNo" column="NTT_NO" columnIndex="5"/>		
+		<result property="replyLc" column="ANSWER_LC" columnIndex="6"/>
+	</resultMap>
+
+	<resultMap id="guestList" class="egovframework.com.cop.bbs.service.BoardVO">
+		<result property="bbsId" column="BBS_ID" columnIndex="1"/>
+		<result property="nttId" column="NTT_ID" columnIndex="2"/>
+		<result property="nttSj" column="NTT_SJ" columnIndex="3"/>
+		<result property="ntcrNm" column="NTCR_NM" columnIndex="4"/>
+		<result property="password" column="PASSWORD" columnIndex="5"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM" columnIndex="6"/>
+		<result property="nttCn" column="NTT_CN" columnIndex="7" jdbcType="CLOB"/>
+		<result property="useAt" column="USE_AT" columnIndex="8"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM" columnIndex="9"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID" columnIndex="10"/>
+	</resultMap>
+
+ 	<select id="BBSManageDAO.selectMaxNttId" resultClass="java.lang.Long">
+ 		<![CDATA[
+			/*	SELECT NVL(NTT_ID,0)+1 AS NTT_ID 
+				FROM COMTNBBS 
+				WHERE NTT_ID=(SELECT MAX(NTT_ID) AS NTT_ID  
+								FROM COMTNBBS) FOR UPDATE WAIT 3*/
+			/* khyoon 2011.10.24 DB2에서는   FOR UPDATE WAIT 3 지원 안함 */
+			/* khyoon 2011.11.24 */
+			SELECT NVL(MAX(NTT_ID),0)+1 AS NTT_ID  FROM COMTNBBS
+ 		]]>
+ 	</select>
+ 	
+ 	<!-- khyoon 2011.11.21 -->
+ 	<select id="BBSManageDAO.selectPreviousNttNo" parameterClass="BoardVO" resultClass="java.lang.Long" >
+		<![CDATA[
+			SELECT NVL(MAX(NTT_NO),0) AS PREVIOUS_NTT_NO  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y'
+			  AND SORT_ORDR = #sortOrdr#
+			  AND NTT_NO < #nttNo#
+		]]>
+	</select>
+
+ 	<select id="BBSManageDAO.selectNextNttNo" parameterClass="BoardVO" resultClass="java.lang.Long" >
+		<![CDATA[
+			SELECT NVL(MIN(NTT_NO),0) AS NEXT_NTT_NO  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y'
+			  AND SORT_ORDR = #sortOrdr#
+			  AND NTT_NO > #nttNo#
+		]]>
+	</select>
+	
+ 	<select id="BBSManageDAO.selectPreviousSortOrdr" parameterClass="BoardVO" resultClass="java.lang.Long" >
+		<![CDATA[
+			SELECT NVL(MIN(SORT_ORDR),0) AS PREVIOUS_SORT_ORDR  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y'
+			  AND SORT_ORDR > #sortOrdr#
+		]]>
+	</select>	
+	
+ 	<select id="BBSManageDAO.selectNextSortOrdr" parameterClass="BoardVO" resultClass="java.lang.Long" >
+		<![CDATA[
+			SELECT NVL(MAX(SORT_ORDR),0) AS NEXT_SORT_ORDR  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y'
+			  AND SORT_ORDR < #sortOrdr#
+		]]>
+	</select>	
+
+ 	<select id="BBSManageDAO.selectNttId" parameterClass="BoardVO" resultClass="java.lang.Long" >	
+		<![CDATA[
+			SELECT NVL(NTT_ID,0) AS NTT_ID  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y'
+			  AND SORT_ORDR = #sortOrdr#
+			  AND NTT_NO = #nttNo#
+		]]>			
+	</select>
+	<!-- ~khyoon -->	 	
+	
+	<insert id="BBSManageDAO.insertBoardArticle" parameterClass="Board" >
+		<selectKey resultClass="java.lang.Long" keyProperty="nttNo">
+			SELECT NVL(MAX(SORT_ORDR),0)+1 AS NTT_NO  
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+		</selectKey>
+		<![CDATA[
+			INSERT INTO COMTNBBS
+			(NTT_ID, BBS_ID, NTT_SJ, NTT_CN, SORT_ORDR, 
+			 NTCR_ID, NTCR_NM, PASSWORD, RDCNT, 
+			 NTCE_BGNDE, NTCE_ENDDE, ANSWER_AT,  			   
+			 PARNTSCTT_NO, NTT_NO, ANSWER_LC, ATCH_FILE_ID,
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM, USE_AT,
+			 NTT_CL_CODE, PRESS_NM, SOURCE_URL, NEWS_DAY,
+			 PUB_DATE, BLOG_URL, TWITTER_URL, FACEBOOK_URL
+			 )
+			VALUES
+			( #nttId#, #bbsId#, #nttSj#, #nttCn#, #nttNo#, 
+			  #ntcrId#, #ntcrNm#, #password#, #inqireCo#, 
+			  #ntceBgnde#, #ntceEndde#, #replyAt#, 
+			  #parnts#, 1, #replyLc#, #atchFileId#,
+			  #frstRegisterId#, SYSDATE, 'Y',
+			  #nttClCode#, #pressNm#, #sourceUrl#, #newsDay#,
+			  #pubDate#, #blogUrl#, #twitterUrl#, #facebookUrl#
+			 )			
+		]]>
+	</insert>
+	
+	<insert id="BBSManageDAO.replyBoardArticle" parameterClass="Board" >
+		<selectKey resultClass="java.lang.Long" keyProperty="nttNo">
+			SELECT NVL(MAX(NTT_NO),0)+1 AS NTT_NO  FROM COMTNBBS
+			WHERE BBS_ID = #bbsId# AND SORT_ORDR = #sortOrdr#
+		</selectKey>			
+		<![CDATA[
+			INSERT INTO COMTNBBS
+			(NTT_ID, BBS_ID, NTT_SJ, NTT_CN, SORT_ORDR, 
+			 NTCR_ID, NTCR_NM, PASSWORD, RDCNT, 
+			 NTCE_BGNDE, NTCE_ENDDE, ANSWER_AT,  			   
+			 PARNTSCTT_NO, NTT_NO, ANSWER_LC, ATCH_FILE_ID,
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM, USE_AT
+			 )
+			VALUES
+			( #nttId#, #bbsId#, #nttSj#, #nttCn#, #sortOrdr#, 
+			  #ntcrId#, #ntcrNm#, #password#, #inqireCo#, 
+			  #ntceBgnde#, #ntceEndde#, #replyAt#, 
+			  #parnts#, 1, #replyLc#, #atchFileId#,
+			  #frstRegisterId#, SYSDATE, 'Y'
+			 )			
+		]]>
+	</insert>	
+	
+	<select id="BBSManageDAO.selectNoticeListForSort" parameterClass="Board" resultMap="sortList">
+		<![CDATA[			
+			SELECT
+				a.BBS_ID, a.NTT_ID, a.SORT_ORDR, a.PARNTSCTT_NO, a.NTT_NO, a.ANSWER_LC
+			FROM
+				COMTNBBS a	
+			WHERE
+				a.BBS_ID = #bbsId#
+			AND
+				a.SORT_ORDR = #sortOrdr#
+			ORDER BY  a.SORT_ORDR DESC, a.NTT_NO ASC	
+		]]>						
+	</select>
+
+			
+	<select id="BBSManageDAO.selectBoardArticleList" parameterClass="BoardVO" resultMap="boardList" >
+		<![CDATA[
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT
+				a.NTT_ID, a.NTT_SJ, a.FRST_REGISTER_ID, NVL(b.USER_NM, a.NTCR_NM) as FRST_REGISTER_NM,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM,
+				a.RDCNT, a.PARNTSCTT_NO, a.ANSWER_AT, a.ANSWER_LC, a.USE_AT, a.ATCH_FILE_ID,
+				a.BBS_ID, rtrim(a.NTCE_BGNDE) NTCE_BGNDE, rtrim(a.NTCE_ENDDE) NTCE_ENDDE, 
+				c.CODE_NM, a.NTT_CN, a.PRESS_NM, a.SOURCE_URL, a.NEWS_DAY
+			FROM
+				COMTNBBS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			/* khyoon 2011.10.27 */
+			LEFT OUTER JOIN
+				COMTCCMMNDETAILCODE c
+			ON c.CODE_ID = #nttClCodeId#
+			AND a.NTT_CL_CODE = c.CODE
+			/*~khyoon */
+			WHERE
+				a.BBS_ID = #bbsId#
+			AND a.USE_AT = 'Y'	/* khyoon 2011.11.11 삭제된 게시물 제외 */
+		]]>
+			<isEqual prepend="AND" property="searchCnd" compareValue="0">
+				<![CDATA[	a.NTT_SJ LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="1">
+				<![CDATA[	a.NTT_CN LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	
+			<isEqual prepend="AND" property="searchCnd" compareValue="2">
+				<![CDATA[	b.USER_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>				
+			<!-- khyoon 게시물 보도처 조건검색 추가 2011.11.15 -->
+			<isEqual prepend="AND" property="searchCnd" compareValue="3">
+				<![CDATA[	a.PRESS_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>			
+			<!-- khyoon 게시물 분류별 조건검색 추가 2011.11.11 -->
+ 			<isNotEqual prepend="AND" property="searchNttClCode" compareValue="">
+				<![CDATA[	a.NTT_CL_CODE = #searchNttClCode#				]]>
+			</isNotEqual>
+			<!-- khyoon 게시물 등록일자 조건검색 추가 2011.11.25 -->
+			<isNotEqual prepend="AND" property="searchBgnDe" compareValue="">
+				<![CDATA[	TO_CHAR(a.FRST_REGIST_PNTTM,'YYYYMMDD') 
+							BETWEEN #searchBgnDe# AND #searchEndDe#			]]>
+			</isNotEqual>			
+			<!-- ~khyoon -->
+		<![CDATA[			
+			ORDER BY a.SORT_ORDR DESC, NTT_NO ASC
+			) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>				
+	</select>	
+	
+	<select id="BBSManageDAO.selectBoardArticleListCnt" parameterClass="BoardVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT
+				COUNT(a.NTT_ID)
+			FROM
+				COMTNBBS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			WHERE
+				a.BBS_ID = #bbsId#
+			AND a.USE_AT = 'Y'	/* khyoon 2011.11.16 삭제된 게시물 제외 */
+		]]>
+			<isEqual prepend="AND" property="searchCnd" compareValue="0">
+				<![CDATA[	a.NTT_SJ LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="1">
+				<![CDATA[	a.NTT_CN LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	
+			<isEqual prepend="AND" property="searchCnd" compareValue="2">
+				<![CDATA[	b.USER_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>				
+			<!-- khyoon 게시물 보도처 조건검색 추가 2011.11.15 -->
+			<isEqual prepend="AND" property="searchCnd" compareValue="3">
+				<![CDATA[	a.PRESS_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>			
+			<!-- khyoon 게시물 분류별 조건검색 추가 2011.11.11 -->
+ 			<isNotEqual prepend="AND" property="searchNttClCode" compareValue="">
+				<![CDATA[	a.NTT_CL_CODE = #searchNttClCode#				]]>
+			</isNotEqual>
+			<!-- ~khyoon -->
+		
+	</select>	
+ 
+	<select id="BBSManageDAO.selectBoardArticle" parameterClass="BoardVO" resultMap="boardDetail" >
+		<![CDATA[
+			SELECT
+				a.NTT_SJ, a.NTCR_ID, a.NTCR_NM, a.NTT_NO, a.NTT_CN,
+				a.PASSWORD, a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM,
+				a.NTCE_BGNDE, a.NTCE_ENDDE, a.RDCNT, 
+				a.USE_AT, a.ATCH_FILE_ID, a.BBS_ID, a.NTT_ID,
+				a.PARNTSCTT_NO, a.ANSWER_AT, a.ANSWER_LC, a.SORT_ORDR,
+				c.BBS_TY_CODE, c.BBS_ATTRB_CODE, c.REPLY_POSBL_AT, 
+				c.FILE_ATCH_POSBL_AT, c.ATCH_POSBL_FILE_NUMBER, c.BBS_NM, c.NTT_CL_POSBL_AT,
+				/* khyoon 2011.10.27 */
+				a.NTT_CL_CODE, d.CODE_NM, a.PRESS_NM, a.SOURCE_URL, a.NEWS_DAY,
+				/* khyoon 2011.11.15 */
+				SUBSTR(a.PUB_DATE,1,4) AS PUB_YEAR,
+				SUBSTR(a.PUB_DATE,5,2) AS PUB_MONTH,
+				a.BLOG_URL, a.TWITTER_URL, a.FACEBOOK_URL				    
+				/*~khyoon */
+			FROM
+				COMTNBBS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			LEFT OUTER JOIN 
+				COMTNBBSMASTER c
+			ON a.BBS_ID = c.BBS_ID		
+			/* khyoon 2011.10.27 */	
+			LEFT OUTER JOIN
+				COMTCCMMNDETAILCODE d
+			ON d.CODE_ID = #nttClCodeId#
+			AND a.NTT_CL_CODE = d.CODE
+			/*~khyoon */
+			WHERE
+				a.BBS_ID = #bbsId#	
+			AND
+				a.NTT_ID = #nttId#
+			/* khyoon 2011.11.23 */	
+		    AND 
+		    	a.USE_AT = 'Y'
+		    /*~khyoon */
+		]]>				
+	</select> 
+ 
+ 	<update id="BBSManageDAO.updateBoardArticle" parameterClass="Board">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				NTT_SJ = #nttSj#,
+				NTT_CN = #nttCn#, 
+				NTCR_ID = #ntcrId#,
+				NTCR_NM = #ntcrNm#,
+				PASSWORD = #password#,
+				NTCE_BGNDE = #ntceBgnde#,		
+				NTCE_ENDDE = #ntceEndde#,
+				LAST_UPDUSR_ID = #lastUpdusrId#,
+				ATCH_FILE_ID = #atchFileId#,
+				LAST_UPDT_PNTTM = SYSDATE,
+				NTT_CL_CODE = #nttClCode#,
+				PRESS_NM = #pressNm#,
+				SOURCE_URL = #sourceUrl#,
+				NEWS_DAY = #newsDay#,
+				PUB_DATE = #pubDate#,
+				BLOG_URL = #blogUrl#,
+				TWITTER_URL = #twitterUrl#,
+				FACEBOOK_URL = #facebookUrl#
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#
+			/* khyoon 2011.11.23 */	
+		    AND USE_AT = 'Y'
+		    /*~khyoon */			
+ 		]]>
+ 	</update>
+
+ 	<update id="BBSManageDAO.deleteBoardArticle" parameterClass="Board">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				NTT_SJ = #nttSj#,
+				USE_AT = 'N',
+				LAST_UPDUSR_ID = #lastUpdusrId#,
+				LAST_UPDT_PNTTM = SYSDATE
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#
+ 		]]>
+ 	</update>
+
+ 	<select id="BBSManageDAO.selectMaxInqireCo" resultClass="java.lang.Integer" parameterClass="BoardVO">
+ 		<![CDATA[
+			SELECT NVL(MAX(RDCNT),0)+1 AS RDCNT FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#
+ 		]]>
+ 	</select>
+ 	
+ 	<select id="BBSManageDAO.selectRecentlyNttId" resultClass="java.lang.Long" parameterClass="BoardVO">
+ 		<![CDATA[
+			SELECT NVL(MAX(NTT_ID),0) AS MAX_NTT_ID
+			FROM COMTNBBS
+			WHERE BBS_ID = #bbsId#
+			  AND USE_AT = 'Y' 		
+ 		]]>
+			<isEqual prepend="AND" property="searchCnd" compareValue="0">
+				<![CDATA[	NTT_SJ LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="1">
+				<![CDATA[	NTT_CN LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	
+			<isEqual prepend="AND" property="searchCnd" compareValue="3">
+				<![CDATA[	PRESS_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>			
+ 			<isNotEqual prepend="AND" property="searchNttClCode" compareValue="">
+				<![CDATA[	NTT_CL_CODE = #searchNttClCode#				]]>
+			</isNotEqual>
+	
+ 	</select> 	
+ 	
+ 	<select id="BBSManageDAO.selectNoticeItemForSort" resultClass="java.lang.Long" parameterClass="Board">
+ 		<![CDATA[
+			SELECT
+				NVL(MAX(NTT_NO),0)+1 AS NTT_NO
+			FROM
+				COMTNBBS	
+			WHERE
+				BBS_ID = #bbsId#
+			AND
+				SORT_ORDR = #sortOrdr#
+			AND 
+				NTT_ID = #nttId#	
+ 		]]>
+ 	</select> 	
+
+ 	<update id="BBSManageDAO.updateInqireCo" parameterClass="BoardVO">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				RDCNT = #inqireCo#,
+				LAST_UPDUSR_ID = #lastUpdusrId#,
+				LAST_UPDT_PNTTM = SYSDATE
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#
+ 		]]>
+ 	</update>
+
+	<update id="BBSManageDAO.updateSortOrder" parameterClass="BoardVO">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				NTT_NO = #nttNo#
+			WHERE NTT_ID = #nttId#
+ 		]]>	
+	</update>
+
+	<select id="BBSManageDAO.selectGuestList" parameterClass="BoardVO" resultMap="guestList" >
+		<![CDATA[
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT
+				a.NTT_ID, a.NTT_SJ, a.NTCR_NM, a.PASSWORD, 
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH:MI:SS')
+				as FRST_REGIST_PNTTM,
+				a.NTT_CN, a.USE_AT, a.BBS_ID, b.USER_NM as FRST_REGISTER_NM, a.FRST_REGISTER_ID
+			FROM
+				COMTNBBS a, COMVNUSERMASTER b
+			WHERE
+				a.BBS_ID = #bbsId#
+			AND 
+				a.FRST_REGISTER_ID = b.ESNTL_ID
+			AND
+				a.USE_AT = 'Y'
+			ORDER BY a.SORT_ORDR DESC, a.NTT_NO ASC
+			) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>				
+	</select>	
+	
+	<select id="BBSManageDAO.selectGuestListCnt" parameterClass="BoardVO" resultClass="java.lang.Integer" >
+		<![CDATA[
+			SELECT
+				COUNT(NTT_ID)
+			FROM
+				COMTNBBS 
+			WHERE
+				BBS_ID = #bbsId#	
+			AND
+				USE_AT = 'Y'
+		]]>			
+	</select>	
+
+	<update id="BBSManageDAO.deleteGuestList" parameterClass="BoardVO">
+		<![CDATA[
+			UPDATE COMTNBBS
+			SET USE_AT = 'N'
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#
+		]]>			
+	</update>	
+	
+	<select id="BBSManageDAO.getPasswordInf" parameterClass="Board" resultClass="java.lang.String">
+		<![CDATA[
+			SELECT
+				PASSWORD
+			FROM
+				COMTNBBS	
+			WHERE BBS_ID = #bbsId#
+			AND NTT_ID = #nttId#				
+		]]>
+	</select>
+
+	<select id="BBSManageDAO.getParentNttNo" parameterClass="Board" resultClass="java.lang.Long">
+		<![CDATA[
+			SELECT NTT_NO FROM COMTNBBS
+			WHERE BBS_ID = #bbsId# AND NTT_ID = #parnts#			
+		]]>
+	</select>
+	
+ 	<update id="BBSManageDAO.updateOtherNttNo" parameterClass="Board">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				NTT_NO = NTT_NO + 1
+			WHERE BBS_ID = #bbsId# AND SORT_ORDR = #sortOrdr#
+			AND NTT_NO > #nttNo#
+ 		]]>
+ 	</update>
+ 	
+ 	 	<update id="BBSManageDAO.updateNttNo" parameterClass="Board">
+ 		<![CDATA[
+			UPDATE COMTNBBS SET 
+				NTT_NO = #nttNo#
+			WHERE BBS_ID = #bbsId# 
+			AND NTT_ID = #nttId#
+ 		]]>
+ 	</update>
+</sqlMap>

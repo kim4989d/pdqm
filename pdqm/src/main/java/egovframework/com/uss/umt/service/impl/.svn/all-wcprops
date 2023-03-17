@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/pdqm/!svn/ver/834/pdqm/src/main/java/egovframework/com/uss/umt/service/impl
+END
+EgovEntrprsManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/EgovEntrprsManageServiceImpl.java
+END
+EgovUserManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/EgovUserManageServiceImpl.java
+END
+MberManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/834/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/MberManageDAO.java
+END
+DeptManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/DeptManageDAO.java
+END
+EgovMberManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/pdqm/!svn/ver/669/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/EgovMberManageServiceImpl.java
+END
+EntrprsManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/EntrprsManageDAO.java
+END
+EgovDeptManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/EgovDeptManageServiceImpl.java
+END
+UserManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/impl/UserManageDAO.java
+END

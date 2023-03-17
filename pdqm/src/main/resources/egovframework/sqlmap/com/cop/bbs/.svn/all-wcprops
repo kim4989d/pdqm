@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/pdqm/!svn/ver/1111/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs
+END
+EgovBBSLoneMaster_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs/EgovBBSLoneMaster_SQL_Oracle.xml
+END
+EgovBBSUse_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs/EgovBBSUse_SQL_Oracle.xml
+END
+EgovBoard_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/1111/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs/EgovBoard_SQL_Oracle.xml
+END
+EgovBBSMaster_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/824/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs/EgovBBSMaster_SQL_Oracle.xml
+END
+EgovBBSAddedOptions_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/cop/bbs/EgovBBSAddedOptions_SQL_Oracle.xml
+END

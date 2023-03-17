@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="matching">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="dbInfoVO" type="egovframework.pdqm.front.support.matching.model.DBInfoVO"/>
+	<typeAlias  alias="dbInfoAllVO" type="egovframework.pdqm.front.support.matching.model.DBInfoAllVO"/>
+	<typeAlias  alias="tblInfoVO" type="egovframework.pdqm.front.support.matching.model.TBLInfoVO"/>
+	<typeAlias  alias="colInfoVO" type="egovframework.pdqm.front.support.matching.model.COLInfoVO"/>
+
+	<!-- DB 정보 목록 조회 쿼리 -->
+
+	<resultMap id="result-dbInfo" class="dbInfoVO">
+		<result property="rowNo"			column="RN"/>
+		<result property="database_id"		column="DATABASE_ID"/>
+	    <result property="database_nm"		column="DATABASE_NM"/>
+	    <result property="database_dc"		column="DATABASE_DC"/>
+	    <result property="instt_nm"			column="INSTT_NM"/>
+	    <result property="file_nm"			column="FILE_NM"/>
+	    <result property="regist_pnttm"		column="REGIST_PNTTM"/>
+	    <result property="register_id"		column="REGISTER_ID"/>
+	</resultMap>
+	<!-- 테이블 정보 목록 조회 쿼리 -->
+	<resultMap id="result-tblInfo" class="tblInfoVO">
+		<result property="rowNo"			column="RN"/>
+		<result property="table_id"			column="TABLE_ID"/>
+		<result property="database_id"		column="DATABASE_ID"/>
+		<result property="instt_nm"			column="INSTT_NM"/>
+		<result property="database_nm"		column="DATABASE_NM"/>
+	    <result property="table_nm"			column="TABLE_NM"/>
+	    <result property="sort_ordr"		column="SORT_ORDR"/>    
+	</resultMap>
+	<!-- 컬럼 정보 목록 조회 쿼리 -->
+	<resultMap id="result-colInfo" class="colInfoVO">
+		<result property="rn"				column="RN"/>
+		<result property="database_id"		column="DATABASE_ID"/>
+		<result property="table_id"			column="TABLE_ID"/>
+		<result property="instt_nm"			column="INSTT_NM"/>
+		<result property="database_nm"		column="DATABASE_NM"/>
+		<result property="table_nm"			column="TABLE_NM"/>
+	    <result property="sort_ordr"		column="SORT_ORDR"/>	    
+	    <result property="column_id"		column="COLUMN_ID"/>
+	    <result property="column_nm"		column="COLUMN_NM"/>
+	    <result property="column_korean_nm"	column="COLUMN_KOREAN_NM"/>
+	    <result property="data_ty"			column="DATA_TY"/>
+	    <result property="data_lt"			column="DATA_LT"/>
+	    <result property="dcmlpoint_lt"		column="DCMLPOINT_LT"/>
+	    <result property="c_sort_ordr"		column="C_SORT_ORDR"/>
+	</resultMap> 
+	<!-- 컬럼비교 결과 목록 조회 쿼리 -->
+	<resultMap id="result-colCompInfo" class="colInfoVO">
+		<result property="rn"				column="RN"/>
+		<result property="database_id"		column="DATABASE_ID"/>
+		<result property="table_id"			column="TABLE_ID"/>
+		<result property="instt_nm"			column="INSTT_NM"/>
+		<result property="database_nm"		column="DATABASE_NM"/>
+		<result property="table_nm"			column="TABLE_NM"/>
+	    <result property="sort_ordr"		column="SORT_ORDR"/>	    
+	    <result property="column_id"		column="COLUMN_ID"/>
+	    <result property="column_nm"		column="COLUMN_NM"/>
+	    <result property="column_korean_nm"	column="COLUMN_KOREAN_NM"/>
+	    <result property="data_ty"			column="DATA_TY"/>
+	    <result property="data_lt"			column="DATA_LT"/>
+	    <result property="dcmlpoint_lt"		column="DCMLPOINT_LT"/>
+	    <result property="c_sort_ordr"		column="C_SORT_ORDR"/>
+	    <result property="comp_rtn"			column="COMP_RTN"/>
+	</resultMap>
+	<resultMap id="result-colCompExlInfo" class="colInfoVO">
+		<result property="rn"				column="RN"/>
+		<result property="instt_nm"			column="INSTT_NM"/>
+		<result property="database_nm"		column="DATABASE_NM"/>
+		<result property="table_nm"			column="TABLE_NM"/>
+	    <result property="column_nm"		column="COLUMN_NM"/>
+	    <result property="column_korean_nm"	column="COLUMN_KOREAN_NM"/>
+	    <result property="data_ty"			column="DATA_TY"/>
+	    <result property="data_lt"			column="DATA_LT"/>
+	    <result property="dcmlpoint_lt"		column="DCMLPOINT_LT"/>
+	    <result property="comp_rtn"			column="COMP_RTN"/>
+	</resultMap> 
+	<select id="matchingCmmDAO.searchAllDBInfoList" resultMap="result-dbInfo" parameterClass="dbInfoAllVO"><![CDATA[
+        SELECT
+			ROWNUM as RN
+			, DATABASE_ID
+			, DATABASE_NM
+			, DATABASE_DC
+			, INSTT_NM
+			, FILE_NM
+			, REGIST_PNTTM
+			, REGISTER_ID
+		FROM (				
+				SELECT
+					DATABASE_ID
+					, DATABASE_NM
+					, DATABASE_DC
+					, INSTT_NM
+					, FILE_NM
+					, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+					, REGISTER_ID
+				FROM TNDATABASEMANAGE 
+				WHERE
+					REGISTER_ID= #register_id#
+				ORDER BY INSTT_NM, DATABASE_NM
+			)
+	]]></select>
+		
+	<select id="matchingCmmDAO.searchAllDBInfoPgList" resultMap="result-dbInfo" parameterClass="dbInfoVO"><![CDATA[
+		SELECT
+			RN
+		    , DATABASE_ID
+			, DATABASE_NM
+			, DATABASE_DC
+			, INSTT_NM
+			, FILE_NM
+			, REGIST_PNTTM
+			, REGISTER_ID
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID
+					, DATABASE_NM
+					, DATABASE_DC
+					, INSTT_NM
+					, FILE_NM
+					, REGIST_PNTTM
+					, REGISTER_ID
+				FROM (				
+						SELECT
+							DATABASE_ID
+							, DATABASE_NM
+							, DATABASE_DC
+							, INSTT_NM
+							, FILE_NM
+							, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+							, REGISTER_ID
+						FROM TNDATABASEMANAGE 
+						WHERE
+							REGISTER_ID= #register_id#
+						ORDER BY INSTT_NM, DATABASE_NM
+					)
+		    )
+		WHERE RN BETWEEN (#firstIndex# + 1) AND (#firstIndex# + #recordCountPerPage#)
+	]]></select>
+	
+	 <select id="matchingCmmDAO.searchDBInfoList" resultMap="result-dbInfo" parameterClass="dbInfoAllVO"><![CDATA[
+        SELECT
+			ROWNUM as RN
+			, DATABASE_ID
+			, DATABASE_NM
+			, DATABASE_DC
+			, INSTT_NM
+			, FILE_NM
+			, REGIST_PNTTM
+			, REGISTER_ID
+		FROM (				
+				SELECT
+					DATABASE_ID
+					, DATABASE_NM
+					, DATABASE_DC
+					, INSTT_NM
+					, FILE_NM
+					, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+					, REGISTER_ID
+				FROM TNDATABASEMANAGE 
+				WHERE
+					REGISTER_ID= #register_id#
+					AND DATABASE_NM like '%'||#database_nm#||'%'
+				ORDER BY INSTT_NM, DATABASE_NM
+			)
+	]]></select>
+	
+	<select id="matchingCmmDAO.searchDBInfoPgList" resultMap="result-dbInfo" parameterClass="dbInfoVO"><![CDATA[
+		SELECT
+			RN
+		    , DATABASE_ID
+			, DATABASE_NM
+			, DATABASE_DC
+			, INSTT_NM
+			, FILE_NM
+			, REGIST_PNTTM
+			, REGISTER_ID
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID
+					, DATABASE_NM
+					, DATABASE_DC
+					, INSTT_NM
+					, FILE_NM
+					, REGIST_PNTTM
+					, REGISTER_ID
+				FROM (				
+						SELECT
+							DATABASE_ID
+							, DATABASE_NM
+							, DATABASE_DC
+							, INSTT_NM
+							, FILE_NM
+							, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+							, REGISTER_ID
+						FROM TNDATABASEMANAGE 
+						WHERE
+							REGISTER_ID= #register_id#
+							AND DATABASE_NM like '%'||#database_nm#||'%'
+						ORDER BY INSTT_NM, DATABASE_NM
+					)
+		    )
+		WHERE RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+	]]></select>
+	
+	<select id="matchingCmmDAO.searchDBInfoPgCnt" resultClass="int" parameterClass="dbInfoVO"><![CDATA[
+		SELECT
+			count(*) as totcnt
+		FROM TNDATABASEMANAGE
+		
+		WHERE
+			REGISTER_ID= #register_id#
+			AND DATABASE_NM like '%'||#database_nm#||'%'
+	]]></select>
+	
+	
+
+	<select id="matchingCmmDAO.searchTBLInfoList" resultMap="result-tblInfo" parameterClass="tblInfoVO"><![CDATA[
+
+		SELECT
+			RN
+			, TABLE_ID					
+			, DATABASE_ID
+			, INSTT_NM
+			, DATABASE_NM
+			, TABLE_NM
+			, SORT_ORDR
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, TABLE_ID					
+					, DATABASE_ID
+					, INSTT_NM
+					, DATABASE_NM
+					, TABLE_NM
+					, SORT_ORDR
+				FROM (				
+						select
+							b.TABLE_ID
+							, b.DATABASE_ID
+							, a.INSTT_NM
+							, a.DATABASE_NM
+							, b.TABLE_NM
+							, b.SORT_ORDR
+						from
+							TNDATABASEMANAGE a, TNTABLEINFO b 
+						where							
+							a.DATABASE_ID = b.DATABASE_ID
+							and a.REGISTER_ID= #login_id# 
+							and a.DATABASE_ID in ( $database_id$ )
+							and b.TABLE_NM like '%'||#table_nm#||'%'
+						ORDER BY DATABASE_ID, SORT_ORDR
+					)
+		    ) 
+		where RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+	]]></select>
+	
+	<select id="matchingCmmDAO.searchTBLInfoCnt" resultClass="int" parameterClass="tblInfoVO"><![CDATA[
+		SELECT
+			count(*) as totcnt
+		from
+			TNDATABASEMANAGE a, TNTABLEINFO b 
+		where							
+			a.DATABASE_ID = b.DATABASE_ID
+			and a.REGISTER_ID= #login_id#
+			and a.DATABASE_ID in ( $database_id$ )
+			and TABLE_NM like '%'||#table_nm#||'%'
+	]]></select>
+
+ 
+ 
+ 	<select id="matchingCmmDAO.compCol1List" resultMap="result-colCompInfo" parameterClass="tblInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID, TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+			, COMP_RTN
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID, TABLE_ID, COLUMN_ID
+					, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+					, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+					, COMP_RTN
+				FROM (				
+						SELECT
+						    max(c.database_id) as database_id, max(c.table_id) as table_id
+						    , max(c.instt_nm) as instt_nm, max(c.database_nm) as database_nm
+						    , max(c.table_nm) as table_nm, C.SORT_ORDR as sort_ordr
+						    , C.COLUMN_ID, C.COLUMN_NM, MAX(C.COLUMN_KOREAN_NM) AS COLUMN_KOREAN_NM
+						    , max(C.c_SORT_ORDR) as c_sort_ordr
+						    , MAX(C.DATA_TY) AS DATA_TY, MAX(C.DATA_LT) AS DATA_LT, MAX(C.DCMLPOINT_LT) AS DCMLPOINT_LT
+						    , SUM(CASE WHEN C.COLUMN_KOREAN_NM <> CMP.COLUMN_KOREAN_NM THEN 1 ELSE 0 END) AS COMP_RTN
+						FROM (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+						        where
+						            a.database_id = b.database_id
+						            and b.table_id = c.table_id
+						            and b.table_id = #table_id#
+						    ) C LEFT OUTER JOIN (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+						        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+						            and a.DATABASE_ID in ($database_id$)
+						            and a.REGISTER_ID= #login_id# 
+						    )CMP
+						        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+						WHERE C.TABLE_ID= #table_id#
+						GROUP BY C.COLUMN_ID, C.COLUMN_NM, C.SORT_ORDR
+						ORDER BY C.SORT_ORDR, C.SORT_ORDR ASC
+					)
+		    )
+		where RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#	
+	]]></select>
+
+	<select id="matchingCmmDAO.compCol1Cnt" resultClass="int" parameterClass="tblInfoVO"><![CDATA[
+		select
+			count(*)
+		from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		where
+		    a.database_id = b.database_id
+		    and b.table_id = c.table_id
+		    and a.register_id =#login_id#
+		    and b.table_id = #table_id#
+	]]></select>
+	
+	<!-- 컬럼비교 결과 목록 출력 쿼리 -->
+
+	<select id="matchingCmmDAO.compCol1RtnExl" resultMap="result-colCompExlInfo" parameterClass="tblInfoVO"><![CDATA[
+        SELECT
+			ROWNUM as RN
+			, INSTT_NM, DATABASE_NM, TABLE_NM
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT
+			, COMP_RTN
+		FROM (				
+				SELECT
+				    max(c.database_id) as database_id, max(c.table_id) as table_id
+				    , max(c.instt_nm) as instt_nm, max(c.database_nm) as database_nm
+				    , max(c.table_nm) as table_nm, C.SORT_ORDR as sort_ordr
+				    , C.COLUMN_ID, C.COLUMN_NM, MAX(C.COLUMN_KOREAN_NM) AS COLUMN_KOREAN_NM
+				    , max(C.c_SORT_ORDR) as c_sort_ordr
+				    , MAX(C.DATA_TY) AS DATA_TY, MAX(C.DATA_LT) AS DATA_LT, MAX(C.DCMLPOINT_LT) AS DCMLPOINT_LT
+				    , SUM(CASE WHEN C.COLUMN_KOREAN_NM <> CMP.COLUMN_KOREAN_NM THEN 1 ELSE 0 END) AS COMP_RTN
+				FROM (
+				        select a.database_id, b.table_id, c.column_id
+				            , a.instt_nm, a.database_nm
+				            , b.table_nm, b.sort_ordr
+				            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+				        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+				        where
+				            a.database_id = b.database_id
+				            and b.table_id = c.table_id
+				            and b.table_id = #table_id#
+				    ) C LEFT OUTER JOIN (
+				        select a.database_id, b.table_id, c.column_id
+				            , a.instt_nm, a.database_nm
+				            , b.table_nm, b.sort_ordr
+				            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+				        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+				        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+				            and a.DATABASE_ID in ($database_id$)
+				            and a.REGISTER_ID= #login_id# 
+				    )CMP
+				        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+				WHERE C.TABLE_ID= #table_id#
+				GROUP BY C.COLUMN_ID, C.COLUMN_NM, C.SORT_ORDR
+				ORDER BY C.SORT_ORDR, C.SORT_ORDR ASC
+			)
+	]]></select>
+	
+	
+	
+	<select id="matchingCmmDAO.compCol1DtlTgt" resultMap="result-colInfo" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+			1 as RN
+			, a.DATABASE_ID, b.TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, b.SORT_ORDR as SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, c.SORT_ORDR as C_SORT_ORDR
+		FROM
+			TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		WHERE
+			a.DATABASE_ID = b.DATABASE_ID
+			AND b.TABLE_ID = c.TABLE_ID
+			AND c.COLUMN_ID = #column_id#	
+	]]></select>
+	
+	<select id="matchingCmmDAO.compCol1DtlList" resultMap="result-colInfo" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID, TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID, TABLE_ID, COLUMN_ID
+					, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+					, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+				FROM (				
+						SELECT
+						    cmp.database_id as database_id, cmp.table_id as table_id
+						    , cmp.instt_nm as instt_nm, cmp.database_nm as database_nm
+						    , cmp.table_nm as table_nm, cmp.SORT_ORDR as sort_ordr
+						    , cmp.COLUMN_ID, cmp.COLUMN_NM, cmp.COLUMN_KOREAN_NM AS COLUMN_KOREAN_NM
+						    , cmp.c_SORT_ORDR as c_sort_ordr
+						    , cmp.DATA_TY AS DATA_TY, cmp.DATA_LT AS DATA_LT, cmp.DCMLPOINT_LT AS DCMLPOINT_LT
+						FROM (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+						        where
+						            a.database_id = b.database_id
+						            and b.table_id = c.table_id
+						            and c.column_id = #column_id#
+						    ) C LEFT OUTER JOIN (
+						        select
+						        	a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+						        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+						            and a.DATABASE_ID in ($database_id$)
+						            and a.REGISTER_ID= #register_id#
+						    )CMP
+						        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+						WHERE C.COLUMN_KOREAN_NM <> CMP.COLUMN_KOREAN_NM
+						ORDER BY CMP.SORT_ORDR, CMP.C_SORT_ORDR ASC
+					)
+		    )
+		where RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#	
+	]]></select>
+	
+	<select id="matchingCmmDAO.compCol1DtlCnt" resultClass="int" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+		    COUNT(*) AS totcnt
+		FROM (
+		        select a.database_id, b.table_id, c.column_id
+		            , a.instt_nm, a.database_nm
+		            , b.table_nm, b.sort_ordr
+		            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+		        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		        where
+		            a.database_id = b.database_id
+		            and b.table_id = c.table_id
+		            and c.column_id = #column_id#
+		    ) C LEFT OUTER JOIN (
+		        select
+		        	a.database_id, b.table_id, c.column_id
+		            , a.instt_nm, a.database_nm
+		            , b.table_nm, b.sort_ordr
+		            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+		        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+		        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+		            and a.DATABASE_ID in ($database_id$)
+		            and a.REGISTER_ID= #register_id#
+		    )CMP
+		        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+		WHERE C.COLUMN_KOREAN_NM <> CMP.COLUMN_KOREAN_NM
+	]]></select>
+	
+	
+	
+	<!-- 타입비교 결과 목록 조회 쿼리 -->
+
+ 	<select id="matchingCmmDAO.compCol2List" resultMap="result-colCompInfo" parameterClass="tblInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID, TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+			, COMP_RTN
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID, TABLE_ID, COLUMN_ID
+					, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+					, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+					, COMP_RTN
+				FROM (				
+						SELECT
+						    max(c.database_id) as database_id, max(c.table_id) as table_id
+						    , max(c.instt_nm) as instt_nm, max(c.database_nm) as database_nm
+						    , max(c.table_nm) as table_nm, C.SORT_ORDR as sort_ordr
+						    , C.COLUMN_ID, C.COLUMN_NM, MAX(C.COLUMN_KOREAN_NM) AS COLUMN_KOREAN_NM
+						    , max(C.c_SORT_ORDR) as c_sort_ordr
+						    , MAX(C.DATA_TY) AS DATA_TY, MAX(C.DATA_LT) AS DATA_LT, MAX(C.DCMLPOINT_LT) AS DCMLPOINT_LT
+						    , SUM(
+						    		CASE WHEN (C.DATA_TY <> CMP.DATA_TY) OR (C.DATA_LT <> CMP.DATA_LT) THEN 1 ELSE 0 END
+						    	) AS COMP_RTN
+						FROM (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+						        where
+						            a.database_id = b.database_id
+						            and b.table_id = c.table_id
+						            and b.table_id = #table_id#
+						    ) C LEFT OUTER JOIN (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+						        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+						            and a.DATABASE_ID in ($database_id$)
+						            and a.REGISTER_ID= #login_id# 
+						    )CMP
+						        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+						WHERE C.TABLE_ID= #table_id#
+						GROUP BY C.COLUMN_ID, C.COLUMN_NM, C.SORT_ORDR
+						ORDER BY C.SORT_ORDR, C.SORT_ORDR ASC
+					)
+		    )
+		where RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#	
+	]]></select>
+
+	<select id="matchingCmmDAO.compCol2Cnt" resultClass="int" parameterClass="tblInfoVO"><![CDATA[
+		select
+			count(*)
+		from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		where
+		    a.database_id = b.database_id
+		    and b.table_id = c.table_id
+		    and a.register_id =#login_id#
+		    and b.table_id = #table_id#
+	]]></select>
+	<!-- 컬럼비교 결과 목록 출력 쿼리 -->
+
+	<select id="matchingCmmDAO.compCol2RtnExl" resultMap="result-colCompExlInfo" parameterClass="tblInfoVO"><![CDATA[
+        SELECT
+			ROWNUM as RN
+			, INSTT_NM, DATABASE_NM, TABLE_NM
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT
+			, COMP_RTN
+		FROM (				
+				SELECT
+				    max(c.database_id) as database_id, max(c.table_id) as table_id
+				    , max(c.instt_nm) as instt_nm, max(c.database_nm) as database_nm
+				    , max(c.table_nm) as table_nm, C.SORT_ORDR as sort_ordr
+				    , C.COLUMN_ID, C.COLUMN_NM, MAX(C.COLUMN_KOREAN_NM) AS COLUMN_KOREAN_NM
+				    , max(C.c_SORT_ORDR) as c_sort_ordr
+				    , MAX(C.DATA_TY) AS DATA_TY, MAX(C.DATA_LT) AS DATA_LT, MAX(C.DCMLPOINT_LT) AS DCMLPOINT_LT
+				    , SUM(
+				    		CASE WHEN (C.DATA_TY <> CMP.DATA_TY) OR (C.DATA_LT <> CMP.DATA_LT) THEN 1 ELSE 0 END
+				    	) AS COMP_RTN
+				FROM (
+				        select a.database_id, b.table_id, c.column_id
+				            , a.instt_nm, a.database_nm
+				            , b.table_nm, b.sort_ordr
+				            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+				        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+				        where
+				            a.database_id = b.database_id
+				            and b.table_id = c.table_id
+				            and b.table_id = #table_id#
+				    ) C LEFT OUTER JOIN (
+				        select a.database_id, b.table_id, c.column_id
+				            , a.instt_nm, a.database_nm
+				            , b.table_nm, b.sort_ordr
+				            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+				        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+				        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+				            and a.DATABASE_ID in ($database_id$)
+				            and a.REGISTER_ID= #login_id# 
+				    )CMP
+				        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+				WHERE C.TABLE_ID= #table_id#
+				GROUP BY C.COLUMN_ID, C.COLUMN_NM, C.SORT_ORDR
+				ORDER BY C.SORT_ORDR, C.SORT_ORDR ASC
+			)
+	]]></select>
+	
+	<select id="matchingCmmDAO.compCol2DtlTgt" resultMap="result-colInfo" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+			1 as RN
+			, a.DATABASE_ID, b.TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, b.SORT_ORDR as SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, c.SORT_ORDR as C_SORT_ORDR
+		FROM
+			TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		WHERE
+			a.DATABASE_ID = b.DATABASE_ID
+			AND b.TABLE_ID = c.TABLE_ID
+			AND c.COLUMN_ID = #column_id#	
+	]]></select>
+	
+	<select id="matchingCmmDAO.compCol2DtlList" resultMap="result-colInfo" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID, TABLE_ID, COLUMN_ID
+			, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+			, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+		FROM (
+		        SELECT
+					ROWNUM as RN
+					, DATABASE_ID, TABLE_ID, COLUMN_ID
+					, INSTT_NM, DATABASE_NM, TABLE_NM, SORT_ORDR
+					, COLUMN_NM, COLUMN_KOREAN_NM, DATA_TY, DATA_LT, DCMLPOINT_LT, C_SORT_ORDR
+				FROM (				
+						SELECT
+						    cmp.database_id as database_id, cmp.table_id as table_id
+						    , cmp.instt_nm as instt_nm, cmp.database_nm as database_nm
+						    , cmp.table_nm as table_nm, cmp.SORT_ORDR as sort_ordr
+						    , cmp.COLUMN_ID, cmp.COLUMN_NM, cmp.COLUMN_KOREAN_NM AS COLUMN_KOREAN_NM
+						    , cmp.c_SORT_ORDR as c_sort_ordr
+						    , cmp.DATA_TY AS DATA_TY, cmp.DATA_LT AS DATA_LT, cmp.DCMLPOINT_LT AS DCMLPOINT_LT
+						FROM (
+						        select a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+						        where
+						            a.database_id = b.database_id
+						            and b.table_id = c.table_id
+						            and c.column_id = #column_id#
+						    ) C LEFT OUTER JOIN (
+						        select
+						        	a.database_id, b.table_id, c.column_id
+						            , a.instt_nm, a.database_nm
+						            , b.table_nm, b.sort_ordr
+						            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+						        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+						        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+						            and a.DATABASE_ID in ($database_id$)
+						            and a.REGISTER_ID= #register_id#
+						    )CMP
+						        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+						WHERE (
+								C.DATA_TY <> CMP.DATA_TY OR C.DATA_LT <> CMP.DATA_LT
+							)
+						ORDER BY CMP.SORT_ORDR, CMP.C_SORT_ORDR ASC
+					)
+		    )
+		where RN BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#	
+	]]></select>
+	
+	<select id="matchingCmmDAO.compCol2DtlCnt" resultClass="int" parameterClass="colInfoVO"><![CDATA[
+		SELECT
+		    COUNT(*) AS totcnt
+		FROM (
+		        select a.database_id, b.table_id, c.column_id
+		            , a.instt_nm, a.database_nm
+		            , b.table_nm, b.sort_ordr
+		            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+		        from TNDATABASEMANAGE a, TNTABLEINFO b, TNCOLUMNINFO c
+		        where
+		            a.database_id = b.database_id
+		            and b.table_id = c.table_id
+		            and c.column_id = #column_id#
+		    ) C LEFT OUTER JOIN (
+		        select
+		        	a.database_id, b.table_id, c.column_id
+		            , a.instt_nm, a.database_nm
+		            , b.table_nm, b.sort_ordr
+		            , c.column_nm, c.column_korean_nm, c.data_ty, c.data_lt, c.dcmlpoint_lt, c.sort_ordr as c_sort_ordr
+		        from TNCOLUMNINFO c, TNTABLEINFO b, TNDATABASEMANAGE a								
+		        where c.TABLE_ID=b.TABLE_ID and b.DATABASE_ID=a.DATABASE_ID
+		            and a.DATABASE_ID in ($database_id$)
+		            and a.REGISTER_ID= #register_id#
+		    )CMP
+		        ON C.TABLE_NM <> CMP.TABLE_NM AND C.COLUMN_NM = CMP.COLUMN_NM
+		WHERE C.COLUMN_KOREAN_NM <> CMP.COLUMN_KOREAN_NM
+	]]></select>
+</sqlMap>

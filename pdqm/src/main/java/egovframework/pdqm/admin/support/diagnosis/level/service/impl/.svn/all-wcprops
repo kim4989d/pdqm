@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/pdqm/!svn/ver/2144/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl
+END
+DiagnosisLevelMngDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/pdqm/!svn/ver/2144/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelMngDAO.java
+END
+DiagnosisLevelQuizServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/pdqm/!svn/ver/1634/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelQuizServiceImpl.java
+END
+DiagnosisLevelQuizDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/pdqm/!svn/ver/1380/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelQuizDAO.java
+END
+DiagnosisLevelSelfServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/pdqm/!svn/ver/1096/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelSelfServiceImpl.java
+END
+DiagnosisLevelScoreServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/pdqm/!svn/ver/1938/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelScoreServiceImpl.java
+END
+DiagnosisLevelSelfDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/pdqm/!svn/ver/1011/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelSelfDAO.java
+END
+DiagnosisLevelScoreDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/pdqm/!svn/ver/1938/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelScoreDAO.java
+END
+DiagnosisLevelMngServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/pdqm/!svn/ver/2144/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/impl/DiagnosisLevelMngServiceImpl.java
+END

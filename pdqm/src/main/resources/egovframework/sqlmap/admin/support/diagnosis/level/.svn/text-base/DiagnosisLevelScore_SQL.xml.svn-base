@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisLevelScore">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisLevelScoreVO" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelScoreVO"/>
+	<typeAlias  alias="diagnosisLevelScore" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelScore"/>
+
+	<select id="diagnosisLevelScoreDAO.selectLevelScoreDgnssTrgetList" parameterClass="diagnosisLevelScoreVO" resultClass="egovMap">
+		<![CDATA[
+			SELECT d.DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_LEVEL,
+			       s.MUMM,
+			       s.CODE_ID,
+			       s.CODE,
+			       s.CODE_NM,
+			       s.MXMM,
+			       s.RESULT_DC,
+			       TO_char(s.FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM ,
+			       (SELECT mber_nm 
+					  FROM COMTNGNRLMBER 
+			         WHERE ESNTL_ID = s.FRST_REGISTER_ID  ) mber_nm
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT c.CODE_ID,
+			              c.CODE,
+			              c.CODE_NM ,
+			              a.DGNSS_TRGET_ID,
+			              a.DGNSS_TRGET_LEVEL,
+			              a.MUMM,
+			              a.MXMM,
+			              a.RESULT_DC,
+			              a.FRST_REGIST_PNTTM,
+			              a.FRST_REGISTER_ID,
+			              a.LAST_UPDT_PNTTM,
+			              a.LAST_UPDUSR_ID 
+			         FROM COMTCCMMNDETAILCODE c 
+			          LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			              ON (
+			                  c.CODE_ID=a.CODE_ID 
+			                  AND c.CODE=a.CODE 
+			                  AND a.DGNSS_TRGET_LEVEL=1
+			              ) 
+			        WHERE c.CODE_ID = 'LVL100' 
+			       ) s 
+			       ON (
+			           d.DGNSS_TRGET_ID=s.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=1 
+			]]>		
+		 		  <isNotEmpty  prepend="and" property="searchDgnssTrger">
+				      d.DGNSS_TRGET_ID = #searchDgnssTrger#
+				  </isNotEmpty>				       
+		 		  <isNotEmpty  prepend="and" property="searchCode">
+				      s.code = #searchCode#
+				  </isNotEmpty>							       
+                   
+			 START WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR,
+			       s.CODE
+		    
+		
+	</select>
+	
+	<select id="diagnosisLevelScoreDAO.selectLevelScoreDgnssTrgetListTotCnt" parameterClass="diagnosisLevelScoreVO" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) totcnt
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT c.CODE_ID,
+			              c.CODE,
+			              c.CODE_NM ,
+			              a.DGNSS_TRGET_ID,
+			              a.DGNSS_TRGET_LEVEL,
+			              a.MUMM,
+			              a.MXMM,
+			              a.RESULT_DC,
+			              a.FRST_REGIST_PNTTM,
+			              a.FRST_REGISTER_ID,
+			              a.LAST_UPDT_PNTTM,
+			              a.LAST_UPDUSR_ID 
+			         FROM COMTCCMMNDETAILCODE c 
+			          LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			              ON (
+			                  c.CODE_ID=a.CODE_ID 
+			                  AND c.CODE=a.CODE 
+			                  AND a.DGNSS_TRGET_LEVEL=1
+			              ) 
+			        WHERE c.CODE_ID = 'LVL100' 
+			       ) s 
+			       ON (
+			           d.DGNSS_TRGET_ID=s.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=1 
+		]]>			       
+		 		  <isNotEmpty  prepend="and" property="searchDgnssTrger">
+				      d.DGNSS_TRGET_ID = #searchDgnssTrger#
+				  </isNotEmpty>				       
+		 		  <isNotEmpty  prepend="and" property="searchCode">
+				      s.code = #searchCode#
+				  </isNotEmpty>					       
+			 START WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+
+ 
+		  	
+	</select>
+
+	<resultMap id="result-selectDgnssLevelMasterList" class="diagnosisLevelScore">
+        <result property="dgnssTrgetId"                column="DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+	    <result property="useYn"                   column="USE_YN"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelScoreDAO.selectDgnssLevelMasterList"  resultMap="result-selectDgnssLevelMasterList">
+		<![CDATA[
+		SELECT 
+			b.DGNSS_TRGET_ID,
+		    b.DGNSS_TRGET_NM,
+		    (CASE WHEN b.cnt>0 THEN 'Y' ELSE 'N' end) USE_YN
+		  FROM
+		    (	
+		     SELECT 
+		           a.DGNSS_TRGET_ID
+		          ,a.DGNSS_TRGET_NM
+		          ,(SELECT COUNT(*) FROM TNLEVELSCOREMANAGE WHERE DGNSS_TRGET_ID = a.DGNSS_TRGET_ID) cnt
+		       FROM TNDGNSSTRGETINFO a
+		        WHERE a.USE_AT = 'Y'
+		          AND a.DGNSS_TRGET_LEVEL = 1
+			) b          
+		]]>
+	</select>
+	
+	
+	
+	<select id="diagnosisLevelScoreDAO.updateLevelScoreDgnssTrgetView" parameterClass="diagnosisLevelScore" resultClass="egovMap">
+		<![CDATA[
+			SELECT c.CODE_ID,
+			       c.CODE,
+			       c.CODE_NM ,
+			       a.DGNSS_TRGET_ID,
+			       a.DGNSS_TRGET_LEVEL,
+			       a.MUMM,
+			       a.MXMM
+			
+			  FROM COMTCCMMNDETAILCODE c 
+			   LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			       ON (
+			           c.CODE_ID=a.CODE_ID 
+			           AND c.CODE=a.CODE  			           
+			           AND a.DGNSS_TRGET_ID=#dgnssTrgetId#
+			       ) 
+			 WHERE c.CODE_ID = 'LVL100'
+
+		]]>		    
+		
+	</select>
+	
+	<update id="diagnosisLevelScoreDAO.updateLevelScoreDgnssTrget">
+		<![CDATA[
+		
+			UPDATE TNLEVELSCOREMANAGE 
+			  SET MUMM = #mumm#
+			  	 ,MXMM = #mxmm#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#			  	 
+			  where DGNSS_TRGET_ID = #dgnssTrgetId#
+			  and CODE = #code# 
+		]]>
+	</update>
+	
+
+	<select id="diagnosisLevelScoreDAO.selectScoreViewPointList" parameterClass="diagnosisLevelScoreVO" resultClass="egovMap">
+		<![CDATA[
+			SELECT (SELECT f.DGNSS_TRGET_NM FROM  TNDGNSSTRGETINFO f WHERE f.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID)  UPPER_DGNSS_TRGET_NM,
+                   d.DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_LEVEL,
+			       s.MUMM,
+			       s.CODE_ID,
+			       s.CODE,
+			       s.CODE_NM,
+			       s.MXMM,
+			       DECODE(s.RESULT_DC,'','미등록','등록') RESULT_DC, 
+			       TO_char(s.FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM ,
+			       (SELECT mber_nm 
+					  FROM COMTNGNRLMBER 
+			         WHERE ESNTL_ID = s.FRST_REGISTER_ID  ) mber_nm
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT c.CODE_ID,
+			              c.CODE,
+			              c.CODE_NM ,
+			              a.DGNSS_TRGET_ID,
+			              a.DGNSS_TRGET_LEVEL,
+			              a.MUMM,
+			              a.MXMM,
+			              a.RESULT_DC,
+			              a.FRST_REGIST_PNTTM,
+			              a.FRST_REGISTER_ID,
+			              a.LAST_UPDT_PNTTM,
+			              a.LAST_UPDUSR_ID 
+			         FROM COMTCCMMNDETAILCODE c 
+			          LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			              ON (
+			                  c.CODE_ID=a.CODE_ID 
+			                  AND c.CODE=a.CODE 
+			                  AND a.DGNSS_TRGET_LEVEL=2
+			              ) 
+			        WHERE c.CODE_ID = 'LVL100' 
+			       ) s 
+			       ON (
+			           d.DGNSS_TRGET_ID=s.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=2
+		]]>	
+		 		  <isNotEmpty  prepend="and" property="searchDgnssTrger">
+				      d.UPPER_DGNSS_TRGET_ID = #searchDgnssTrger#
+				  </isNotEmpty>		
+			      <isNotEmpty  prepend="and" property="searchViewPoint">
+				      d.DGNSS_TRGET_ID = #searchViewPoint#
+				  </isNotEmpty>	
+		 		  <isNotEmpty  prepend="and" property="searchCode">
+				      s.code = #searchCode#
+				  </isNotEmpty>		
+		         <isEqual  property="searchRegist" compareValue="Y">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '등록'
+		         </isEqual>
+		         <isEqual  property="searchRegist" compareValue="N">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '미등록'
+		         </isEqual>
+
+			 START WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR,
+			       s.CODE
+	    
+		
+	</select>
+	
+	<select id="diagnosisLevelScoreDAO.selectScoreViewPointListTotCnt" parameterClass="diagnosisLevelScoreVO" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) totcnt
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT c.CODE_ID,
+			              c.CODE,
+			              c.CODE_NM ,
+			              a.DGNSS_TRGET_ID,
+			              a.DGNSS_TRGET_LEVEL,
+			              a.MUMM,
+			              a.MXMM,
+			              a.RESULT_DC,
+			              a.FRST_REGIST_PNTTM,
+			              a.FRST_REGISTER_ID,
+			              a.LAST_UPDT_PNTTM,
+			              a.LAST_UPDUSR_ID 
+			         FROM COMTCCMMNDETAILCODE c 
+			          LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			              ON (
+			                  c.CODE_ID=a.CODE_ID 
+			                  AND c.CODE=a.CODE 
+			                  AND a.DGNSS_TRGET_LEVEL=2
+			              ) 
+			        WHERE c.CODE_ID = 'LVL100' 
+			       ) s 
+			       ON (
+			           d.DGNSS_TRGET_ID=s.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=2
+		]]>				       
+		 		  <isNotEmpty  prepend="and" property="searchDgnssTrger">
+				      d.UPPER_DGNSS_TRGET_ID = #searchDgnssTrger#
+				  </isNotEmpty>			
+			      <isNotEmpty  prepend="and" property="searchViewPoint">
+				      d.DGNSS_TRGET_ID = #searchViewPoint#
+				  </isNotEmpty>					  	       
+		 		  <isNotEmpty  prepend="and" property="searchCode">
+				      s.code = #searchCode#
+				  </isNotEmpty>			
+		         <isEqual  property="searchRegist" compareValue="Y">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '등록'
+		         </isEqual>
+		         <isEqual  property="searchRegist" compareValue="N">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '미등록'
+		         </isEqual>				  
+			 START WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+	</select>
+
+
+	<resultMap id="result-selectScoreViewPointExcel" class="diagnosisLevelScore">
+        <result property="upperDgnssTrgetNm"                column="UPPER_DGNSS_TRGET_NM"/>
+        <result property="dgnssTrgetNm"              column="DGNSS_TRGET_NM"/>
+		<result property="codeNm"          column="CODE_NM"/>
+		<result property="resultDc"              column="RESULT_DC"/>
+		<result property="mberNm"              column="MBER_NM"/>
+		<result property="frstRegistPnttm"              column="FRST_REGIST_PNTTM"/>
+	</resultMap>		
+
+
+	<select id="diagnosisLevelScoreDAO.selectScoreViewPointExcel" parameterClass="diagnosisLevelScoreVO" resultMap="result-selectScoreViewPointExcel">
+		<![CDATA[
+			SELECT (SELECT f.DGNSS_TRGET_NM FROM  TNDGNSSTRGETINFO f WHERE f.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID)  UPPER_DGNSS_TRGET_NM,
+                   d.DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_LEVEL,
+			       s.MUMM,
+			       s.CODE_ID,
+			       s.CODE,
+			       s.CODE_NM,
+			       s.MXMM,
+			       s.RESULT_DC, 
+			       TO_char(s.FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM ,
+			       (SELECT mber_nm 
+					  FROM COMTNGNRLMBER 
+			         WHERE ESNTL_ID = s.FRST_REGISTER_ID  ) MBER_NM
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT c.CODE_ID,
+			              c.CODE,
+			              c.CODE_NM ,
+			              a.DGNSS_TRGET_ID,
+			              a.DGNSS_TRGET_LEVEL,
+			              a.MUMM,
+			              a.MXMM,
+			              a.RESULT_DC,
+			              a.FRST_REGIST_PNTTM,
+			              a.FRST_REGISTER_ID,
+			              a.LAST_UPDT_PNTTM,
+			              a.LAST_UPDUSR_ID 
+			         FROM COMTCCMMNDETAILCODE c 
+			          LEFT OUTER JOIN TNLEVELSCOREMANAGE a 
+			              ON (
+			                  c.CODE_ID=a.CODE_ID 
+			                  AND c.CODE=a.CODE 
+			                  AND a.DGNSS_TRGET_LEVEL=2
+			              ) 
+			        WHERE c.CODE_ID = 'LVL100' 
+			       ) s 
+			       ON (
+			           d.DGNSS_TRGET_ID=s.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=2
+		]]>	
+		 		  <isNotEmpty  prepend="and" property="searchDgnssTrger">
+				      d.UPPER_DGNSS_TRGET_ID = #searchDgnssTrger#
+				  </isNotEmpty>		
+			      <isNotEmpty  prepend="and" property="searchViewPoint">
+				      d.DGNSS_TRGET_ID = #searchViewPoint#
+				  </isNotEmpty>	
+		 		  <isNotEmpty  prepend="and" property="searchCode">
+				      s.code = #searchCode#
+				  </isNotEmpty>		
+		         <isEqual  property="searchRegist" compareValue="Y">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '등록'
+		         </isEqual>
+		         <isEqual  property="searchRegist" compareValue="N">
+		             and DECODE(s.RESULT_DC,'','미등록','등록')  = '미등록'
+		         </isEqual>
+
+			 START WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR,
+			       s.CODE
+	    
+		
+	</select>
+	
+		
+	<resultMap id="result-updateResultExplainView" class="diagnosisLevelScore">
+        <result property="code"                column="CODE"/>
+        <result property="dgnssTrgetId"              column="DGNSS_TRGET_ID"/>
+	    <result property="resultDc"                   column="RESULT_DC"/>
+		<result property="codeNm"          column="CODE_NM"/>
+		<result property="dgnssTrgetNm"              column="DGNSS_TRGET_NM"/>
+		<result property="upperDgnssTrgetNm"              column="UPPER_DGNSS_TRGET_NM"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelScoreDAO.updateResultExplainView" parameterClass="diagnosisLevelScore" resultMap="result-updateResultExplainView">
+		<![CDATA[
+		    SELECT a.CODE
+		       ,a.DGNSS_TRGET_ID
+		       ,a.RESULT_DC
+		       ,b.CODE_NM
+		       ,c.DGNSS_TRGET_NM
+		       ,(SELECT DGNSS_TRGET_NM FROM TNDGNSSTRGETINFO WHERE DGNSS_TRGET_ID = c.UPPER_DGNSS_TRGET_ID) UPPER_DGNSS_TRGET_NM 
+		  FROM TNLEVELSCOREMANAGE a
+		       ,COMTCCMMNDETAILCODE b
+		       ,TNDGNSSTRGETINFO c
+		 WHERE a.CODE_ID = b.CODE_ID
+		   AND a.CODE = b.CODE
+		   AND a.DGNSS_TRGET_ID = c.DGNSS_TRGET_ID
+		   AND a.DGNSS_TRGET_ID = #dgnssTrgetId#
+		   AND a.CODE = #code#
+   
+		]]>
+	</select>
+	
+	<update id="diagnosisLevelScoreDAO.updateResultExplain">
+		<![CDATA[
+		
+			UPDATE TNLEVELSCOREMANAGE 
+			  SET RESULT_DC = #resultDc#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#			  	 
+			  where DGNSS_TRGET_ID = #dgnssTrgetId#
+			  and CODE = #code# 
+		]]>
+	</update>
+
+	<resultMap id="result-selectViewPointCode" class="diagnosisLevelScore">
+        <result property="dgnssTrgetNm"                column="DGNSS_TRGET_NM"/>
+        <result property="dgnssTrgetId"              column="DGNSS_TRGET_ID"/>
+
+	</resultMap>		
+
+	<select id="diagnosisLevelScoreDAO.selectViewPointCode" parameterClass="diagnosisLevelScoreVO" resultMap="result-selectViewPointCode">
+		<![CDATA[
+	       SELECT DGNSS_TRGET_ID
+				,DGNSS_TRGET_NM
+	       FROM TNDGNSSTRGETINFO 
+	       WHERE UPPER_DGNSS_TRGET_ID = #searchDgnssTrger#
+	        AND use_at = 'Y'
+   
+		]]>
+	</select>
+		
+</sqlMap>

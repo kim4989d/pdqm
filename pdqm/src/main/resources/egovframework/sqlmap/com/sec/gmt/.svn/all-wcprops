@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt
+END
+EgovGroupManage_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt/EgovGroupManage_SQL.xml
+END
+EgovGroupManage_SQL_Tibero.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt/EgovGroupManage_SQL_Tibero.xml
+END
+EgovGroupManage_SQL_Mysql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt/EgovGroupManage_SQL_Mysql.xml
+END
+EgovGroupManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt/EgovGroupManage_SQL_Oracle.xml
+END
+EgovGroupManage_SQL_Altibase.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/gmt/EgovGroupManage_SQL_Altibase.xml
+END

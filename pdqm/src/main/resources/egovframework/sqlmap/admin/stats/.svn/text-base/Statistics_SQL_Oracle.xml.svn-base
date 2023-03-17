@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Statistics">
+	
+    <typeAlias  alias="statisticsVO" type="egovframework.pdqm.admin.stats.service.StatisticsVO"/>
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+
+	<!-- psh append -->
+    <select id="StatisticsDAO.selectJoinCount" parameterClass="statisticsVO" resultClass="egovMap">
+        <![CDATA[
+			SELECT TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 	AS SBSCRB_DE
+				, SUM(CASE WHEN a.MBER_TYPE = 'O' THEN 1 ELSE 0 END) AS ORDINARY
+				, SUM(CASE WHEN a.MBER_TYPE = 'G' THEN 1 ELSE 0 END)  AS GOVERNMENT
+			  FROM COMTNGNRLMBER a
+			  WHERE TO_CHAR(SBSCRB_DE, 'YYYY-MM') BETWEEN  #dateFrom# AND #dateTo#
+			  GROUP BY TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 
+        ]]>
+    </select>
+    <select id="StatisticsDAO.selectAccessCount" parameterClass="statisticsVO" resultClass="egovMap">
+        <![CDATA[
+			SELECT TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 	AS SBSCRB_DE
+				, SUM(CASE WHEN a.MBER_TYPE = 'O' THEN 1 ELSE 0 END) AS ORDINARY
+				, SUM(CASE WHEN a.MBER_TYPE = 'G' THEN 1 ELSE 0 END)  AS GOVERNMENT
+			  FROM COMTNGNRLMBER a
+			  WHERE TO_CHAR(SBSCRB_DE, 'YYYYMM') BETWEEN  #dateFrom# AND #dateTo#
+			  GROUP BY TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 
+        ]]>
+    </select>
+    <select id="StatisticsDAO.selectUseCount" parameterClass="statisticsVO" resultClass="egovMap">
+        <![CDATA[
+			SELECT TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 	AS SBSCRB_DE
+				, SUM(CASE WHEN a.MBER_TYPE = 'O' THEN 1 ELSE 0 END) AS ORDINARY
+				, SUM(CASE WHEN a.MBER_TYPE = 'G' THEN 1 ELSE 0 END)  AS GOVERNMENT
+			  FROM COMTNGNRLMBER a
+			  WHERE TO_CHAR(SBSCRB_DE, 'YYYYMM') BETWEEN  #dateFrom# AND #dateTo#
+			  GROUP BY TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD') 
+        ]]>
+    </select>
+    
+</sqlMap>

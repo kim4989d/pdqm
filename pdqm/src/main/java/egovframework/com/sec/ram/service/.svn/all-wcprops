@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service
+END
+AuthorManage.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/AuthorManage.java
+END
+AuthorRoleManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/AuthorRoleManageVO.java
+END
+EgovAuthorManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/EgovAuthorManageService.java
+END
+AuthorManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/AuthorManageVO.java
+END
+EgovAuthorRoleManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/EgovAuthorRoleManageService.java
+END
+AuthorRoleManage.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/AuthorRoleManage.java
+END

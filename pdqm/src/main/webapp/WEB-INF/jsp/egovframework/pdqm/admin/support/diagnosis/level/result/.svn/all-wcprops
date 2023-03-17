@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/2349/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result
+END
+ScoreViewPointList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/pdqm/!svn/ver/2337/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ScoreViewPointList.jsp
+END
+ResultExplainList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/pdqm/!svn/ver/2337/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ResultExplainList.jsp
+END
+ScoreDgnssTrgetModity.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/pdqm/!svn/ver/2349/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ScoreDgnssTrgetModity.jsp
+END
+ScoreDgnssTrgetList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/pdqm/!svn/ver/2337/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ScoreDgnssTrgetList.jsp
+END
+ScoreViewPointModity.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/pdqm/!svn/ver/2349/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ScoreViewPointModity.jsp
+END
+ResultExplainModity.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/pdqm/!svn/ver/2337/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/level/result/ResultExplainModity.jsp
+END

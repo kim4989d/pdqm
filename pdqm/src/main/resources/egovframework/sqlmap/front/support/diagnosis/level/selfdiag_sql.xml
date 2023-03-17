@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+
+<sqlMap namespace="selfDiag">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="selfDiagVO" type="egovframework.pdqm.front.support.diagnosis.level.model.SelfDiagVO" />
+	<typeAlias alias="selfDiag" type="egovframework.pdqm.front.support.diagnosis.level.model.SelfDiag" />
+
+
+	<resultMap id="result-selectLevelDgnssId" class="selfDiag">
+		<result property="levelDgnssId" column="LEVEL_DGNSS_ID" />
+		<result property="levelDgnssNm" column="LEVEL_DGNSS_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectLevelDgnssId" resultMap="result-selectLevelDgnssId"><![CDATA[
+	SELECT A.LEVEL_DGNSS_ID
+		, A.LEVEL_DGNSS_NM
+	FROM (
+		SELECT A.*
+			, CASE WHEN A.NTCE_TY_CODE = 'N20'
+					AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) > SYSDATE
+				THEN 'S30'
+				WHEN A.NTCE_TY_CODE = 'N20'
+					AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) <= SYSDATE
+					AND TO_DATE( A.NTCE_END_DT, 'YYYYMMDDHH24MISS' ) >= SYSDATE
+				THEN 'S20'
+				WHEN A.NTCE_TY_CODE = 'N20'
+					AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) < SYSDATE
+					AND TO_DATE( A.NTCE_END_DT, 'YYYYMMDDHH24MISS' ) < SYSDATE
+				THEN 'S50'
+				ELSE 'S40'
+				END NTCE_TY_CODE_2
+		FROM TNLEVELDGNSSMANAGE A
+		WHERE A.USE_AT = 'Y'
+	) A
+	WHERE A.NTCE_TY_CODE_2 = 'S20'
+	]]></select>
+
+
+	<resultMap id="result-selectUpperInsttSeCode" class="selfDiag">
+		<result property="upperInsttSeCode" column="CODE" />
+		<result property="upperInsttSeCodeNm" column="CODE_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectUpperInsttSeCode" resultMap="result-selectUpperInsttSeCode"><![CDATA[
+	SELECT B.CODE, B.CODE_NM
+	FROM COMTCCMMNCODE A, COMTCCMMNDETAILCODE B
+	WHERE A.CODE_ID = B.CODE_ID
+		AND A.CL_CODE = 'PQC'
+		AND A.CODE_ID = 'T300'
+		AND A.USE_AT = 'Y'
+		AND B.USE_AT = 'Y'
+	ORDER BY B.CODE
+	]]></select>
+
+	<resultMap id="result-selectInsttSeCode" class="selfDiag">
+		<result property="insttSeCodeId" column="CODE_ID" />
+		<result property="insttSeCode" column="CODE" />
+		<result property="insttSeCodeNm" column="CODE_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectInsttSeCode" resultMap="result-selectInsttSeCode"><![CDATA[
+   	SELECT A.CODE_ID, B.CODE, B.CODE_NM
+   	FROM COMTCCMMNCODE A, COMTCCMMNDETAILCODE B
+       WHERE A.CODE_ID = B.CODE_ID
+        AND A.CL_CODE = 'PQC'
+        AND A.CODE_ID IN ( 'T400', 'T500' )
+        AND A.USE_AT = 'Y'
+        AND B.USE_AT = 'Y'
+	ORDER BY A.CODE_ID, CODE
+	]]></select>
+
+	<resultMap id="result-selectDatabaseTyId" class="selfDiag">
+		<result property="databaseTyId" column="DATABASE_TY_ID" />
+		<result property="databaseTyNm" column="DATABASE_TY_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectDatabaseTyId" resultMap="result-selectDatabaseTyId"><![CDATA[
+	SELECT DATABASE_TY_ID, DATABASE_TY_NM
+	FROM TNDATABASETYMANAGE
+	WHERE USE_AT = 'Y'
+	ORDER BY SORT_ORDR
+	]]></select>
+
+
+	<resultMap id="result-selectDatabaseScaleCode" class="selfDiag">
+		<result property="databaseScaleCode" column="CODE" />
+		<result property="databaseScaleCodeNm" column="CODE_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectDatabaseScaleCode" resultMap="result-selectDatabaseScaleCode"><![CDATA[
+	SELECT B.CODE, B.CODE_NM
+	FROM COMTCCMMNCODE A, COMTCCMMNDETAILCODE B
+	WHERE A.CODE_ID = B.CODE_ID
+		AND A.CL_CODE = 'PQC'
+		AND A.CODE_ID = 'T700'
+		AND A.USE_AT = 'Y'
+		AND B.USE_AT = 'Y'
+	ORDER BY B.CODE
+	]]></select>
+
+
+	<resultMap id="result-selectCntDgnssTrget" class="selfDiag">
+		<result property="dgnssTrgetId" column="DGNSS_TRGET_ID" />
+		<result property="dgnssTrgetNm" column="DGNSS_TRGET_NM" />
+		<result property="dgnssTrgetDc" column="DGNSS_TRGET_DC" />
+		<result property="qesitmCount" column="QESITM_COUNT" />
+	</resultMap>
+	<select id="selfDiagDAO.selectCntDgnssTrget" resultMap="result-selectCntDgnssTrget"><![CDATA[
+	SELECT D.DGNSS_TRGET_ID
+		, D.DGNSS_TRGET_NM
+		, D.DGNSS_TRGET_DC
+		, NVL( P.QESITM_COUNT, 0 ) QESITM_COUNT
+	FROM TNDGNSSTRGETINFO D 
+	LEFT OUTER JOIN (
+			SELECT E.UPPER_DGNSS_TRGET_ID DGNSS_TRGET_ID
+				, COUNT( A.DGNSS_TRGET_ID ) QESITM_COUNT 
+			FROM TNLEVELQESITMPOOL A
+				, TNLEVELDGNSSQESITM B
+				, TNLEVELDGNSSMANAGE C
+				, TNDGNSSTRGETINFO E
+			WHERE A.QESITM_ID = B.QESITM_ID
+				AND A.DGNSS_TRGET_ID = E.DGNSS_TRGET_ID
+				AND B.LEVEL_DGNSS_ID = C.LEVEL_DGNSS_ID 
+				AND C.USE_AT = 'Y'
+				AND C.LEVEL_DGNSS_ID = #levelDgnssId#
+				AND A.USE_AT = 'Y'
+				AND E.USE_AT = 'Y'
+				AND E.DGNSS_TRGET_STTUS_CODE = 'U'
+			GROUP BY E.UPPER_DGNSS_TRGET_ID
+		) P ON ( D.DGNSS_TRGET_ID = P.DGNSS_TRGET_ID )
+	WHERE D.USE_AT = 'Y'
+		AND D.DGNSS_TRGET_STTUS_CODE = 'U'
+		AND D.DGNSS_TRGET_LEVEL = 1
+	START WITH D.DGNSS_TRGET_ID = #dgnssTrgetId#
+	CONNECT BY PRIOR D.DGNSS_TRGET_ID = D.UPPER_DGNSS_TRGET_ID
+	ORDER SIBLINGS BY D.SORT_ORDR
+	]]></select>
+
+
+	<resultMap id="result-selectListDgnssTrget" class="selfDiag">
+		<result property="dgnssTrgetId" column="DGNSS_TRGET_ID" />
+		<result property="dgnssTrgetNm" column="DGNSS_TRGET_NM" />
+		<result property="dgnssTrgetLevel" column="DGNSS_TRGET_LEVEL" />
+		<result property="dgnssTrgetDc" column="DGNSS_TRGET_DC" />
+		<result property="upperDgnssTrgetId" column="UPPER_DGNSS_TRGET_ID" />
+		<result property="qesitmNo" column="QESITM_NO" />
+		<result property="qesitmId" column="QESITM_ID" />
+		<result property="qesitm" column="QESITM" />
+		<result property="answerTyCode" column="ANSWER_TY_CODE" />
+		<result property="sortOrdrQ" column="Q_SORT_ORDR" />
+		<result property="answerId" column="ANSWER_ID" />
+		<result property="answer" column="ANSWER" />
+		<result property="answerStdr" column="ANSWER_STDR" />
+		<result property="allot" column="ALLOT" />
+		<result property="sortOrdrA" column="A_SORT_ORDR" />
+		<result property="answerCnt" column="ANSWER_CNT" />
+	</resultMap>
+	<select id="selfDiagDAO.selectListDgnssTrget" resultMap="result-selectListDgnssTrget"><![CDATA[
+	SELECT D.DGNSS_TRGET_NM
+		, D.DGNSS_TRGET_LEVEL
+		, D.DGNSS_TRGET_DC
+		, D.DGNSS_TRGET_ID
+		, UPPER_DGNSS_TRGET_ID
+		, P.QESITM_NO
+		, P.QESITM_ID
+		, P.QESITM
+		, P.ANSWER_TY_CODE
+		, P.Q_SORT_ORDR
+		, P.ANSWER_ID
+		, P.ANSWER
+		, P.ANSWER_STDR
+		, P.ALLOT
+		, P.A_SORT_ORDR
+		, COUNT( P.ALLOT ) OVER ( PARTITION BY P.QESITM_ID ) AS ANSWER_CNT
+	FROM TNDGNSSTRGETINFO D
+		LEFT OUTER JOIN (
+				SELECT A.QESITM_ID
+					, A.DGNSS_TRGET_ID
+					, A.QESITM
+					, A.ANSWER_TY_CODE
+					, A.SORT_ORDR Q_SORT_ORDR
+					, B.QESITM_NO
+					, D.ANSWER_ID
+					, D.ANSWER
+					, D.ANSWER_STDR
+					, D.ALLOT
+					, D.SORT_ORDR A_SORT_ORDR
+					, C.LEVEL_DGNSS_NM
+					, C.NTCE_TY_CODE
+					, C.NTCE_BEGIN_DT
+					, C.NTCE_END_DT
+					, C.QESITM_CO
+				FROM TNLEVELQESITMPOOL A
+					, TNLEVELDGNSSQESITM B
+					, TNLEVELDGNSSMANAGE C
+					, TNLEVELQESITMPOOLANSWER D
+				WHERE A.QESITM_ID = B.QESITM_ID
+					AND B.QESITM_ID = D.QESITM_ID
+					AND B.LEVEL_DGNSS_ID = C.LEVEL_DGNSS_ID AND C.USE_AT = 'Y'
+					AND C.LEVEL_DGNSS_ID = #levelDgnssId#
+					AND A.USE_AT = 'Y'
+					AND D.USE_AT = 'Y'
+			) P ON  ( D.DGNSS_TRGET_ID = P.DGNSS_TRGET_ID )
+		LEFT OUTER JOIN (
+				SELECT E.DGNSS_TRGET_ID DGNSS_TRGET_ID
+					, COUNT( A.DGNSS_TRGET_ID ) QESITM_COUNT_2
+				FROM TNLEVELQESITMPOOL A
+					, TNLEVELDGNSSQESITM B
+					, TNLEVELDGNSSMANAGE C
+					, TNDGNSSTRGETINFO E
+				WHERE A.QESITM_ID = B.QESITM_ID
+					AND A.DGNSS_TRGET_ID = E.DGNSS_TRGET_ID
+					AND B.LEVEL_DGNSS_ID = C.LEVEL_DGNSS_ID 
+					AND C.USE_AT = 'Y'
+					AND C.LEVEL_DGNSS_ID = #levelDgnssId#
+					AND A.USE_AT = 'Y'
+					AND E.USE_AT = 'Y'
+					AND E.DGNSS_TRGET_STTUS_CODE = 'U'
+				GROUP BY E.DGNSS_TRGET_ID
+			) P2 ON ( D.DGNSS_TRGET_ID = P2.DGNSS_TRGET_ID )
+	WHERE D.USE_AT = 'Y'
+		AND D.DGNSS_TRGET_STTUS_CODE = 'U'
+	START WITH D.DGNSS_TRGET_ID = 0
+	CONNECT BY PRIOR D.DGNSS_TRGET_ID = D.UPPER_DGNSS_TRGET_ID
+	ORDER SIBLINGS BY D.SORT_ORDR, P.Q_SORT_ORDR, P.A_SORT_ORDR
+	]]></select>
+
+
+	<resultMap id="result-getNewLevelResultId" class="selfDiag">
+		<result property="levelResultId" column="LEVEL_RESULT_ID" />
+	</resultMap>
+	<select id="selfDiagDAO.getNewLevelResultId" resultMap="result-getNewLevelResultId"><![CDATA[
+	SELECT SEQ_D_LEVELDGNSSRESULTID.NEXTVAL AS LEVEL_RESULT_ID
+	FROM DUAL
+	]]></select>
+
+
+	<insert id="selfDiagDAO.insertDgnssTrget1Result">
+	<![CDATA[
+	INSERT INTO TNLEVELDGNSSRESULT (
+		  LEVEL_RESULT_ID
+		, LEVEL_DGNSS_ID
+		, DATABASE_TY_ID
+		, INSTT_NM
+		, UPPER_INSTT_SE_CODE
+		, INSTT_SE_CODE
+		, DATABASE_NM
+		, DATABASE_SCALE_CODE
+		, USER_IP
+		, DGNSS_DT
+	) VALUES (
+		  #levelResultId#
+		, #levelDgnssId#
+		, #databaseTyId#
+		, #insttNm#
+		, #upperInsttSeCode#
+		, #insttSeCode#
+		, #databaseNm#
+		, #databaseScaleCode#
+		, #userIp#
+		, TO_CHAR( SYSDATE, 'YYYYMMDDHH24MISS' )
+	)
+	]]>
+	</insert>
+	<insert id="selfDiagDAO.insertDgnssTrget1Result2">
+	<![CDATA[
+	INSERT INTO TNLEVELDGNSSRESULT
+	SELECT ( SELECT MAX( LEVEL_DGNSS_ID ) + 1 FROM TNLEVELDGNSSRESULT )
+		, A.LEVEL_DGNSS_ID
+		, A.DATABASE_TY_ID
+		, A.INSTT_NM
+		, A.UPPER_INSTT_SE_CODE
+		, A.INSTT_SE_CODE
+		, A.DATABASE_NM
+		, A.DATABASE_SCALE_CODE
+		, #userIp#
+		, SYSDATE
+	FROM TNLEVELDGNSSRESULT A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B ON ( B.CODE_ID = 'T300' AND A.UPPER_INSTT_SE_CODE = B.CODE )
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( A.UPPER_INSTT_SE_CODE = C.CODE_ID AND A.INSTT_SE_CODE = C.CODE )
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE D ON ( D.CODE_ID = 'T700' AND A.DATABASE_SCALE_CODE = D.CODE )
+		LEFT OUTER JOIN TNDATABASETYMANAGE  E ON ( A.DATABASE_TY_ID = E.DATABASE_TY_ID )
+	WHERE LEVEL_RESULT_ID = #levelResultId#
+	]]>
+	</insert>
+	
+		
+
+
+	<insert id="selfDiagDAO.insertDgnssTrget2Result"><![CDATA[
+	INSERT INTO TNLEVELDGNSSANSWERRESULT (
+		  LEVEL_RESULT_ID
+		, LEVEL_DGNSS_ID
+		, QESITM_ID
+		, ANSWER_ID
+		, QESITM_NO
+		, ANSWER_TY_CODE
+		, DGNSS_TRGET_ID
+		, UPPER_DGNSS_TRGET_ID
+		, ALLOT
+	) VALUES (
+		  #levelResultId#
+		, #levelDgnssId#
+		, #qesitmId#
+		, #answerId#
+		, #qesitmNo#
+		, #answerTyCode#
+		, #dgnssTrgetId#
+		, #upperDgnssTrgetId#
+		, #allot#
+	)
+	]]></insert>
+
+	<insert id="selfDiagDAO.insertDgnssTrget3Result"><![CDATA[
+	INSERT INTO TNLEVELDGNSSQESITMRESULT 
+	SELECT T.LEVEL_RESULT_ID
+		, T.LEVEL_DGNSS_ID
+		, T.QESITM_ID
+		, T.DGNSS_TRGET_ID
+		, T.UPPER_DGNSS_TRGET_ID
+		, SUM( NVL( CNVRSN_SCORE, 0 ) ) SCORE
+	FROM (
+		SELECT A.LEVEL_RESULT_ID
+			, A.LEVEL_DGNSS_ID
+			, A.QESITM_ID
+			, A.DGNSS_TRGET_ID
+			, A.UPPER_DGNSS_TRGET_ID
+			, CASE WHEN A.ANSWER_TY_CODE <> 'T6000' THEN
+					( TO_NUMBER( NVL( B.CODE_NM, '40' ) ) + ( ( NVL( A.ALLOT, 1 ) - 1 ) * ( ( TO_NUMBER( NVL( C.CODE_NM, '100' ) ) - TO_NUMBER( NVL( B.CODE_NM, '40' ) ) ) / ( TO_NUMBER( NVL( E.MAX_ALLOT, '1' ) ) - 1 ) ) ) ) 
+				ELSE A.ALLOT
+				END CNVRSN_SCORE
+		FROM TNLEVELDGNSSANSWERRESULT A
+			LEFT OUTER JOIN (
+					SELECT B.CODE_ID, COUNT( B.CODE ) MAX_ALLOT
+					FROM COMTCCMMNCODE A, COMTCCMMNDETAILCODE B
+					WHERE A.CODE_ID = B.CODE_ID
+						AND A.CL_CODE = 'PQC'
+						AND A.CODE_ID IN ( 'T1000', 'T2000', 'T3000', 'T4000', 'T5000' )
+						AND A.USE_AT = 'Y'
+						AND B.USE_AT = 'Y'
+					GROUP BY B.CODE_ID
+				) E ON (A.ANSWER_TY_CODE = E.CODE_ID )
+			, COMTCCMMNDETAILCODE B
+			, COMTCCMMNDETAILCODE C
+		WHERE A.LEVEL_DGNSS_ID = #levelDgnssId#
+			AND A.LEVEL_RESULT_ID = #levelResultId#
+			AND B.CODE_ID = 'T40'
+			AND B.USE_AT = 'Y'
+			AND B.CODE = 'MUMM'
+			AND C.CODE_ID = 'T50'
+			AND C.USE_AT = 'Y'
+			AND C.CODE = 'MXMM'
+	) T
+	GROUP BY T.LEVEL_RESULT_ID, T.LEVEL_DGNSS_ID, T.QESITM_ID, T.DGNSS_TRGET_ID, T.UPPER_DGNSS_TRGET_ID
+	]]></insert>
+
+	<insert id="selfDiagDAO.insertDgnssTrget4Result"><![CDATA[
+	INSERT INTO TNLEVELDGNSSVIEWPOINTRESULT
+	SELECT S.LEVEL_RESULT_ID
+		, S.LEVEL_DGNSS_ID
+		, S.DGNSS_TRGET_ID
+		, S.UPPER_DGNSS_TRGET_ID
+		, S.AVG_SCORE
+		, B.CODE 
+	FROM (
+		SELECT LEVEL_RESULT_ID
+			, LEVEL_DGNSS_ID
+			, DGNSS_TRGET_ID
+			, UPPER_DGNSS_TRGET_ID
+			, AVG( SCORE ) AVG_SCORE
+		FROM TNLEVELDGNSSQESITMRESULT 
+		WHERE LEVEL_DGNSS_ID = #levelDgnssId#
+			AND LEVEL_RESULT_ID = #levelResultId#
+		GROUP BY LEVEL_RESULT_ID, LEVEL_DGNSS_ID, DGNSS_TRGET_ID, UPPER_DGNSS_TRGET_ID
+		) S
+	LEFT OUTER JOIN TNLEVELSCOREMANAGE B ON ( S.DGNSS_TRGET_ID = B.DGNSS_TRGET_ID AND B.DGNSS_TRGET_LEVEL = 2
+		AND S.AVG_SCORE > B.MUMM AND S.AVG_SCORE <= B.MXMM )
+	]]></insert>
+
+	<insert id="selfDiagDAO.insertDgnssTrget5Result"><![CDATA[
+	INSERT INTO TNLEVELDGNSSTRGETRESULT
+	SELECT S.LEVEL_RESULT_ID
+		, S.LEVEL_DGNSS_ID
+		, S.UPPER_DGNSS_TRGET_ID
+		, S.AVG_SCORE
+		, B.CODE 
+	FROM (
+		SELECT LEVEL_RESULT_ID
+			, LEVEL_DGNSS_ID
+			, UPPER_DGNSS_TRGET_ID
+			, AVG( NVL( SCORE, 0 ) ) AVG_SCORE
+		FROM TNLEVELDGNSSQESITMRESULT
+		WHERE LEVEL_DGNSS_ID = #levelDgnssId#
+			AND LEVEL_RESULT_ID = #levelResultId#
+		GROUP BY LEVEL_RESULT_ID, LEVEL_DGNSS_ID, UPPER_DGNSS_TRGET_ID
+		) S
+	LEFT OUTER JOIN TNLEVELSCOREMANAGE B ON ( S.UPPER_DGNSS_TRGET_ID = B.DGNSS_TRGET_ID AND B.DGNSS_TRGET_LEVEL = 1
+		AND S.AVG_SCORE > B.MUMM AND S.AVG_SCORE <= B.MXMM )
+	]]></insert>
+
+
+	<resultMap id="result-selectDgnssTrget1Result" class="selfDiag">
+		<result property="levelResultId" column="LEVEL_RESULT_ID" />
+		<result property="levelDgnssId" column="LEVEL_DGNSS_ID" />
+		<result property="databaseTyId" column="DATABASE_TY_ID" />
+		<result property="databaseTyNm" column="DATABASE_TY_NM" />
+		<result property="insttNm" column="INSTT_NM" />
+		<result property="upperInsttSeCode" column="UPPER_INSTT_SE_CODE" />
+		<result property="upperInsttSeCodeNm" column="UPPER_INSTT_SE_CODE_NM" />
+		<result property="insttSeCode" column="INSTT_SE_CODE" />
+		<result property="insttSeCodeNm" column="INSTT_SE_CODE_NM" />
+		<result property="databaseNm" column="DATABASE_NM" />
+		<result property="databaseScaleCode" column="DATABASE_SCALE_CODE" />
+		<result property="databaseScaleCodeNm" column="DATABASE_SCALE_CODE_NM" />
+	</resultMap>
+	<select id="selfDiagDAO.selectDgnssTrget1Result" resultMap="result-selectDgnssTrget1Result"><![CDATA[
+	SELECT A.LEVEL_RESULT_ID
+		, A.LEVEL_DGNSS_ID
+		, A.DATABASE_TY_ID
+		, E.DATABASE_TY_NM
+		, A.INSTT_NM
+		, A.UPPER_INSTT_SE_CODE
+		, B.CODE_NM UPPER_INSTT_SE_CODE_NM
+		, A.INSTT_SE_CODE
+		, C.CODE_NM INSTT_SE_CODE_NM
+		, A.DATABASE_NM
+		, A.DATABASE_SCALE_CODE
+		, D.CODE_NM DATABASE_SCALE_CODE_NM
+	FROM TNLEVELDGNSSRESULT A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B ON ( B.CODE_ID = 'T300' AND A.UPPER_INSTT_SE_CODE = B.CODE )
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( A.UPPER_INSTT_SE_CODE = C.CODE_ID AND A.INSTT_SE_CODE = C.CODE )
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE D ON ( D.CODE_ID = 'T700' AND A.DATABASE_SCALE_CODE = D.CODE )
+		LEFT OUTER JOIN TNDATABASETYMANAGE  E ON ( A.DATABASE_TY_ID = E.DATABASE_TY_ID )
+	WHERE LEVEL_RESULT_ID = #levelResultId#
+	]]></select>
+
+
+	<resultMap id="result-selectCompResult" class="selfDiag">
+		<result property="dgnssTrgetId" column="DGNSS_TRGET_ID" />
+		<result property="dgnssTrgetNm" column="DGNSS_TRGET_NM" />
+		<result property="dgnssTrgetLevel" column="DGNSS_TRGET_LEVEL" />
+		<result property="upperDgnssTrgetId" column="UPPER_DGNSS_TRGET_ID" />
+		<result property="dgnssResultClCodeNm" column="DGNSS_RESULT_CL_CODE_NM" />
+		<result property="dgnssResultClCode" column="DGNSS_RESULT_CL_CODE" />
+		<result property="dgnssResultClCode2" column="DGNSS_RESULT_CL_CODE2" />
+	</resultMap>
+	<select id="selfDiagDAO.selectCompResult" resultMap="result-selectCompResult"><![CDATA[
+	SELECT DISTINCT DGNSS_TRGET_ID
+		, X.*
+	FROM (
+			SELECT D.DGNSS_TRGET_ID
+				, D.DGNSS_TRGET_NM
+				, D.DGNSS_TRGET_LEVEL
+				, D.UPPER_DGNSS_TRGET_ID
+				, P.DGNSS_RESULT_CL_CODE_NM
+				, P.DGNSS_RESULT_CL_CODE
+				, SUBSTR( P.DGNSS_RESULT_CL_CODE, 3, 3 ) DGNSS_RESULT_CL_CODE2
+				, NVL( P2.C_CNT, 0 ) DETAIL_CNT
+			FROM TNDGNSSTRGETINFO D
+			LEFT OUTER JOIN (
+				SELECT S.LEVEL_RESULT_ID
+					, S.LEVEL_DGNSS_ID
+					, S.DGNSS_TRGET_ID
+					, S.DGNSS_RESULT_CL_CODE
+					, B.RESULT_DC
+					, C.CODE_NM DGNSS_RESULT_CL_CODE_NM
+				FROM TNLEVELDGNSSTRGETRESULT S
+					LEFT OUTER JOIN TNLEVELSCOREMANAGE B ON ( S.DGNSS_RESULT_CL_CODE = B.CODE AND S.DGNSS_TRGET_ID = B.DGNSS_TRGET_ID AND B.DGNSS_TRGET_LEVEL = 1 )
+					LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( C.CODE_ID = 'LVL100' AND S.DGNSS_RESULT_CL_CODE = C.CODE )
+				WHERE S.LEVEL_RESULT_ID = #levelResultId#
+				) P ON ( D.DGNSS_TRGET_ID = P.DGNSS_TRGET_ID )
+			LEFT OUTER JOIN (
+					SELECT UPPER_DGNSS_TRGET_ID, COUNT(*) C_CNT
+					FROM TNDGNSSTRGETINFO
+					WHERE UPPER_DGNSS_TRGET_ID <> 0
+						AND USE_AT = 'Y'
+						AND DGNSS_TRGET_STTUS_CODE = 'U'
+					GROUP BY UPPER_DGNSS_TRGET_ID
+				) P2  ON ( D.DGNSS_TRGET_ID = P2.UPPER_DGNSS_TRGET_ID )
+			WHERE D.USE_AT = 'Y'
+				AND D.DGNSS_TRGET_STTUS_CODE = 'U'
+				AND D.DGNSS_TRGET_LEVEL = 1
+			START WITH D.DGNSS_TRGET_ID = #dgnssTrgetId#
+			CONNECT BY PRIOR D.DGNSS_TRGET_ID = D.UPPER_DGNSS_TRGET_ID
+			ORDER SIBLINGS BY D.SORT_ORDR
+	) X
+	ORDER BY DGNSS_TRGET_ID
+	]]></select>
+
+
+	<resultMap id="result-selectDetailResult" class="selfDiag">
+		<result property="dgnssTrgetId" column="DGNSS_TRGET_ID" />
+		<result property="dgnssTrgetNm" column="DGNSS_TRGET_NM" />
+		<result property="dgnssTrgetLevel" column="DGNSS_TRGET_LEVEL" />
+		<result property="upperDgnssTrgetId" column="UPPER_DGNSS_TRGET_ID" />
+		<result property="dgnssResultClCodeNm" column="DGNSS_RESULT_CL_CODE_NM" />
+		<result property="dgnssResultClCode" column="DGNSS_RESULT_CL_CODE" />
+		<result property="dgnssResultClCode2" column="DGNSS_RESULT_CL_CODE2" />
+		<result property="resultDc" column="RESULT_DC" />
+		<result property="detailCnt" column="DETAIL_CNT" />
+	</resultMap>
+	<select id="selfDiagDAO.selectDetailResult" parameterClass="selfDiagVO" resultMap="result-selectDetailResult"><![CDATA[
+	SELECT D.DGNSS_TRGET_ID
+		, D.DGNSS_TRGET_NM
+		, D.DGNSS_TRGET_LEVEL
+		, D.UPPER_DGNSS_TRGET_ID
+		, P.DGNSS_RESULT_CL_CODE_NM
+		, P.DGNSS_RESULT_CL_CODE
+		, SUBSTR( P.DGNSS_RESULT_CL_CODE, 3, 3 ) DGNSS_RESULT_CL_CODE2
+		, P.RESULT_DC
+		, NVL( P2.C_CNT, 0 ) DETAIL_CNT
+	FROM TNDGNSSTRGETINFO D
+	LEFT OUTER JOIN (
+			SELECT S.LEVEL_RESULT_ID
+				, S.LEVEL_DGNSS_ID
+				, S.DGNSS_TRGET_ID
+				, S.DGNSS_RESULT_CL_CODE
+				, B.RESULT_DC
+				, C.CODE_NM DGNSS_RESULT_CL_CODE_NM
+			FROM TNLEVELDGNSSVIEWPOINTRESULT S
+				LEFT OUTER JOIN TNLEVELSCOREMANAGE B ON ( S.DGNSS_RESULT_CL_CODE=b.CODE AND S.DGNSS_TRGET_ID = B.DGNSS_TRGET_ID AND B.DGNSS_TRGET_LEVEL = 2 )
+				LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( C.CODE_ID = 'LVL100' AND S.DGNSS_RESULT_CL_CODE = C.CODE) 
+			WHERE S.LEVEL_DGNSS_ID = #levelDgnssId#
+				AND S.LEVEL_RESULT_ID = #levelResultId#
+		) P ON ( D.DGNSS_TRGET_ID = P.DGNSS_TRGET_ID )
+	LEFT OUTER JOIN (
+			SELECT UPPER_DGNSS_TRGET_ID, COUNT(*) C_CNT
+			FROM TNDGNSSTRGETINFO
+			WHERE UPPER_DGNSS_TRGET_ID <> 0
+				AND USE_AT = 'Y'
+				AND DGNSS_TRGET_STTUS_CODE = 'U'
+			GROUP BY UPPER_DGNSS_TRGET_ID
+		) P2  ON ( D.DGNSS_TRGET_ID = P2.UPPER_DGNSS_TRGET_ID )
+	WHERE D.USE_AT = 'Y' AND D.DGNSS_TRGET_STTUS_CODE = 'U'
+	START WITH D.DGNSS_TRGET_ID = #dgnssTrgetId#
+	CONNECT BY PRIOR D.DGNSS_TRGET_ID = D.UPPER_DGNSS_TRGET_ID
+	ORDER SIBLINGS BY D.SORT_ORDR
+	]]></select>
+
+
+</sqlMap>

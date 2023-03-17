@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/pdqm/!svn/ver/2091/pdqm/src/main/java/egovframework/com/cmm/web
+END
+EgovFileMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/966/pdqm/src/main/java/egovframework/com/cmm/web/EgovFileMngController.java
+END
+EgovMultipartResolver.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/web/EgovMultipartResolver.java
+END
+EgovImageProcessController.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/web/EgovImageProcessController.java
+END
+EgovFileDownloadController.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/341/pdqm/src/main/java/egovframework/com/cmm/web/EgovFileDownloadController.java
+END
+EgovBindingInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/web/EgovBindingInitializer.java
+END
+EgovComIndexController.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/pdqm/!svn/ver/2091/pdqm/src/main/java/egovframework/com/cmm/web/EgovComIndexController.java
+END
+EgovComUtlController.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/web/EgovComUtlController.java
+END

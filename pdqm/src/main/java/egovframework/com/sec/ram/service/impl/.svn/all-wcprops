@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl
+END
+EgovAuthorManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl/EgovAuthorManageServiceImpl.java
+END
+AuthorRoleManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl/AuthorRoleManageDAO.java
+END
+EgovUserDetailsSecurityServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl/EgovUserDetailsSecurityServiceImpl.java
+END
+EgovAuthorRoleManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl/EgovAuthorRoleManageServiceImpl.java
+END
+AuthorManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/ram/service/impl/AuthorManageDAO.java
+END

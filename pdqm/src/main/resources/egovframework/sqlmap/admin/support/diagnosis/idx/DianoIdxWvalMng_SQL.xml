@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnoIdxWghtvalMngVo">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<typeAlias  alias="diagnoIdxWghtvalMngVo" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnoIdxWghtvalMngVo"/>
+	<typeAlias  alias="diagnoIdxDbTypePMngSelect" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnoIdxDbTypePMngSelect"/>
+	
+	
+
+	<resultMap id="result-selectIdxWghtvalMngList" class="diagnoIdxWghtvalMngVo">
+                                        
+		<result property="DATABASETYID"				column="DATABASE_TY_ID"  /> 
+<result property="DATABASETYNM"       column="DATABASE_TY_NM"  />
+<result property="LASTUPDTPNTTM"      column="LAST_UPDT_PNTTM"  />
+<result property="LASTUPDUSRID"       column="LAST_UPDUSR_ID"  />
+<result property="REGISTNM"       column="REGIST_NM"  />
+
+	
+	
+	</resultMap>		
+
+	<select id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngList" resultMap="result-selectIdxWghtvalMngList"  parameterClass="diagnoIdxWghtvalMngVo">
+		<![CDATA[
+
+		
+
+SELECT w.DATABASE_TY_ID AS DATABASE_TY_ID, 
+       w.DATABASE_TY_NM AS DATABASE_TY_NM, 
+       a.LAST_UPDT_PNTTM AS LAST_UPDT_PNTTM, 
+       a.LAST_UPDUSR_ID AS LAST_UPDUSR_ID, 
+       
+       CASE 
+           WHEN a.DATABASE_TY_ID IS NULL 
+           THEN 
+               (SELECT CODE_NM 
+                 FROM COMTCCMMNDETAILCODE 
+                WHERE CODE_ID='T60' 
+                      AND CODE='R10' 
+               ) 
+           ELSE 
+               (SELECT CODE_NM 
+                 FROM COMTCCMMNDETAILCODE 
+                WHERE CODE_ID='T60' 
+                      AND CODE='R20' 
+               ) 
+       END
+       
+        REGIST_NM  
+  FROM TNDATABASETYMANAGE w 
+   LEFT OUTER JOIN 
+       (SELECT DISTINCT DATABASE_TY_ID, 
+              to_char(LAST_UPDT_PNTTM,'YYYY-MM-DD') LAST_UPDT_PNTTM , 
+              LAST_UPDUSR_ID 
+         FROM TNDATABASETYIDXWGHTVAL 
+        WHERE UPPER_IDX_ID IS NOT NULL 
+       ) a 
+       ON ( 
+           w.DATABASE_TY_ID=a.DATABASE_TY_ID 
+       )
+       WHERE w.use_at='Y' 
+ORDER BY w.SORT_ORDR  
+		]]> 
+	
+	  	 
+	</select>
+
+	<select id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngListTotCnt" resultClass="int"  parameterClass="diagnoIdxWghtvalMngVo">
+		<![CDATA[
+				
+				SELECT COUNT(*) FROM (
+					SELECT w.DATABASE_TY_ID AS DATABASE_TY_ID, 
+       				w.DATABASE_TY_NM AS DATABASE_TY_NM, 
+      				 a.LAST_UPDT_PNTTM AS LAST_UPDT_PNTTM, 
+      				 a.LAST_UPDUSR_ID AS LAST_UPDUSR_ID, 
+       				CASE 
+          			 WHEN a.DATABASE_TY_ID IS NULL 
+          			 THEN 
+               (SELECT CODE_NM 
+                 FROM COMTCCMMNDETAILCODE 
+               	 WHERE CODE_ID='T60' 
+                      AND CODE='R10' 
+             	  ) 
+          		 ELSE 
+               (SELECT CODE_NM 
+                 FROM COMTCCMMNDETAILCODE 
+                WHERE CODE_ID='T60' 
+                      AND CODE='R20' 
+               ) 
+       				END REGIST_NM 
+  					FROM TNDATABASETYMANAGE w 
+   				LEFT OUTER JOIN 
+      			 (SELECT DISTINCT DATABASE_TY_ID, 
+              to_char(LAST_UPDT_PNTTM,'YYYYMMDD') LAST_UPDT_PNTTM , 
+              LAST_UPDUSR_ID 
+       				  FROM TNDATABASETYIDXWGHTVAL 
+      				  WHERE UPPER_IDX_ID IS NOT NULL 
+      			 ) a 
+      			 ON ( 
+          		 w.DATABASE_TY_ID=a.DATABASE_TY_ID 
+       			) 
+				ORDER BY w.SORT_ORDR  
+			)		
+
+		]]> 
+	  	 
+	</select>
+		<resultMap id="result-IdxWghtvalMngLeft" class="diagnoIdxWghtvalMngVo">
+	
+	<result property="IDXID"           column="IDX_ID"          />
+<result property="IDXNM"           column="IDX_NM"          />
+<result property="UPPERIDXID"     column="UPPER_IDX_ID"    />
+<result property="WGHTVALIDXID"   column="WGHTVAL_IDX_ID"  />
+
+<result property="IDXWGHTVAL"     column="IDX_WGHTVAL"   />
+<result property="EMPHSIDXID"      column="EMPHS_IDX_ID"     />
+<result property="SORTORDR"      column="SORT_ORDR"     />
+<result property="IDXLEVEL"      column="IDX_LEVEL"     />	
+		</resultMap>
+	
+	
+		<resultMap id="result-IdxWghtvalMngRight" class="diagnoIdxWghtvalMngVo">
+	
+	<result property="IDXID"           column="IDX_ID"          />
+<result property="IDXNM"           column="IDX_NM"          />
+<result property="UPPERIDXID"     column="UPPER_IDX_ID"    />
+<result property="IDXWGHTVAL"     column="IDX_WGHTVAL"   />
+<result property="SORTORDR"      column="SORT_ORDR"     />
+<result property="DATABASETYID"      column="DATABASE_TY_ID"     />
+<result property="IDXLEVEL"      column="IDX_LEVEL"     />	
+	
+	
+		</resultMap>
+	
+	
+	<resultMap id="result-selectIdxWghtvalMngbox" class="diagnoIdxWghtvalMngVo">
+                                        
+			<result property="DATABASETYID"		  column="DATABASE_TY_ID"      />
+			<result property="DATABASETYNM"        column="DATABASE_TY_NM"      />
+	</resultMap>		
+	
+	
+	
+	<delete id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngDel" parameterClass="diagnoIdxWghtvalMngVo">
+	delete from TNDATABASETYIDXWGHTVAL where DATABASE_TY_ID=#HDATABASETYID#
+	</delete>
+	
+	<insert id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngInsert" parameterClass="diagnoIdxWghtvalMngVo">
+	insert into TNDATABASETYIDXWGHTVAL values (#HDATABASETYID#,#IDXID#,#UPPERIDXID#,#IDXLEVEL#,#SORTORDR#,#IDXWGHTVAL#,SYSDATE,'POLL',SYSDATE,'POLL')
+	</insert>
+	
+	
+	
+	
+	<select id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngLeft" resultMap="result-IdxWghtvalMngLeft"  parameterClass="diagnoIdxWghtvalMngVo">
+		<![CDATA[
+
+SELECT i.IDX_ID 		AS IDX_ID,
+       i.IDX_NM 		AS IDX_NM,
+       i.UPPER_IDX_ID 	AS UPPER_IDX_ID,
+       a.IDX_ID 		AS WGHTVAL_IDX_ID,
+       a.EMPHS_IDX_ID   AS EMPHS_IDX_ID, 
+       i.SORT_ORDR          AS SORT_ORDR,
+   NVL(a.IDX_LEVEL,i.IDX_LEVEL) AS IDX_LEVEL, 
+       CASE WHEN a.IDX_WGHTVAL IS NULL THEN i.WGHTVAL ELSE a.IDX_WGHTVAL END IDX_WGHTVAL
+   
+  FROM TNIDXINFO i 
+   LEFT OUTER JOIN 
+       (SELECT w.* ,
+              CASE 
+                  WHEN e.IDX_ID IS NOT NULL 
+                  THEN 'true' 
+                  ELSE 'false' 
+              END EMPHS_IDX_ID 
+         FROM TNDATABASETYIDXWGHTVAL w 
+          LEFT OUTER JOIN TNEMPHSIDXMANAGE e 
+              ON (
+                  w.idx_id=e.idx_id 
+                  AND w.DATABASE_TY_ID=e.DATABASE_TY_ID
+              ) 
+        WHERE w.DATABASE_TY_ID=#HDATABASETYID# 
+       ) a 
+       ON (
+           i.idx_id=a.idx_id 
+       )           
+
+ WHERE i.USE_AT='Y' 
+       AND i.IDX_STTUS_CODE='U' 
+       AND i.IDX_LEVEL=1  
+       START 
+WITH i.IDX_ID = 0 CONNECT BY PRIOR i.IDX_ID = i.UPPER_IDX_ID 
+ORDER siblings BY i.SORT_ORDR  
+	
+	
+	
+		]]> 
+	  	 
+	</select>
+	
+
+
+
+<select id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngRight" resultMap="result-IdxWghtvalMngRight"  parameterClass="diagnoIdxWghtvalMngVo">
+		<![CDATA[
+	
+	SELECT i.IDX_ID 			AS IDX_ID,
+       i.UPPER_IDX_ID		AS UPPER_IDX_ID,
+       i.IDX_NM				AS IDX_NM,
+       i.SORT_ORDR          AS SORT_ORDR,
+       #HDATABASETYID#     AS DATABASE_TY_ID,
+     NVL(a.IDX_LEVEL,i.IDX_LEVEL) AS IDX_LEVEL,
+    
+       CASE WHEN a.IDX_WGHTVAL IS NULL THEN i.WGHTVAL ELSE a.IDX_WGHTVAL END IDX_WGHTVAL
+  FROM TNIDXINFO i 
+   LEFT OUTER JOIN TNDATABASETYIDXWGHTVAL a 
+       ON (
+           i.idx_id=a.idx_id 
+           AND a.DATABASE_TY_ID=#HDATABASETYID#
+       ) 
+ WHERE i.USE_AT='Y' 
+       AND i.IDX_STTUS_CODE='U' 
+       AND i.IDX_LEVEL=2  
+       AND i.UPPER_IDX_ID=#IDXID# START 
+WITH i.IDX_ID = 0 CONNECT BY PRIOR i.IDX_ID = i.UPPER_IDX_ID 
+ORDER siblings BY i.SORT_ORDR 
+
+	
+	
+		]]> 
+	  	 
+	</select>
+	
+	<select id="diagnoIdxWghtvalMngDao.selectIdxWghtvalMngBox" resultMap="result-selectIdxWghtvalMngbox"  parameterClass="diagnoIdxWghtvalMngVo">
+		<![CDATA[
+
+				SELECT  
+ 					 DATABASE_TY_ID
+					,DATABASE_TY_NM
+				FROM TNDATABASETYMANAGE
+				WHERE USE_AT='Y'
+		
+
+		]]> 
+	 	  <isNotEmpty  prepend="and" property="HDATABASETYID">
+		      DATABASE_TY_ID =  #HDATABASETYID#
+		  </isNotEmpty>		
+ 		
+	  	 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	</sqlMap>

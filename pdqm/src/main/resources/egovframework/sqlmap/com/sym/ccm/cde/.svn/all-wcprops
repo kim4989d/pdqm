@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/pdqm/!svn/ver/11/pdqm/src/main/resources/egovframework/sqlmap/com/sym/ccm/cde
+END
+EgovCmmnDetailCodeManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/pdqm/!svn/ver/11/pdqm/src/main/resources/egovframework/sqlmap/com/sym/ccm/cde/EgovCmmnDetailCodeManage_SQL_Oracle.xml
+END
+EgovCmmnDetailCodeManage_SQL_Mysql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sym/ccm/cde/EgovCmmnDetailCodeManage_SQL_Mysql.xml
+END
+EgovCmmnDetailCodeManage_SQL_Altibase.xml
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sym/ccm/cde/EgovCmmnDetailCodeManage_SQL_Altibase.xml
+END
+EgovCmmnDetailCodeManage_SQL_Tibero.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sym/ccm/cde/EgovCmmnDetailCodeManage_SQL_Tibero.xml
+END

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SupportApplyMng">
+	<typeAlias  alias="applyMngVO" type="egovframework.pdqm.admin.support.apply.model.ApplyMngVO"/>
+	<typeAlias  alias="applyVO" type="egovframework.pdqm.front.support.apply.model.ApplyVO"/>
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<resultMap id="SupportApplyMngBox" class="applyMngVO">
+		<result property="startDt"                column="REQST_BGNDE"/>
+		<result property="endDt"                column="REQST_ENDDE"/>	
+		<result property="dmandExaminNm"                column="DMAND_EXAMIN_NM"/>	
+		
+	</resultMap>
+	<update id="applyMngDAO.updateSupport">
+		<![CDATA[
+		UPDATE TNBSNSREQSTPD SET 
+			REQST_PD_YN='N'
+		  	,LAST_UPDT_PNTTM = SYSDATE
+		  	,LAST_UPDUSR_ID = #lastUpdusrId#
+		WHERE REQST_PD_YN='Y'
+		]]>
+	</update>
+	
+	
+	<insert id="applyMngDAO.insertSupport">
+		<selectKey resultClass="java.lang.String" keyProperty="Sn">
+		   	SELECT  NVL(max(SN),0) + 1  FROM TNBSNSREQSTPD
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TNBSNSREQSTPD 
+				(
+				REQST_BGNDE
+				,REQST_ENDDE
+				,SN
+				,REQST_PD_YN
+				,DMAND_EXAMIN_NM
+				,FRST_REGIST_PNTTM
+				,FRST_REGISTER_ID
+				)
+			VALUES
+				(
+				#startDt#
+				,#endDt#
+				,#Sn#
+				,'Y'
+				,#dmandExaminNm#
+				,SYSDATE
+				,#frstRegisterId#
+				)
+		]]> 
+	</insert>
+	
+	<select id="applyMngDAO.selectSupport" resultMap="SupportApplyMngBox" >
+		<![CDATA[
+			SELECT 
+				REQST_BGNDE ,
+				REQST_ENDDE ,
+				DMAND_EXAMIN_NM
+				 
+			FROM TNBSNSREQSTPD
+				WHERE REQST_PD_YN='Y'
+		]]> 
+	</select>
+
+	<select id="applyMngDAO.selectApplyList" parameterClass="applyMngVO" resultClass="egovMap">
+		<![CDATA[
+		SELECT SN
+		      ,REQST_DE
+		      ,NAME
+		      ,PSTINST
+		      ,DEPT
+		      ,(OFFM_AREA_NO || '-' || OFFM_MIDDLE_TELNO || '-' || OFFM_END_TELNO) OFFM_CTTPC
+		      ,DBMS_NM
+		      ,DMAND_EXAMIN_NM
+		 FROM TNBSNSREQST
+		 WHERE 1=1
+		]]>
+         <isEqual  property="searchCnd" compareValue="ALL">
+             and (NAME  LIKE  '%' || #searchWrd# || '%'
+             or PSTINST  LIKE  '%' || #searchWrd# || '%'
+             )
+         </isEqual>
+
+         <isEqual  property="searchCnd" compareValue="1">
+             and NAME  LIKE  '%' || #searchWrd# || '%'
+         </isEqual>
+            		 
+         <isEqual  property="searchCnd" compareValue="2">
+             and  PSTINST  LIKE  '%' || #searchWrd# || '%'
+         </isEqual>
+
+		<isNotEmpty prepend="and"  property="startDt">
+		      TO_DATE(REQST_DE,'YYYYMMDD') BETWEEN TO_DATE(#startDt#,'YYYYMMDD') AND TO_DATE(#endDt#,'YYYYMMDD')
+		</isNotEmpty>	
+				                     		 
+            		             		 
+		 ORDER BY FRST_REGIST_PNTTM desc
+
+		
+		
+	</select>
+	
+	<select id="applyMngDAO.selectApplyListTotCnt" parameterClass="applyMngVO" resultClass="int">
+		<![CDATA[
+		
+		SELECT COUNT(*) totcnt
+		 FROM TNBSNSREQST
+		 WHERE 1=1
+		]]>
+         <isEqual  property="searchCnd" compareValue="ALL">
+             and (NAME  LIKE  '%' || #searchWrd# || '%'
+             or PSTINST  LIKE  '%' || #searchWrd# || '%'
+             )
+         </isEqual>
+
+         <isEqual  property="searchCnd" compareValue="1">
+             and NAME  LIKE  '%' || #searchWrd# || '%'
+         </isEqual>
+            		 
+         <isEqual  property="searchCnd" compareValue="2">
+             and  PSTINST  LIKE  '%' || #searchWrd# || '%'
+         </isEqual>
+
+		<isNotEmpty prepend="and"  property="startDt">
+		      REQST_DE BETWEEN #startDt# AND #endDt#
+		</isNotEmpty>			  	
+	</select>
+	
+
+
+	<resultMap id="result-selectApplyDetailView" class="applyVO">
+		<result property="sn"                     column="SN"/>                     
+		<result property="reqstDe"                column="REQST_DE"/>               
+		<result property="name"                   column="NAME"/>                   
+		<result property="pstinst"                column="PSTINST"/>                
+		<result property="dept"                   column="DEPT"/>                   
+		<result property="ofcps"                  column="OFCPS"/>                  
+		<result property="offmAreaNo"             column="OFFM_AREA_NO"/>           
+		<result property="offmMiddleTelno"        column="OFFM_MIDDLE_TELNO"/>        
+		<result property="offmEndTelno"           column="OFFM_END_TELNO"/>         
+		<result property="areaNo"                 column="AREA_NO"/>                
+		<result property="middleTelno"            column="MIDDLE_TELNO"/>           
+		<result property="endTelno"               column="END_TELNO"/>              
+		<result property="emailAdres"             column="EMAIL_ADRES"/>     
+		
+		<result property="dmandExaminNm"                 column="DMAND_EXAMIN_NM"/>  
+		       
+		<result property="dbmsNm"                 column="DBMS_NM"/>                
+		<result property="dbmsMainCn"             column="DBMS_MAIN_CN"/>           
+		<result property="dbmsYpCreatAt"          column="DBMS_YP_CREAT_AT"/>       
+		<result property="dbmsYpColctAt"          column="DBMS_YP_COLCT_AT"/>       
+		<result property="dbmsYpProvdAt"          column="DBMS_YP_PROVD_AT"/>       
+		<result property="dbmsYpCmpunAt"          column="DBMS_YP_CMPUN_AT"/>   
+		
+		<result property="infoDmandInsttAt"       column="INFO_DMAND_INSTT_AT"/>       
+		<result property="infoDmandPblinsttAt"     column="INFO_DMAND_PBLINSTT_AT"/>       
+		<result property="infoDmandPrvateAt"      column="INFO_DMAND_PRVATE_AT"/>       
+		<result property="infoDmandGnrlAt"        column="INFO_DMAND_GNRL_AT"/>       
+		<result property="infoCntcPrcuseInstt"     column="INFO_CNTC_PRCUSE_INSTT"/>       
+		<result property="srcInfoHoldInstt"       column="SRC_INFO_HOLD_INSTT"/>       
+		<result property="infoOthbcAt"            column="INFO_OTHBC_AT"/>          
+		<result property="emplyrPrcuseLevel"      column="EMPLYR_PRCUSE_LEVEL"/>        
+		<result property="qlityIssueDataAt"       column="QLITY_ISSUE_DATA_AT"/>       
+		<result property="qlityIssueDatabaseAt"    column="QLITY_ISSUE_DATABASE_AT"/>       
+		<result property="qlityIssueAplctnAt"      column="QLITY_ISSUE_APLCTN_AT" />       
+		<result property="qlityIssueCnfrmtyAt"     column="QLITY_ISSUE_CNFRMTY_AT"/>       
+		<result property="qlityIssueWhtaxAt"      column="QLITY_ISSUE_WHTAX_AT"/>       
+		<result property="qlityIssueQlityAt"      column="QLITY_ISSUE_QLITY_AT"/>       
+		<result property="qlityIssueEtcAt"        column="QLITY_ISSUE_ETC_AT"/>       
+		<result property="qlityImprvmNeed"        column="QLITY_IMPRVM_NEED"/>        
+		<result property="qlityImprvmExpcEffect"  column="QLITY_IMPRVM_EXPC_EFFECT"/>     
+	</resultMap>		
+
+	<select id="applyMngDAO.selectApplyDetailView" parameterClass="applyVO" resultMap="result-selectApplyDetailView">
+		<![CDATA[
+		  SELECT *
+		  FROM TNBSNSREQST
+		    WHERE SN = #sn#
+		]]>
+	</select>
+	
+	
+</sqlMap>

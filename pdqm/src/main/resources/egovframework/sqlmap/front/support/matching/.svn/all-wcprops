@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/2401/pdqm/src/main/resources/egovframework/sqlmap/front/support/matching
+END
+DBMatching_sql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/1969/pdqm/src/main/resources/egovframework/sqlmap/front/support/matching/DBMatching_sql.xml
+END
+matching_sql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/1735/pdqm/src/main/resources/egovframework/sqlmap/front/support/matching/matching_sql.xml
+END
+CompareCode_sql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/pdqm/!svn/ver/2401/pdqm/src/main/resources/egovframework/sqlmap/front/support/matching/CompareCode_sql.xml
+END

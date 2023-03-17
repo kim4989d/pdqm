@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.10.31	윤경한		COMTNFILEDETAIL 테이블 칼럼 추가
+  							- FILE_DOWNCNT	: 파일다운로드   횟수
+							FileManageDAO.selectFileInf 수정
+							FileManageDAO.getMaxDownloadCnt 추가
+							FileManageDAO.updateFileDownCnt 추가
+							resultMap id="fileList" 수정
+							resultMap id="fileDetail" 수정]
+  2011.11.14	윤경한		첫번째 첨부파일 확장자 아이콘 정보 얻어오기 추가	
+  2011.11.30	윤경한		fileSn 속성을 동적 조건 파라미터로 변경
+  							FileManageDAO.selectFileInf 수정						
+-->
+<sqlMap namespace="File">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="FileVO" type="egovframework.com.cmm.service.FileVO"/>
+
+	<resultMap id="fileList" class="egovframework.com.cmm.service.FileVO">
+		<result property="atchFileId" column="ATCH_FILE_ID" columnIndex="1"/>
+		<result property="fileCn" column="FILE_CN" columnIndex="2"/>
+		<!-- khyoon 2011.11.10 -->
+		<!--result property="fileExtsn" column="FILE_EXTSN" columnIndex="3"/-->
+		<result property="fileExtsn" column="ICON_EXTSN" columnIndex="3"/>
+		<!-- ~khyoon -->
+		<result property="fileMg" column="FILE_SIZE" columnIndex="4"/>
+		<result property="fileSn" column="FILE_SN" columnIndex="5"/>
+		<result property="fileStreCours" column="FILE_STRE_COURS" columnIndex="6"/>
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM" columnIndex="7"/>
+		<result property="streFileNm" column="STRE_FILE_NM" columnIndex="8"/>
+		<result property="creatDt" column="CREAT_DT" columnIndex="9"/>
+		<result property="fileKb" column="FILE_SIZE_KB" columnIndex="10"/>		
+		<result property="fileDownCnt" column="FILE_DOWNCNT" columnIndex="11"/>	
+	</resultMap>
+
+	<resultMap id="fileDetail" class="egovframework.com.cmm.service.FileVO">
+		<result property="atchFileId" column="ATCH_FILE_ID" columnIndex="1"/>
+		<result property="fileCn" column="FILE_CN" columnIndex="2"/>
+		<result property="fileExtsn" column="FILE_EXTSN" columnIndex="3"/>
+		<result property="fileMg" column="FILE_SIZE" columnIndex="4"/>
+		<result property="fileSn" column="FILE_SN" columnIndex="5"/>
+		<result property="fileStreCours" column="FILE_STRE_COURS" columnIndex="6"/>
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM" columnIndex="7"/>
+		<result property="streFileNm" column="STRE_FILE_NM" columnIndex="8"/>
+		<result property="fileKb" column="FILE_SIZE_KB" columnIndex="9"/> 
+		<result property="fileDownCnt" column="FILE_DOWNCNT" columnIndex="10"/>
+	</resultMap>	
+
+ 	<select id="FileManageDAO.selectFileList" parameterClass="FileVO" resultMap="fileList" >
+ 		<![CDATA[
+			SELECT 
+				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
+				/* khyoon 2011.11.10 */
+				DECODE(b.FILE_EXTSN,'xls','xls','xlsx','xlsx','pdf','pdf','hwp','hwp','doc','doc','docx','docx','ppt','ppt','pptx','pptx','file') AS ICON_EXTSN,
+				/*~khyoon */ 
+				b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT,
+				ROUND((b.FILE_SIZE/1024),0) AS FILE_SIZE_KB, b.FILE_DOWNCNT
+			FROM
+				COMTNFILE a, COMTNFILEDETAIL b
+			WHERE
+				a.ATCH_FILE_ID = #atchFileId#
+			AND 
+				a.ATCH_FILE_ID = b.ATCH_FILE_ID
+			AND 
+				a.USE_AT = 'Y'				
+			ORDER BY b.FILE_SN	
+ 		]]>
+ 	</select>
+ 	
+	<insert id="FileManageDAO.insertFileMaster" parameterClass="FileVO" >
+		<![CDATA[
+			INSERT INTO COMTNFILE
+			(ATCH_FILE_ID, CREAT_DT, USE_AT)
+			VALUES
+			( #atchFileId#, SYSDATE, 'Y')			
+		]]>
+	</insert>
+	
+	<insert id="FileManageDAO.insertFileDetail" parameterClass="FileVO" >
+		<![CDATA[
+			INSERT INTO COMTNFILEDETAIL
+			( ATCH_FILE_ID, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM, 
+			  ORIGNL_FILE_NM, FILE_EXTSN, FILE_SIZE, FILE_CN )
+			VALUES
+			( #atchFileId#, #fileSn#, #fileStreCours#, #streFileNm#, 
+			  #orignlFileNm#, #fileExtsn#, #fileMg#, #fileCn# )			
+		]]>
+	</insert>	
+	
+	<delete id="FileManageDAO.deleteFileDetail" parameterClass="FileVO" >
+		<![CDATA[
+			DELETE FROM COMTNFILEDETAIL
+			WHERE
+				ATCH_FILE_ID = #atchFileId#
+			AND	
+				FILE_SN = #fileSn#			
+		]]>	
+	</delete>
+ 	
+	<select id="FileManageDAO.getMaxFileSN" parameterClass="FileVO" resultClass="java.lang.Integer">
+		<![CDATA[
+			SELECT NVL(MAX(FILE_SN),0)+1 AS FILE_SN
+			FROM COMTNFILEDETAIL
+			WHERE ATCH_FILE_ID =  #atchFileId#		
+		]]>
+	</select>
+	
+	
+
+
+ 	<select id="FileManageDAO.selectFileInf" parameterClass="FileVO" resultMap="fileDetail" >
+ 		<![CDATA[
+			SELECT 
+				ATCH_FILE_ID, FILE_CN, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM,
+				FILE_EXTSN, ORIGNL_FILE_NM, FILE_SIZE,
+				/* khyoon 2011.10.31 */ 
+				ROUND((FILE_SIZE/1024),0) AS FILE_SIZE_KB, FILE_DOWNCNT
+				/*~khyoon */
+			FROM
+				COMTNFILEDETAIL
+			WHERE
+				ATCH_FILE_ID = #atchFileId#
+ 		]]>
+ 		<!-- khyoon 2011.11.30 -->
+		<isNotEqual prepend="AND" property="fileSn" compareValue="">
+		<![CDATA[	FILE_SN = #fileSn#	]]> 		
+		</isNotEqual>
+		<!-- ~khyoon -->
+ 	</select>
+
+	<update id="FileManageDAO.deleteCOMTNFILE" parameterClass="FileVO" >
+		<![CDATA[
+			UPDATE COMTNFILE
+			SET USE_AT = 'N'
+			WHERE ATCH_FILE_ID = #atchFileId#
+		]]>
+	</update>
+
+	<!-- khyoon 2011.10.31 -->
+	<select id="FileManageDAO.getMaxDownloadCnt" parameterClass="FileVO" resultClass="java.lang.Integer">
+		<![CDATA[
+			SELECT NVL(MAX(FILE_DOWNCNT),0)+1 AS ADD_FILE_DOWNCNT  
+			FROM COMTNFILEDETAIL
+			WHERE
+				ATCH_FILE_ID = #atchFileId#
+			AND	
+				FILE_SN = #fileSn#		
+		]]>
+	</select>
+	
+ 	<update id="FileManageDAO.updateFileDownCnt" parameterClass="FileVO">
+		<![CDATA[
+			UPDATE COMTNFILEDETAIL SET 
+				FILE_DOWNCNT = #fileDownCnt#
+			WHERE
+				ATCH_FILE_ID = #atchFileId#
+			AND	
+				FILE_SN = #fileSn#
+ 		]]>
+ 	</update>
+ 	
+ 	<!-- khyoon 2011.11.14 -->
+	<select id="FileManageDAO.getFirstFileExtsn" parameterClass="FileVO" resultClass="java.lang.String">
+		<![CDATA[
+			SELECT DECODE(b.FILE_EXTSN,'xls','xls','xlsx','xlsx','pdf','pdf','hwp','hwp','doc','doc','docx','docx','ppt','ppt','pptx','pptx','file') AS ICON_EXTSN
+			FROM ( 
+					SELECT MIN(FILE_SN) AS MIN_FILE_SN
+			  		FROM COMTNFILEDETAIL
+			  		WHERE ATCH_FILE_ID = #atchFileId# ) a,
+			  	  COMTNFILEDETAIL b
+			WHERE b.ATCH_FILE_ID = #atchFileId#
+			  AND b.FILE_SN = a.MIN_FILE_SN
+		]]>
+	</select> 	
+	<!-- ~khyoon -->
+
+ 	<select id="FileManageDAO.selectFileListByFileNm" parameterClass="FileVO" resultMap="fileList" >
+ 		<![CDATA[
+ 		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT 
+				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
+				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT
+			FROM
+				COMTNFILE a, COMTNFILEDETAIL b
+			WHERE
+				a.ATCH_FILE_ID = b.ATCH_FILE_ID
+			AND 
+				a.USE_AT = 'Y'
+ 		]]>
+			<isEqual prepend="AND" property="searchCnd" compareValue="streFileNm">
+				<![CDATA[	b.STRE_FILE_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="orignlFileNm">
+				<![CDATA[	b.ORIGNL_FILE_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	
+		<![CDATA[			
+			ORDER BY a.ATCH_FILE_ID, b.FILE_SN	
+			) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>		 		
+ 	</select>
+
+ 	<select id="FileManageDAO.selectFileListCntByFileNm" parameterClass="FileVO" resultClass="java.lang.Integer" >
+ 		<![CDATA[
+			SELECT 
+				COUNT(a.ATCH_FILE_ID)
+			FROM
+				COMTNFILE a, COMTNFILEDETAIL b
+			WHERE
+				a.ATCH_FILE_ID = b.ATCH_FILE_ID
+			AND 
+				a.USE_AT = 'Y'				
+ 		]]>
+			<isEqual prepend="AND" property="searchCnd" compareValue="streFileNm">
+				<![CDATA[	b.STRE_FILE_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCnd" compareValue="orignlFileNm">
+				<![CDATA[	b.ORIGNL_FILE_NM LIKE '%' || #searchWrd# || '%' 		]]>
+			</isEqual>	 		
+ 	</select>
+ 	
+  	<select id="FileManageDAO.selectImageFileList" parameterClass="FileVO" resultMap="fileList" >
+ 		<![CDATA[
+			SELECT 
+				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
+				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT
+			FROM
+				COMTNFILE a, COMTNFILEDETAIL b
+			WHERE
+				a.ATCH_FILE_ID = #atchFileId#
+			AND 
+				a.ATCH_FILE_ID = b.ATCH_FILE_ID
+			AND
+				UPPER(b.FILE_EXTSN) IN ('GIF','JPG','BMP','PNG')
+			AND 
+				a.USE_AT = 'Y'				
+			ORDER BY b.FILE_SN	
+ 		]]>
+ 	</select>	
+ 	
+</sqlMap>

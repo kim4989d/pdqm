@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/pdqm/!svn/ver/1789/pdqm/src/main/resources/egovframework/spring/com
+END
+context-idgen.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/16/pdqm/src/main/resources/egovframework/spring/com/context-idgen.xml
+END
+context-excel.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/1789/pdqm/src/main/resources/egovframework/spring/com/context-excel.xml
+END
+context-common.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/122/pdqm/src/main/resources/egovframework/spring/com/context-common.xml
+END
+context-sqlMap.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-sqlMap.xml
+END
+context-egovuserdetailshelper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/326/pdqm/src/main/resources/egovframework/spring/com/context-egovuserdetailshelper.xml
+END
+context-security.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-security.xml
+END
+context-transaction.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-transaction.xml
+END
+context-properties.xml
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-properties.xml
+END
+context-datasource.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/16/pdqm/src/main/resources/egovframework/spring/com/context-datasource.xml
+END
+context-validator.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-validator.xml
+END
+context-mail.xml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/1410/pdqm/src/main/resources/egovframework/spring/com/context-mail.xml
+END
+context-aspect.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/spring/com/context-aspect.xml
+END

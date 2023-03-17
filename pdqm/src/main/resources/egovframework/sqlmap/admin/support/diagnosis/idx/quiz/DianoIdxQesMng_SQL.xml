@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DianoIdxQesMngVo">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<typeAlias  alias="dianoIdxQesMngVo" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DianoIdxQesMngVo"/>
+	
+	
+
+	<resultMap id="result-selectIdxQesMngList" class="dianoIdxQesMngVo">
+                                        
+			<result property="IDXID"        	column="IDX_ID" />
+			<result property="IDXNM"          column="IDX_NM" />
+			<result property="IDXDC"          column="IDX_DC" />
+			<result property="QESITMCOUNT"    column="QESITM_COUNT" />
+
+	
+	
+	</resultMap>		
+
+	<select id="dianoIdxQesMngDao.selectIdxQesMngList" resultMap="result-selectIdxQesMngList"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+
+		SELECT d.IDX_ID AS IDX_ID,
+       d.IDX_NM AS IDX_NM,
+       d.IDX_DC AS IDX_DC,
+       nvl(p.QESITM_COUNT,0) AS QESITM_COUNT
+  FROM TNIDXINFO d 
+   LEFT OUTER JOIN 
+       (SELECT e.UPPER_IDX_ID IDX_ID,
+              count(a.IDX_ID) QESITM_COUNT 
+         FROM TNIDXQESITMPOOL a, 
+              TNIDXINFO e 
+        WHERE a.IDX_ID=e.IDX_ID 
+              AND a.USE_AT='Y' 
+              AND e.USE_AT='Y' 
+              AND e.IDX_STTUS_CODE='U' 
+        GROUP BY e.UPPER_IDX_ID 
+       ) p 
+       ON (
+           d.IDX_ID=p.IDX_ID
+       ) 
+ WHERE d.USE_AT='Y' 
+       AND d.IDX_STTUS_CODE='U' 
+       AND d.IDX_LEVEL=1 START 
+WITH d.IDX_ID=0 CONNECT BY PRIOR d.IDX_ID = d.UPPER_IDX_ID 
+ORDER siblings BY d.SORT_ORDR 
+				]]> 
+	
+	  	 
+	</select>
+	
+	
+	
+	<resultMap id="result-selectIdxQesMngView" class="dianoIdxQesMngVo">
+                                        
+	  <result property="IDXID"        			column="IDX_ID"       		/>
+       <result property="UPPERIDXID"        column="UPPER_IDX_ID"     />
+       <result property="IDXNM"             column="IDX_NM"           />
+       <result property="QESITMID"          column="QESITM_ID"        />
+       <result property="QESITM"            column="QESITM"           />
+       <result property="ANSWERTYCODE"      column="ANSWER_TY_CODE"   />
+       <result property="Q_SORTORDR"        column="Q_SORT_ORDR"      />
+       <result property="ANSWERID"          column="ANSWER_ID"        />
+       <result property="ANSWER"            column="ANSWER"           />
+       <result property="ANSWERSTDR"        column="ANSWER_STDR"      />
+       <result property="ALLOT"             column="ALLOT"            />
+       <result property="ASORTORDR"         column="A_SORT_ORDR"      />
+       <result property="QESITMCO"          column="QESITM_CO"        />
+       <result property="ANSWERCO"          column="ANSWER_CO"        />
+	</resultMap>		
+	
+	
+	
+	
+	
+		<select id="dianoIdxQesMngDao.selectIdxQesMngView" resultMap="result-selectIdxQesMngView"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+									 
+
+									SELECT 
+									       
+									       D.IDX_ID,
+									       D.UPPER_IDX_ID,
+									       D.IDX_NM,
+									       p.QESITM_ID,
+									       p.QESITM,
+									       p.ANSWER_TY_CODE,
+									       p.Q_SORT_ORDR ,
+									       p.ANSWER_ID,
+									       p.ANSWER,
+									       p.ANSWER_STDR,
+									       p.ALLOT,
+									       p.A_SORT_ORDR ,
+									        NVL(p2.QESITM_CO,0)  QESITM_CO,
+       										NVL(p.ANSWER_CO ,0) ANSWER_CO
+									
+									  FROM TNIDXINFO d 
+									   LEFT OUTER JOIN 
+									       (SELECT a.QESITM_ID,
+									              a.IDX_ID,
+									              a.QESITM,
+									              a.ANSWER_TY_CODE,
+									              a.SORT_ORDR Q_SORT_ORDR ,
+									              b.ANSWER_ID,
+									              b.ANSWER,
+									              b.ANSWER_STDR,
+									              b.ALLOT,
+									              b.SORT_ORDR A_SORT_ORDR,
+									              b.ANSWER_CO 
+									         FROM TNIDXQESITMPOOL a, 
+									              (SELECT b.QESITM_ID,
+									                     b.ANSWER_ID,
+									                     b.ANSWER,
+									                     b.ANSWER_STDR,
+									                     b.ALLOT,
+									                     b.SORT_ORDR,
+									                     c.ANSWER_CO 
+									                FROM TNIDXQESITMPOOLANSWER b , 
+									                     (SELECT QESITM_ID,
+									                            COUNT(*) ANSWER_CO 
+									                       FROM TNIDXQESITMPOOLANSWER 
+									                      WHERE USE_AT='Y' 
+									                      GROUP BY QESITM_ID
+									                     ) c 
+									               WHERE b.USE_AT='Y' 
+									                     AND b.QESITM_ID=c.QESITM_ID 
+									              ) b 
+									        WHERE a.QESITM_ID=b.QESITM_ID 
+									              AND a.USE_AT='Y' 
+									       ) p 
+									       ON (
+									           d.IDX_ID=p.IDX_ID
+									       ) 
+									   LEFT OUTER JOIN 
+									       (SELECT IDX_ID, 
+									              count(QESITM_ID) QESITM_CO 
+									         FROM TNIDXQESITMPOOL 
+									        WHERE USE_AT='Y' 
+									        GROUP BY IDX_ID 
+									       ) p2 
+									       ON (
+									           d.IDX_ID=p2.IDX_ID
+									       ) 
+									 WHERE d.USE_AT='Y' 
+									       AND d.IDX_STTUS_CODE='U' 
+									 AND D.IDX_LEVEL=2 
+									 START 
+									
+									]]>
+									
+									
+									 	
+			  	  <isNotEmpty  prepend=" " property="IDXID">
+			      						WITH d.IDX_ID = #IDXID#
+			  </isNotEmpty>
+									
+						
+							<![CDATA[
+									CONNECT BY PRIOR d.IDX_ID = d.UPPER_IDX_ID 
+									ORDER siblings BY d.SORT_ORDR,
+									       p.Q_SORT_ORDR,
+									       p.A_SORT_ORDR 										
+		
+								]]>
+						
+		</select>			
+
+
+
+
+
+
+	<select id="dianoIdxQesMngDao.selectIdxQesMngViewSearch" resultMap="result-selectIdxQesMngView"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+									 
+
+									SELECT 
+									       
+									       D.IDX_ID,
+									       D.UPPER_IDX_ID,
+									       D.IDX_NM,
+									       p.QESITM_ID,
+									       p.QESITM,
+									       p.ANSWER_TY_CODE,
+									       p.Q_SORT_ORDR ,
+									       p.ANSWER_ID,
+									       p.ANSWER,
+									       p.ANSWER_STDR,
+									       p.ALLOT,
+									       p.A_SORT_ORDR ,
+									   	   NVL(p2.QESITM_CO,0)  QESITM_CO,
+       									   NVL(p.ANSWER_CO ,0) ANSWER_CO
+									  
+									  FROM TNIDXINFO d 
+									   LEFT OUTER JOIN 
+									       (SELECT a.QESITM_ID,
+									              a.IDX_ID,
+									              a.QESITM,
+									              a.ANSWER_TY_CODE,
+									              a.SORT_ORDR Q_SORT_ORDR ,
+									              b.ANSWER_ID,
+									              b.ANSWER,
+									              b.ANSWER_STDR,
+									              b.ALLOT,
+									              b.SORT_ORDR A_SORT_ORDR,
+									              b.ANSWER_CO 
+									         FROM TNIDXQESITMPOOL a, 
+									              (SELECT b.QESITM_ID,
+									                     b.ANSWER_ID,
+									                     b.ANSWER,
+									                     b.ANSWER_STDR,
+									                     b.ALLOT,
+									                     b.SORT_ORDR,
+									                     c.ANSWER_CO 
+									                FROM TNIDXQESITMPOOLANSWER b , 
+									                     (SELECT QESITM_ID,
+									                            COUNT(*) ANSWER_CO 
+									                       FROM TNIDXQESITMPOOLANSWER 
+									                      WHERE USE_AT='Y' 
+									                      GROUP BY QESITM_ID
+									                     ) c 
+									               WHERE b.USE_AT='Y' 
+									                     AND b.QESITM_ID=c.QESITM_ID 
+									              ) b 
+									        WHERE a.QESITM_ID=b.QESITM_ID 
+									              AND a.USE_AT='Y' 
+									       ) p 
+									       ON (
+									           d.IDX_ID=p.IDX_ID
+									       ) 
+									   LEFT OUTER JOIN 
+									       (SELECT IDX_ID, 
+									              count(QESITM_ID) QESITM_CO 
+									         FROM TNIDXQESITMPOOL 
+									        WHERE USE_AT='Y' 
+									        GROUP BY IDX_ID 
+									       ) p2 
+									       ON (
+									           d.IDX_ID=p2.IDX_ID
+									       ) 
+									 WHERE d.USE_AT='Y' 
+									       AND d.IDX_STTUS_CODE='U' 
+									 AND D.IDX_LEVEL=2 
+								]]>
+								
+									 
+			 	  <isNotEmpty  prepend=" " property="IDXID">
+			 						 AND p.QESITM_ID=#QESITMID#
+								 
+									 
+			 </isNotEmpty>
+									 
+									 <![CDATA[	 
+									 START 
+									
+									]]>
+									
+									
+									 	
+			  	  <isNotEmpty  prepend=" " property="IDXID">
+			      						WITH d.IDX_ID = #IDXID#
+			  </isNotEmpty>
+									
+						
+							<![CDATA[
+									CONNECT BY PRIOR d.IDX_ID = d.UPPER_IDX_ID 
+									
+									ORDER siblings BY d.SORT_ORDR,
+									       p.Q_SORT_ORDR,
+									       p.A_SORT_ORDR 										
+		
+								]]>
+						
+		</select>			
+
+
+
+
+
+
+
+
+
+
+
+<resultMap id="result-selectIdxQesMngAnswer" class="dianoIdxQesMngVo">
+                                        
+			<result property="CODE"        	column="CODE" />
+			<result property="CODENM"          column="CODE_NM" />
+			<result property="CODEID"          column="CODE_ID" />
+	
+	
+	</resultMap>		
+
+
+	<select id="dianoIdxQesMngDao.selectIdxQesMngCaseAnswer" resultMap="result-selectIdxQesMngAnswer"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+	
+			SELECT b.CODE 		AS CODE,
+			       b.CODE_NM 	AS CODE_NM, 
+			  	   b.CODE_ID        AS CODE_ID
+			  FROM COMTCCMMNCODE a, 
+			       COMTCCMMNDETAILCODE b 
+			 WHERE a.CODE_ID=b.CODE_ID 
+			       AND a.CL_CODE='PQC' 
+			       AND a.CODE_ID='T100' 
+			       AND a.USE_AT='Y' 
+			       AND b.USE_AT='Y'  
+
+
+		    ]]>
+	</select>
+
+<select id="dianoIdxQesMngDao.selectIdxQesMngCaseAnswerType" resultMap="result-selectIdxQesMngAnswer"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+	
+			select b.CODE,b.CODE_NM , b.CODE_ID
+  
+			from COMTCCMMNCODE a, COMTCCMMNDETAILCODE b
+			where a.CODE_ID=b.CODE_ID
+			and a.CL_CODE='PQC'
+			and a.USE_AT='Y'
+			and b.USE_AT='Y'
+]]>		
+		 	  <isNotEmpty  prepend=" and " property="RADIOSELECT">
+			 b.CODE_ID=#RADIOSELECT#
+		  </isNotEmpty>
+			order by b.code desc 
+
+ 
+</select>
+
+
+
+<select id="dianoIdxQesMngDao.selectIdxQesMngCaseAnswerMax" resultClass="int"  parameterClass="dianoIdxQesMngVo">
+		<![CDATA[
+
+
+(SELECT MAX(QESITM_ID)+1 
+         FROM TNIDXQESITMPOOLANSWER)
+
+]]>	
+
+
+
+</select>
+
+
+
+
+<update id="dianoIdxQesMngDao.updateIdxQesMngCaseQes" parameterClass="dianoIdxQesMngVo">
+
+UPDATE TNIDXQESITMPOOL  SET QESITM_ID=#QESITMID#,IDX_ID=#IDXID# ,QESITM=#QESITM#,ANSWER_TY_CODE=#ANSWERTYCODE#          WHERE QESITM_ID=#QESITMID#
+
+</update>
+
+
+
+<delete id="dianoIdxQesMngDao.deleteIdxQesMngCaseAnswer" parameterClass="dianoIdxQesMngVo">
+DELETE FROM   TNIDXQESITMPOOLANSWER WHERE qesitm_id=#QESITMID#
+</delete>
+
+<insert id="dianoIdxQesMngDao.insertIdxQesMngCaseAnswer" parameterClass="dianoIdxQesMngVo">
+
+
+  INSERT 
+  INTO TNIDXQESITMPOOLANSWER 
+       (
+           QESITM_ID,
+           ANSWER_ID,
+           ANSWER,
+           ANSWER_STDR,
+           ALLOT,
+           SORT_ORDR,
+           USE_AT,
+          FRST_REGIST_PNTTM,
+           FRST_REGISTER_ID,
+           LAST_UPDT_PNTTM,
+           LAST_UPDUSR_ID
+       )  
+       VALUES
+       ( 
+           	#QESITMID#,  
+          (SELECT (MAX(answer_id)+1) answer_id FROM TNIDXQESITMPOOLANSWER),  
+           #ANSWER#,  
+           #ANSWERSTDR#,
+           #ALLOT#,  
+           #SORTORDR#, 
+           'Y', 
+           sysdate, 
+           'POLL', 
+           sysdate, 
+           'POLL'   
+       )
+
+
+
+</insert>
+
+<insert id="dianoIdxQesMngDao.insertIdxQesMngCaseQesType" parameterClass="dianoIdxQesMngVo">
+INSERT 
+  INTO TNIDXQESITMPOOL VALUES
+       (
+       	(SELECT MAX(QESITM_ID)+1 
+         FROM TNIDXQESITMPOOL),  
+              #IDXID#, 
+              #QESITM#, 
+              #ANSWERTYCODE#, 
+               (SELECT NVL((MAX(SORT_ORDR)+1),1)  SORT_ORDR from TNIDXQESITMPOOL WHERE IDX_ID=#IDXID#), 
+              'Y', 
+              SYSDATE, 
+              'POLL',
+               SYSDATE,  
+              'POLL'
+       
+       )          
+
+
+</insert>
+<update id="dianoIdxQesMngDao.insertIdxQesMngCaseQesPoolDel" parameterClass="dianoIdxQesMngVo">
+
+UPDATE TNIDXQESITMPOOL SET USE_AT='N' WHERE QESITM_ID=#QESITMID# AND IDX_ID=#IDXID#
+
+
+</update>
+
+
+<update id="dianoIdxQesMngDao.insertIdxQesMngCaseQesANSWERDel" parameterClass="dianoIdxQesMngVo">
+UPDATE TNIDXQESITMPOOLANSWER SET USE_AT='N' WHERE QESITM_ID=#QESITMID#
+
+</update>
+
+	
+	</sqlMap>

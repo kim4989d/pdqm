@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/1916/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/stats
+END
+selectJoinCount.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/1916/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/stats/selectJoinCount.jsp
+END
+selectAccessCount.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/1916/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/stats/selectAccessCount.jsp
+END
+selectUseCount.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/1916/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/stats/selectUseCount.jsp
+END

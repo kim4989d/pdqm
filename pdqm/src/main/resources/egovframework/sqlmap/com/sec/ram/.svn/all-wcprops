@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram
+END
+EgovAuthorManage_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorManage_SQL.xml
+END
+EgovAuthorManage_SQL_Altibase.xml
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorManage_SQL_Altibase.xml
+END
+EgovAuthorManage_SQL_Mysql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorManage_SQL_Mysql.xml
+END
+EgovAuthorManage_SQL_Tibero.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorManage_SQL_Tibero.xml
+END
+EgovAuthorRoleManage_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorRoleManage_SQL.xml
+END
+EgovAuthorRoleManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorRoleManage_SQL_Oracle.xml
+END
+EgovAuthorRoleManage_SQL_Mysql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorRoleManage_SQL_Mysql.xml
+END
+EgovAuthorRoleManage_SQL_Altibase.xml
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorRoleManage_SQL_Altibase.xml
+END
+EgovAuthorManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorManage_SQL_Oracle.xml
+END
+EgovAuthorRoleManage_SQL_Tibero.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/ram/EgovAuthorRoleManage_SQL_Tibero.xml
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/1983/pdqm/src/main/java/egovframework/com/cop/ems/service
+END
+EgovSndngMailRegistService.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/1982/pdqm/src/main/java/egovframework/com/cop/ems/service/EgovSndngMailRegistService.java
+END
+AtchmnFileVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/15/pdqm/src/main/java/egovframework/com/cop/ems/service/AtchmnFileVO.java
+END
+EgovSndngMailDtlsService.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/ems/service/EgovSndngMailDtlsService.java
+END
+SndngMail.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/ems/service/SndngMail.java
+END
+SndngMailRegistThread.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/1981/pdqm/src/main/java/egovframework/com/cop/ems/service/SndngMailRegistThread.java
+END
+EgovSndngMailService.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/ems/service/EgovSndngMailService.java
+END
+EgovSndngMailDetailService.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/ems/service/EgovSndngMailDetailService.java
+END
+SndngMailVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cop/ems/service/SndngMailVO.java
+END

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisIdxMng">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisIdxMngVO" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnosisIdxMngVO"/>
+	<typeAlias  alias="diagnosisIdxMng" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnosisIdxMng"/>
+
+	<select id="diagnosisIdxMngDAO.selectDiagnosisIdxMngList" parameterClass="diagnosisIdxMngVO" resultClass="egovMap">
+		<![CDATA[
+
+			SELECT d.IDX_ID,
+			       d.UPPER_IDX_ID,
+			       d.IDX_NM,
+			       d.IDX_LEVEL,
+			       d.IDX_DC,
+			       d.IDX_STTUS_CODE ,
+			       d.WGHTVAL,
+			       d.SORT_ORDR,
+			       TO_char(d.FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM,
+			       d.FRST_REGISTER_ID,
+			       d.LAST_UPDT_PNTTM,
+			       d.LAST_UPDUSR_ID ,
+			       DECODE(d.IDX_LEVEL,1,p.QESITM_COUNT,2,p2.QESITM_COUNT,0) QESITM_COUNT,
+			       p3.CODE_NM IDX_STTUS_CODE_NM ,
+			       (SELECT mber_nm FROM COMTNGNRLMBER WHERE ESNTL_ID = FRST_REGISTER_ID) mber_nm
+			  FROM TNIDXINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT e.UPPER_IDX_ID IDX_ID, 
+			              count(a.QESITM_ID) QESITM_COUNT 
+			         FROM TNIDXQESITMPOOL a, 
+			              TNIDXINFO e 
+			        WHERE a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.IDX_STTUS_CODE='U' 
+			              AND a.IDX_ID=e.IDX_ID 
+			        GROUP BY e.UPPER_IDX_ID 
+			       ) p 
+			       ON (
+			           d.IDX_ID=p.IDX_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT e.IDX_ID IDX_ID, 
+			              count(a.QESITM_ID) QESITM_COUNT 
+			         FROM TNIDXQESITMPOOL a, 
+			              TNIDXINFO e 
+			        WHERE a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.IDX_STTUS_CODE='U' 
+			              AND a.IDX_ID=e.IDX_ID 
+			        GROUP BY e.IDX_ID 
+			       ) p2 
+			       ON (
+			           d.IDX_ID=p2.IDX_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT b.CODE,
+			              b.CODE_NM 
+			         FROM COMTCCMMNCODE a, 
+			              COMTCCMMNDETAILCODE b 
+			        WHERE a.CODE_ID=b.CODE_ID 
+			              AND a.CL_CODE='PQC' 
+			              AND a.CODE_ID='T600' 
+			              AND a.USE_AT='Y' 
+			              AND b.USE_AT='Y' 
+			       ) p3 
+			       ON (
+			           d.IDX_STTUS_CODE=p3.CODE
+			       ) 
+			 WHERE d.USE_AT='Y' 
+
+			  
+		]]>		    
+ 		  <isNotEmpty  prepend="and" property="searchSttusCode">
+		      d.IDX_STTUS_CODE = #searchSttusCode# 
+		  </isNotEmpty>		
+ 		  <isNotEmpty  property="searchIdxNm">
+		      AND d.IDX_NM like #searchIdxNm# || '%'
+		  </isNotEmpty>		
+			 START WITH d.IDX_ID = 0 
+			 CONNECT BY PRIOR d.IDX_ID = d.UPPER_IDX_ID 
+			ORDER siblings BY d.SORT_ORDR
+		
+		
+		
+	</select>
+	
+	<select id="diagnosisIdxMngDAO.selectDiagnosisIdxMngListTotCnt" parameterClass="diagnosisIdxMngVO" resultClass="int">
+		<![CDATA[
+		SELECT COUNT(*) totcnt
+		 FROM TNIDXINFO
+		 WHERE uSE_AT = 'Y'
+		]]> 
+ 		  <isNotEmpty  prepend="and" property="searchSttusCode">
+		      IDX_STTUS_CODE = #searchSttusCode# 
+		  </isNotEmpty>		
+ 		  <isNotEmpty  property="searchIdxNm">
+		      AND IDX_NM like #searchIdxNm# || '%'
+		  </isNotEmpty>			  	
+	</select>
+
+	<update id="diagnosisIdxMngDAO.updateSortOrder">
+		<![CDATA[
+		
+			UPDATE TNIDXINFO
+		]]>
+	         <isEqual  property="state" compareValue="insert">
+	            SET SORT_ORDR = SORT_ORDR + 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="updateUp">
+	            SET SORT_ORDR = SORT_ORDR - 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="updateDown">
+	            SET SORT_ORDR = SORT_ORDR + 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="delete">
+	            SET SORT_ORDR = SORT_ORDR - 1
+	         </isEqual>
+	         	         	         		         
+		<![CDATA[
+			  
+			  where IDX_LEVEL = #idxLevel#
+		]]>			  
+			  <isEqual  property="state" compareValue="insert">
+			  <![CDATA[
+			  	  and SORT_ORDR >= #sortOrdr#
+			  ]]>
+			  </isEqual>
+			  
+			  <isEqual  property="state" compareValue="updateUp">
+			  <![CDATA[
+				  and SORT_ORDR > #oldSortOrdr#
+				  and SORT_ORDR <= #sortOrdr#
+			  ]]>
+			  </isEqual>
+
+			  <isEqual  property="state" compareValue="updateDown">
+			  <![CDATA[
+				  and SORT_ORDR >= #sortOrdr#
+				  and SORT_ORDR < #oldSortOrdr#
+			  ]]>
+			  </isEqual>
+
+			  <isEqual  property="state" compareValue="delete">
+			  <![CDATA[
+				  and SORT_ORDR > #oldSortOrdr#
+			  ]]>
+			  </isEqual>
+			  
+			  <isEqual  property="idxLevel" compareValue="2">
+			  <![CDATA[
+				  and UPPER_IDX_ID = #propertyIdxLevelId#
+			  ]]>
+			  </isEqual>
+			  			  			  
+	</update>
+	
+	<insert id="diagnosisIdxMngDAO.insertDiagnosisIdxMng">
+		<![CDATA[
+			INSERT INTO TNIDXINFO
+				(  
+   			     IDX_ID
+			    ,UPPER_IDX_ID
+		   	    ,IDX_NM
+			    ,IDX_LEVEL
+			    ,IDX_DC
+			    ,IDX_STTUS_CODE		
+			    ,WGHTVAL
+			    ,SORT_ORDR
+			    ,uSE_AT
+			    
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				  ) 
+			VALUES (
+				(select NVL(MAX(IDX_ID),0) + 1  from TNIDXINFO)
+				,0
+				,#idxNm#
+				,1
+				,#idxDc#
+				,#idxSttusCode#
+				,#wghtval#
+				,#sortOrdr#	
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+
+	<resultMap id="result-selectDgnssIdxMasterList" class="diagnosisIdxMng">
+        <result property="idxId"                column="IDX_ID"/>
+	    <result property="idxNm"                   column="IDX_NM"/>
+	    <result property="wghtval"                   column="WGHTVAL"/>
+	</resultMap>		
+
+	<select id="diagnosisIdxMngDAO.selectDgnssIdxMasterList"  resultMap="result-selectDgnssIdxMasterList">
+		<![CDATA[
+		  SELECT  
+			   IDX_ID
+			  ,IDX_NM
+			  ,WGHTVAL
+		   FROM TNIDXINFO
+		    WHERE USE_AT = 'Y'
+		      AND IDX_LEVEL = 1
+		   ORDER BY SORT_ORDR
+		]]>
+	</select>
+
+	<resultMap id="result-updateDiagnosisIdxMngView" class="diagnosisIdxMng">
+        <result property="idxId"                column="IDX_ID"/>
+        <result property="upperIdxId"              column="UPPER_IDX_ID"/>
+	    <result property="idxNm"                   column="IDX_NM"/>
+		<result property="idxLevel"          column="IDX_LEVEL"/>
+		<result property="idxDc"              column="IDX_DC"/>
+		<result property="idxSttusCode"              column="IDX_STTUS_CODE"/>
+		<result property="wghtval"              column="WGHTVAL"/>
+		<result property="sortOrdr"              column="SORT_ORDR"/>
+	</resultMap>		
+
+	<select id="diagnosisIdxMngDAO.updateDiagnosisIdxMngView" parameterClass="diagnosisIdxMng" resultMap="result-updateDiagnosisIdxMngView">
+		<![CDATA[
+		  SELECT  
+			   IDX_ID
+			  ,UPPER_IDX_ID
+			  ,IDX_NM
+			  ,IDX_LEVEL
+			  ,IDX_DC
+			  ,IDX_STTUS_CODE
+			  ,WGHTVAL
+			  ,SORT_ORDR
+			  ,USE_AT
+		   FROM TNIDXINFO
+		    WHERE USE_AT = 'Y'
+		      AND IDX_ID = #idxId#
+		]]>
+	</select>
+			
+
+
+
+	<update id="diagnosisIdxMngDAO.updateDiagnosisIdxMng">
+		<![CDATA[
+		
+			UPDATE TNIDXINFO 
+			  SET IDX_NM = #idxNm#
+			  	 ,IDX_DC = #idxDc#
+			  	 ,IDX_STTUS_CODE = #idxSttusCode#
+			  	 ,WGHTVAL = #wghtval#
+			  	 ,SORT_ORDR =#sortOrdr#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where IDX_ID = #idxId#
+		]]>
+	</update>
+
+	<update id="diagnosisIdxMngDAO.deleteDiagnosisIdxMng">
+		<![CDATA[
+		
+			UPDATE TNIDXINFO
+			  SET USE_AT = 'N'
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where IDX_ID = #idxId#
+		]]>
+	</update>
+
+
+	
+	<insert id="diagnosisIdxMngDAO.insertDiagnosisProperty">
+		<![CDATA[
+			INSERT INTO TNIDXINFO
+				(  
+   			     IDX_ID
+			    ,UPPER_IDX_ID
+		   	    ,IDX_NM
+			    ,IDX_LEVEL
+			    ,IDX_DC
+			    ,IDX_STTUS_CODE		
+			    ,WGHTVAL
+			    ,SORT_ORDR
+			    ,uSE_AT
+       			
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+
+				
+				  )
+			VALUES (
+				(select NVL(MAX(IDX_ID),0) + 1 from TNIDXINFO)
+				,#upperIdxId#
+				,#idxNm#
+				,2
+				,#idxDc#
+				,#idxSttusCode#
+				,#wghtval#
+				,#sortOrdr#	
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+
+
+	<resultMap id="result-updateDiagnosisIdxPropertyView" class="diagnosisIdxMng">
+        <result property="idxId"                column="IDX_ID"/>
+        <result property="upperIdxId"              column="UPPER_IDX_ID"/>
+	    <result property="idxNm"                   column="IDX_NM"/>
+		<result property="idxLevel"          column="IDX_LEVEL"/>
+		<result property="idxDc"              column="IDX_DC"/>
+		<result property="idxSttusCode"              column="IDX_STTUS_CODE"/>
+		<result property="wghtval"              column="WGHTVAL"/>
+		<result property="sortOrdr"              column="SORT_ORDR"/>
+		<result property="upperIdxNm"              column="UPPER_IDX_NM"/>
+	</resultMap>		
+
+	<select id="diagnosisIdxMngDAO.updateDiagnosisIdxPropertyView" parameterClass="diagnosisIdxMng" resultMap="result-updateDiagnosisIdxPropertyView">
+		<![CDATA[
+		  SELECT 
+			   A.IDX_ID
+			  ,A.UPPER_IDX_ID
+			  ,A.IDX_NM
+			  ,A.IDX_LEVEL
+			  ,A.IDX_DC
+			  ,A.IDX_STTUS_CODE
+			  ,A.WGHTVAL
+			  ,A.SORT_ORDR
+			  ,A.USE_AT
+			  ,(SELECT IDX_NM FROM TNIDXINFO WHERE IDX_ID = A.UPPER_IDX_ID) UPPER_IDX_NM
+		   FROM TNIDXINFO A
+		    WHERE A.USE_AT = 'Y'
+		      AND A.IDX_ID = #idxId#
+		]]>
+	</select>
+
+	<resultMap id="result-selectDgnssDetailList" class="diagnosisIdxMng">
+        <result property="idxId"                column="IDX_ID"/>
+	    <result property="idxNm"                   column="IDX_NM"/>
+	    <result property="wghtval"                   column="WGHTVAL"/>
+	</resultMap>		
+
+	<select id="diagnosisIdxMngDAO.selectDgnssDetailList"  parameterClass="diagnosisIdxMng" resultMap="result-selectDgnssDetailList">
+		<![CDATA[ 
+		  SELECT 
+			   IDX_ID
+			  ,IDX_NM
+			  ,WGHTVAL
+		   FROM TNIDXINFO
+		    WHERE USE_AT = 'Y'
+		      AND UPPER_IDX_ID = #propertyIdxLevelId#
+		    order by SORT_ORDR
+		]]>
+	</select>
+			
+</sqlMap>

@@ -1,0 +1,282 @@
+package egovframework.com.cop.bbs.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cop.bbs.service.Board;
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cop.bbs.service.EgovBBSManageService;
+import egovframework.com.utl.fcc.service.EgovDateUtil;
+import egovframework.rte.fdl.cmmn.AbstractServiceImpl;
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import egovframework.rte.fdl.property.EgovPropertyService;
+
+/**
+ * 게시물 관리를 위한 서비스 구현 클래스
+ * @author 공통서비스개발팀 이삼섭
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *   
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.3.19  이삼섭          최초 생성
+ *	 2011.09.22 서준식          nttId IdGen 서비스로 변경
+ * </pre>
+ */
+@Service("EgovBBSManageService")
+public class EgovBBSManageServiceImpl extends AbstractServiceImpl implements EgovBBSManageService {
+
+    @Resource(name = "BBSManageDAO")
+    private BBSManageDAO bbsMngDAO;
+
+    @Resource(name = "EgovFileMngService")
+    private EgovFileMngService fileService;
+
+    @Resource(name = "propertiesService")
+    protected EgovPropertyService propertyService;
+    
+    @Resource(name = "egovNttIdGnrService")
+    private EgovIdGnrService nttIdgenService;
+
+    Logger log = Logger.getLogger(this.getClass());
+	
+    /**
+     * 게시물 한 건을 삭제 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#deleteBoardArticle(egovframework.com.cop.bbs.brd.service.Board)
+     */
+    public void deleteBoardArticle(Board board) throws Exception {
+	FileVO fvo = new FileVO();
+	
+	fvo.setAtchFileId(board.getAtchFileId());
+
+	board.setNttSj("이 글은 작성자에 의해서 삭제되었습니다.");
+
+	bbsMngDAO.deleteBoardArticle(board);
+
+	if (!"".equals(fvo.getAtchFileId()) || fvo.getAtchFileId() != null) {
+	    fileService.deleteAllFileInf(fvo);
+	}
+    }
+    
+    /**
+     * 뉴스레터 대상수 조회
+     * khyoon 2011.11.28
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#selectNewsletterTargetListCnt
+     */    
+    public long selectNewsletterTargetListCnt() throws Exception {
+    	return bbsMngDAO.selectNewsletterTargetListCnt();
+    }
+    
+    /**
+     * 뉴스레터 대상자 이메일 조회
+     * khyoon 2011.11.28
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#selectNewsletterTargetList
+     */    
+    public List<String> selectNewsletterTargetList() throws Exception {
+    	return bbsMngDAO.selectNewsletterTargetList();
+    }    
+    
+
+    /**
+     * 게시판에 게시물 또는 답변 게시물을 등록 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#insertBoardArticle(egovframework.com.cop.bbs.brd.service.Board)
+     */
+    public void insertBoardArticle(Board board) throws Exception {
+	// SORT_ORDR는 부모글의 소트 오더와 같게, NTT_NO는 순서대로 부여
+
+	if ("Y".equals(board.getReplyAt())) {
+	    // 답글인 경우 1. Parnts를 세팅, 2.Parnts의 sortOrdr을 현재글의 sortOrdr로 가져오도록, 3.nttNo는 현재 게시판의 순서대로
+	    // replyLc는 부모글의 ReplyLc + 1
+	    
+	    //String tmpParnts = board.getParnts();
+			
+	    @SuppressWarnings("unused")
+	    long tmpNttId = 0L; // 답글 게시물 ID			
+			
+	    tmpNttId = bbsMngDAO.replyBoardArticle(board);
+
+	} else {
+	    // 답글이 아닌경우 Parnts = 0, replyLc는 = 0, sortOrdr = nttNo(Query에서 처리)
+	    board.setParnts("0");
+	    board.setReplyLc("0");
+	    board.setReplyAt("N");
+	    board.setNttId(nttIdgenService.getNextIntegerId());//2011.09.22
+	    
+	    bbsMngDAO.insertBoardArticle(board);
+	}
+    }
+
+	/**
+     * 게시물 대하여 상세 내용을 조회 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#selectBoardArticle(egovframework.com.cop.bbs.MainVO.service.BoardVO)
+     */
+    public BoardVO selectBoardArticle(BoardVO boardVO) throws Exception {
+	if (boardVO.isPlusCount()) {
+	    int iniqireCo = bbsMngDAO.selectMaxInqireCo(boardVO);
+	    
+	    boardVO.setInqireCo(iniqireCo);
+	    bbsMngDAO.updateInqireCo(boardVO);
+	}
+	
+	// khyoon 2011.11.14
+	long previousNttNo = 0;
+	long previousSortOrdr = 0;
+	long previousNttId = 0;
+	long nextNttNo = 0;
+	long nextSortOrdr = 0;
+	long nextNttId = 0;
+	
+	if (boardVO.getAct().equals("")) {
+		boardVO.setNttId(bbsMngDAO.selectRecentlyNttId(boardVO));
+	}
+	else if(boardVO.getAct().equals("PREVIOUS")) {
+		previousNttNo = bbsMngDAO.selectPreviousNttNo(boardVO);
+		if(previousNttNo > 0) {
+			boardVO.setNttNo(previousNttNo);
+			previousNttId = bbsMngDAO.selectNttId(boardVO);
+		}
+		else {
+			previousSortOrdr = bbsMngDAO.selectPreviousSortOrdr(boardVO);
+			if(previousSortOrdr > 0) {
+				boardVO.setSortOrdr(previousSortOrdr);
+				boardVO.setNttNo(999);	// TRICK
+				previousNttNo = bbsMngDAO.selectPreviousNttNo(boardVO);
+				if(previousNttNo > 0) {
+					boardVO.setNttNo(previousNttNo);
+					previousNttId = bbsMngDAO.selectNttId(boardVO);
+				}
+			}
+		}
+		boardVO.setNttId(previousNttId);		
+	}
+	else if(boardVO.getAct().equals("NEXT")) {
+		nextNttNo = bbsMngDAO.selectNextNttNo(boardVO);
+		if(nextNttNo > 0) {
+			boardVO.setNttNo(nextNttNo);
+			nextNttId = bbsMngDAO.selectNttId(boardVO);
+		}
+		else {
+			nextSortOrdr = bbsMngDAO.selectNextSortOrdr(boardVO);
+			if(nextSortOrdr > 0) {
+				boardVO.setSortOrdr(nextSortOrdr);
+				boardVO.setNttNo(0);	// TRICK
+				nextNttNo = bbsMngDAO.selectNextNttNo(boardVO);
+				if(nextNttNo > 0) {
+					boardVO.setNttNo(nextNttNo);
+					nextNttId = bbsMngDAO.selectNttId(boardVO);
+				}
+			}
+		}
+		boardVO.setNttId(nextNttId);
+	}
+	//~khyoon
+
+	if(boardVO.getNttId() > 0)
+		return bbsMngDAO.selectBoardArticle(boardVO);
+	else
+		return boardVO;
+    }
+
+	/**
+     * 조건에 맞는 게시물 목록을 조회 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#selectBoardArticles(egovframework.com.cop.bbs.MainVO.service.BoardVO)
+     */
+    public Map<String, Object> selectBoardArticles(BoardVO boardVO, String attrbFlag) throws Exception {
+	List<BoardVO> list = bbsMngDAO.selectBoardArticleList(boardVO);
+	List<BoardVO> result = new ArrayList<BoardVO>();
+
+	if ("BBSA01".equals(attrbFlag)) {
+	    // 유효게시판 임
+	    String today = EgovDateUtil.getToday();
+
+	    BoardVO vo;
+	    Iterator<BoardVO> iter = list.iterator();
+	    while (iter.hasNext()) {
+		vo = (BoardVO)iter.next();
+		
+		if (!"".equals(vo.getNtceBgnde()) || !"".equals(vo.getNtceEndde())) {
+		    if (EgovDateUtil.getDaysDiff(today, vo.getNtceBgnde()) > 0 || EgovDateUtil.getDaysDiff(today, vo.getNtceEndde()) < 0) {
+			// 시작일이 오늘날짜보다 크거나, 종료일이 오늘 날짜보다 작은 경우
+			vo.setIsExpired("Y");
+		    }
+		}
+		result.add(vo);
+	    }
+	} else {
+	    result = list;
+	}
+
+	int cnt = bbsMngDAO.selectBoardArticleListCnt(boardVO);
+
+	Map<String, Object> map = new HashMap<String, Object>();
+	
+	map.put("resultList", result);
+	map.put("resultCnt", Integer.toString(cnt));
+
+	return map;
+    }
+
+    /**
+     * 게시물 한 건의 내용을 수정 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#updateBoardArticle(egovframework.com.cop.bbs.brd.service.Board)
+     */
+    public void updateBoardArticle(Board board) throws Exception {
+	bbsMngDAO.updateBoardArticle(board);
+    }
+
+    /**
+     * 방명록 내용을 삭제 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#deleteGuestList(egovframework.com.cop.bbs.MainVO.service.BoardVO)
+     */
+    public void deleteGuestList(BoardVO boardVO) throws Exception {
+	bbsMngDAO.deleteGuestList(boardVO);
+    }
+
+    /**
+     * 방명록에 대한 목록을 조회 한다.
+     * 
+     * @see egovframework.com.cop.bbs.brd.service.EgovBBSManageService#selectGuestList(egovframework.com.cop.bbs.MainVO.service.BoardVO)
+     */
+    public Map<String, Object> selectGuestList(BoardVO boardVO) throws Exception {
+	List<BoardVO> result = bbsMngDAO.selectGuestList(boardVO);
+	int cnt = bbsMngDAO.selectGuestListCnt(boardVO);
+	
+	Map<String, Object> map = new HashMap<String, Object>();
+	
+	map.put("resultList", result);
+	map.put("resultCnt", Integer.toString(cnt));
+
+	return map;
+    }
+
+    /**
+     * 방명록에 대한 패스워드를 조회 한다.
+     * 
+     * @param board
+     * @return
+     * @throws Exception
+     */
+    public String getPasswordInf(Board board) throws Exception {
+	return bbsMngDAO.getPasswordInf(board);
+    }
+}

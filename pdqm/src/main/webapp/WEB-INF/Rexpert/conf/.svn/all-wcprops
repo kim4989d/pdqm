@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pdqm/!svn/ver/1014/pdqm/src/main/webapp/WEB-INF/Rexpert/conf
+END
+Crypto.properties
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/Crypto.properties
+END
+License.properties
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/License.properties
+END
+rexpert.properties
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/rexpert.properties
+END
+quartz.properties
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/quartz.properties
+END
+DataConnection.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/1014/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/DataConnection.properties
+END
+DataSource.properties
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/DataSource.properties
+END
+RexDataServer.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/73/pdqm/src/main/webapp/WEB-INF/Rexpert/conf/RexDataServer.properties
+END

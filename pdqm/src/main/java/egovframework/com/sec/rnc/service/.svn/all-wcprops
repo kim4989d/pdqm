@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/rnc/service
+END
+EgovRlnmManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/rnc/service/EgovRlnmManageService.java
+END
+EgovSocketClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/rnc/service/EgovSocketClient.java
+END
+EgovTimedSocket.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/rnc/service/EgovTimedSocket.java
+END

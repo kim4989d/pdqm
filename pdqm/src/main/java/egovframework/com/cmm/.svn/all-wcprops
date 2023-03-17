@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/pdqm/!svn/ver/2163/pdqm/src/main/java/egovframework/com/cmm
+END
+SessionVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/SessionVO.java
+END
+EgovWebUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/EgovWebUtil.java
+END
+EgovMessageSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/EgovMessageSource.java
+END
+ComDefaultVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/pdqm/!svn/ver/286/pdqm/src/main/java/egovframework/com/cmm/ComDefaultVO.java
+END
+ImagePaginationRenderer.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/221/pdqm/src/main/java/egovframework/com/cmm/ImagePaginationRenderer.java
+END
+ComCodeVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/pdqm/!svn/ver/164/pdqm/src/main/java/egovframework/com/cmm/ComCodeVO.java
+END
+ComDefaultCodeVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/ComDefaultCodeVO.java
+END
+EgovComCrossSiteHndlr.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/EgovComCrossSiteHndlr.java
+END
+EgovComOthersExcepHndlr.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/EgovComOthersExcepHndlr.java
+END
+AltibaseClobStringTypeHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/AltibaseClobStringTypeHandler.java
+END
+LoginVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/1116/pdqm/src/main/java/egovframework/com/cmm/LoginVO.java
+END
+IncludedCompInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/IncludedCompInfoVO.java
+END
+EgovComponentChecker.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/EgovComponentChecker.java
+END
+EgovComExcepHndlr.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/EgovComExcepHndlr.java
+END

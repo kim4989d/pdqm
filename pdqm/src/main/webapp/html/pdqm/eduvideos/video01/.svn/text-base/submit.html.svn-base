@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<title>::: 구글웨이! 구글의 조직모델 혁신과 경영전략 :::</title>
+<script language="JavaScript" src="/commonjs/common_action_sf.js"></script>
+<SCRIPT LANGUAGE="JavaScript"> 
+<!-- 
+var memo=""; 
+function input() { 
+memo = parent.contents; //상위 프레임에서 플래시의 텍스트를 memo변수에 저장 
+document.ff.p_content.value=memo; //memo변수의 내용을 p_content의 value값으로 저장 
+document.ff.submit(); //프로그램 페이지로 값을 보냄 } 
+}
+//--> 
+</SCRIPT> 
+</head>
+<BODY> 
+<TABLE cellSpacing="0" cellPadding="0" border="0"> 
+<TBODY> 
+<TR> 
+<TD>
+<FORM name="ff" action="/plsql/cyber/edu_opin.input" method="post"> 
+<INPUT type="hidden" value="1" name="p_opseq">
+<INPUT type="hidden" value="01 현대건설의 지속성장을 위한 CSR [Stop & Think]" name="p_title"> 
+<TEXTAREA name="p_content" rows="10" cols="49"></TEXTAREA> 
+</FORM> 
+</TD> 
+</TR> 
+</TBODY> 
+</TABLE> 
+</BODY> 
+
+</html>

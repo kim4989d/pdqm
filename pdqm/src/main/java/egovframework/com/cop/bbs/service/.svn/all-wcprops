@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/2391/pdqm/src/main/java/egovframework/com/cop/bbs/service
+END
+EgovBBSLoneMasterService.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSLoneMasterService.java
+END
+EgovBBSScrapService.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSScrapService.java
+END
+Satisfaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/Satisfaction.java
+END
+ScrapVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/ScrapVO.java
+END
+BoardMaster.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/852/pdqm/src/main/java/egovframework/com/cop/bbs/service/BoardMaster.java
+END
+EgovBBSManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/pdqm/!svn/ver/1091/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSManageService.java
+END
+Board.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/2391/pdqm/src/main/java/egovframework/com/cop/bbs/service/Board.java
+END
+EgovBBSUseInfoManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSUseInfoManageService.java
+END
+SatisfactionVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/SatisfactionVO.java
+END
+BoardMasterVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/798/pdqm/src/main/java/egovframework/com/cop/bbs/service/BoardMasterVO.java
+END
+BoardUseInf.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/BoardUseInf.java
+END
+EgovBBSCommentService.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSCommentService.java
+END
+Comment.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/Comment.java
+END
+EgovBBSSatisfactionService.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSSatisfactionService.java
+END
+BoardVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/2122/pdqm/src/main/java/egovframework/com/cop/bbs/service/BoardVO.java
+END
+EgovBBSAttributeManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/EgovBBSAttributeManageService.java
+END
+BoardUseInfVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/BoardUseInfVO.java
+END
+CommentVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/CommentVO.java
+END
+Scrap.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/Scrap.java
+END

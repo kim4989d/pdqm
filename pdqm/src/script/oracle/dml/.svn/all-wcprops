@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/pdqm/!svn/ver/132/pdqm/src/script/oracle/dml
+END
+sym.ccm.cde_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/sym.ccm.cde_insert_oracle.sql
+END
+sym.mnu_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/sym.mnu_insert_oracle.sql
+END
+sec.ram_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/sec.ram_insert_oracle.sql
+END
+cop.ems_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/pdqm/!svn/ver/17/pdqm/src/script/oracle/dml/cop.ems_insert_oracle.sql
+END
+uss.ion.rec_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uss.ion.rec_insert_oracle.sql
+END
+uss.umt_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uss.umt_insert_oracle.sql
+END
+uss.sam.cpy_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uss.sam.cpy_insert_oracle.sql
+END
+uss.ion.bnr_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uss.ion.bnr_insert_oracle.sql
+END
+uss.sam.stp_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uss.sam.stp_insert_oracle.sql
+END
+uat.uia_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/uat.uia_insert_oracle.sql
+END
+cop.bbs_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/dml/cop.bbs_insert_oracle.sql
+END
+uss.olh.faq_insert_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/pdqm/!svn/ver/132/pdqm/src/script/oracle/dml/uss.olh.faq_insert_oracle.sql
+END

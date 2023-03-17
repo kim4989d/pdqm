@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.09.07   	서준식     	 	NTCE_BGNDE, NTCE_ENDDE 컬럼 빈공간에 의한 비교 오류 때문에 Rtrim() 추가 
+  2011.09.21    서준식              BBSManageDAO.selectMaxNttId문에 COMMIT 될때까지 LOCK설정
+  2011.09.21    서준식              NTT_ID를 IDGENT서비스를 사용해서 생성하므로 BBSManageDAO.selectMaxNttId문은 실제 사용하지 않음
+-->
+<sqlMap namespace="Board">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="Board" type="egovframework.com.cop.bbs.service.Board"/>
+	<typeAlias  alias="BoardVO" type="egovframework.com.cop.bbs.service.BoardVO"/>
+
+
+
+ 	<select id="MainDAO.selectNoticeList" resultClass="egovMap" parameterClass="BoardVO">
+ 		<![CDATA[
+ 		/* MainDAO.selectNoticeList */
+		SELECT NTT_SJ 
+		     , FRST_REGIST_PNTTM   
+		  FROM COMTNBBS a 
+		 WHERE BBS_ID = 'BBSMSTR_000000000061'
+		       AND ROWNUM < 5 
+		ORDER BY FRST_REGIST_PNTTM desc
+ 		]]>
+ 	</select>
+ 	
+
+</sqlMap>

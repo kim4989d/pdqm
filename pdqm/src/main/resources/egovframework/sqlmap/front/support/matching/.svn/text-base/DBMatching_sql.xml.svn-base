@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="EmpBatchInsert">
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="empVO" type="egovframework.pdqm.front.support.matching.model.DBMatchingVO" />
+	<typeAlias alias="dbInfo" type="egovframework.pdqm.front.support.matching.model.DBMatchingInfoVO" />
+	<typeAlias alias="empCVO" type="egovframework.pdqm.front.support.matching.model.DBMatchingCVO" />
+	<typeAlias alias="DBMatching" type="egovframework.pdqm.front.support.matching.model.DBMatching" />
+    <typeAlias alias="loginVO" type="egovframework.com.cmm.LoginVO"/>
+    <typeAlias alias="codeInfoVO" type="egovframework.pdqm.front.support.matching.model.CodeInfoVO"/>
+	<typeAlias alias="dbInfoVO" type="egovframework.pdqm.front.support.matching.model.DBInfoVO"/>
+
+	
+	<insert id="insertDBMatching.TABLES" parameterClass="empVO" >
+		<selectKey resultClass="java.lang.String" keyProperty="DATABASE_ID_max">
+			SELECT MAX(DATABASE_ID) FROM TNDATABASEMANAGE
+		   	WHERE REGISTER_ID = #sLoginVO#
+		</selectKey> 
+		<![CDATA[
+			insert into TNTABLECOLUMNINFO (
+				DATABASE_ID
+				,TABLE_NM
+				,COLUMN_NM
+				,COLUMN_KOREAN_NM
+				,DATA_TY
+				,DATA_LT
+				,DCMLPOINT_LT
+				,REGISTER_ID
+				,REGIST_PNTTM
+			) values (
+				#DATABASE_ID_max# 
+				,#table_nm#	
+				,#column_nm#	
+				,#column_korean_nm#	
+				,#data_ty#	
+				,#data_lt#	
+				,#dcmlpoint_lt#
+				,#sLoginVO#
+				,#REGIST_PNTTM# 
+			)
+		]]>
+	</insert>
+
+	<insert id="DBMatchingDAO.insertDBInfo" parameterClass="dbInfo" >
+		<selectKey resultClass="java.lang.String" keyProperty="DATABASE_ID_max">
+		   	select SEQ_M_DATABASEID.nextval from dual 
+		</selectKey>  
+		
+		<![CDATA[
+			insert into TNDATABASEMANAGE (
+				DATABASE_ID
+				,DATABASE_NM
+				,DATABASE_DC
+				,INSTT_NM
+				,FILE_NM
+				,REGIST_PNTTM
+				,REGISTER_ID
+			) values (
+				#DATABASE_ID_max#
+				,#sDatabaseName#
+				,#sDescription#
+				,#sAgency#
+				,#sFileName#				
+				,SYSDATE				
+				,#sLoginVO#
+			)
+		]]>
+	</insert>
+	
+	<procedure id="PRC_TNINFO" parameterClass="dbInfo">
+	{call PRC_TNINFO(#sLoginVO#, #DATABASE_ID_max#, #REGIST_PNTTM#)}
+	</procedure>
+	
+	<insert id="DBMatchingDAO.insertCodeInfo" parameterClass="dbInfo" >
+		<selectKey resultClass="java.lang.String" keyProperty="DATABASE_ID_max">
+		   	SELECT NVL(max(CODE_INFO_ID)+1,1)  FROM PDQM.TNCODEMANAGE 
+		</selectKey> 
+		<![CDATA[
+			INSERT INTO PDQM.TNCODEMANAGE (
+				CODE_INFO_ID
+				,DATABASE_ID
+				,CODE_INFO_NM
+				,CODE_INFO_DC
+				,FILE_NM
+				,REGIST_PNTTM
+				,REGISTER_ID
+			) values (
+				#DATABASE_ID_max#
+				,#sDatabaseId#
+				,#sCodeName#	
+				,#sCodeNameDesc#	
+				,#sFileName#	
+				,SYSDATE	
+				,#sLoginVO#
+			)
+		]]>
+	</insert>
+	
+	<insert id="DBMatchingDAO.insertCODE" parameterClass="empCVO" >
+		<selectKey resultClass="java.lang.String" keyProperty="DATABASE_ID_max">
+		   	SELECT max(CODE_INFO_ID) FROM PDQM.TNCODEMANAGE 
+		   	WHERE REGISTER_ID = #sLoginVO#
+		</selectKey> 
+		<![CDATA[
+			INSERT INTO TNCODEVALUEINFO (
+				CODE_ID
+				,CODE_INFO_ID
+				,CODE_VALUE
+			) values (
+				#sCODE_ID#
+				,#DATABASE_ID_max#
+				,#sCODE_VALUE#	
+			)
+		]]>
+	</insert>
+	
+	<resultMap id="result-selectDBMatchigList" class="DBMatching">
+	    <result property="dbTrgetId"          column="DATABASE_ID"/>
+        <result property="dgnssTrgetNm"        	column="DATABASE_NM"/>
+	</resultMap>
+	<select id="DBMatchingDAO.selectDBMatchigList" resultMap="result-selectDBMatchigList" parameterClass="DBMatching">
+		<![CDATA[
+			SELECT  DATABASE_ID
+				    ,DATABASE_NM
+			FROM TNDATABASEMANAGE
+			WHERE REGISTER_ID = #id#			       
+		]]>
+				
+	</select>
+	
+	
+	<resultMap id="result-codeInfoVO" class="codeInfoVO">
+	  <result property="rowNo"			column="RN"/>
+	  <result property="database_id"		column="DATABASE_ID"/>
+      <result property="database_nm"		column="DATABASE_NM"/>
+      <result property="code_nm"	    	column="CODE_INFO_NM"/>
+      <result property="code_nm_desc"		column="CODE_INFO_DC"/>
+      <result property="regist_pnttm"		column="REGIST_PNTTM"/>
+      <result property="register_id"		column="REGISTER_ID"/>
+      <result property="code_info_id"		column="CODE_INFO_ID"/> 
+	</resultMap>
+	<select id="DBMatchingDAO.SearchCodeInfoList" resultMap="result-codeInfoVO" parameterClass="codeInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID
+			, DATABASE_NM
+			, CODE_INFO_NM
+			, CODE_INFO_DC
+			, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+			, REGISTER_ID
+			, CODE_INFO_ID
+		FROM (
+		        SELECT
+					ROWNUM as RN
+						, DATABASE_ID
+						, DATABASE_NM
+						, CODE_INFO_NM
+						, CODE_INFO_DC
+						, REGIST_PNTTM
+						, REGISTER_ID
+						, CODE_INFO_ID
+				FROM (				
+						SELECT
+							A.DATABASE_ID
+							, A.DATABASE_NM
+							, B.CODE_INFO_NM
+							, B.CODE_INFO_DC
+							, B.REGIST_PNTTM
+							, B.REGISTER_ID
+							, B.CODE_INFO_ID
+						FROM TNDATABASEMANAGE A LEFT OUTER JOIN TNCODEMANAGE B
+                        ON A.DATABASE_ID = B.DATABASE_ID
+						WHERE
+							B.REGISTER_ID= #register_id#
+						ORDER BY INSTT_NM, DATABASE_NM
+					)
+		    )
+		WHERE RN BETWEEN (#firstIndex# + 1) AND (#firstIndex# + #recordCountPerPage#)
+	]]></select>
+	
+	<resultMap id="result-codeInfoVO1" class="codeInfoVO">
+	  <result property="rowNo"			column="RN"/>
+	  <result property="database_id"		column="DATABASE_ID"/>
+      <result property="database_nm"		column="DATABASE_NM"/>
+      <result property="code_nm"	    	column="CODE_INFO_NM"/>
+      <result property="code_nm_desc"		column="CODE_INFO_DC"/>
+      <result property="regist_pnttm"		column="REGIST_PNTTM"/>
+      <result property="register_id"		column="REGISTER_ID"/>
+      <result property="code_info_id"		column="CODE_INFO_ID"/> 
+	</resultMap>
+	<select id="DBMatchingDAO.SearchDindCodeInfoList" resultMap="result-codeInfoVO1" parameterClass="codeInfoVO"><![CDATA[
+		SELECT
+			RN
+			, DATABASE_ID
+			, DATABASE_NM
+			, CODE_INFO_NM
+			, CODE_INFO_DC
+			, REGIST_PNTTM
+			, REGISTER_ID
+			, CODE_INFO_ID
+		FROM (
+		        SELECT
+					ROWNUM as RN
+						, DATABASE_ID
+						, DATABASE_NM
+						, CODE_INFO_NM
+						, CODE_INFO_DC
+						, to_char(REGIST_PNTTM,'YYYY-MM-DD') as REGIST_PNTTM
+						, REGISTER_ID
+						, CODE_INFO_ID
+				FROM (				
+						SELECT
+							A.DATABASE_ID
+							, A.DATABASE_NM
+							, B.CODE_INFO_NM
+							, B.CODE_INFO_DC
+							, B.REGIST_PNTTM
+							, B.REGISTER_ID
+							, B.CODE_INFO_ID
+						FROM TNDATABASEMANAGE A LEFT OUTER JOIN TNCODEMANAGE B
+                        ON A.DATABASE_ID = B.DATABASE_ID
+						WHERE
+							B.REGISTER_ID= #register_id#
+							]]>
+			<isNotEmpty prepend="AND" property="code_nm">
+			      <![CDATA[ B.CODE_INFO_NM LIKE '%'||#code_nm#||'%' ]]>
+			</isNotEmpty>
+			<![CDATA[ 
+						ORDER BY INSTT_NM, DATABASE_NM
+					)
+		    )
+		WHERE RN BETWEEN (#firstIndex# + 1) AND (#firstIndex# + #recordCountPerPage#)
+	]]></select>
+	
+	<select id="DBMatchingDAO.SearchCodeInfoCnt" resultClass="int" parameterClass="codeInfoVO"><![CDATA[
+		SELECT count(*)
+		FROM TNDATABASEMANAGE A 
+		    LEFT OUTER JOIN TNCODEMANAGE B 
+		    ON A.DATABASE_ID = B.DATABASE_ID
+		WHERE
+			B.REGISTER_ID= #register_id#
+			]]>		
+		<isNotEmpty prepend="AND" property="code_nm">
+				<![CDATA[ B.CODE_INFO_NM LIKE '%'||#code_nm#||'%' ]]>
+		</isNotEmpty>
+	</select>
+	
+	<delete id="DBMatchingDAO.deleteDBInfo" parameterClass="dbInfoVO">
+		<![CDATA[
+		DELETE FROM TNDATABASEMANAGE
+		WHERE DATABASE_ID = #database_id#
+		]]>
+	</delete>
+
+
+	<update id="DBMatchingDAO.updateDBInfo" parameterClass="dbInfoVO">
+		<![CDATA[
+		UPDATE TNDATABASEMANAGE 
+		   SET DATABASE_NM = #database_nm#
+		   	   ,DATABASE_DC =#database_dc#
+		   	   ,INSTT_NM = #instt_nm#
+		 WHERE DATABASE_ID = #database_id#
+		]]>
+	</update>
+	
+	<delete id="DBMatchingDAO.deleteCodeModify" parameterClass="codeInfoVO">
+		<![CDATA[
+		DELETE FROM TNCODEMANAGE
+		WHERE CODE_INFO_ID = #code_info_id#
+		]]>
+	</delete>
+
+
+	<update id="DBMatchingDAO.updateCodeModify" parameterClass="codeInfoVO">
+		<![CDATA[
+		UPDATE TNCODEMANAGE 
+		   SET CODE_INFO_NM = #code_nm#
+		   	   ,CODE_INFO_DC =#code_nm_desc#
+		 WHERE CODE_INFO_ID = #code_info_id#
+		]]>
+	</update>
+	
+	
+	<resultMap id="result-empCVO" class="codeInfoVO">
+	  <result property="rowNo"			column="RN"/>
+	  <result property="code_info_id"		column="CODE_INFO_ID"/>
+      <result property="code_id"		column="CODE_ID"/>
+      <result property="code_value"	    	column="CODE_VALUE"/>
+      <result property="t_code_info_id"		column="T_CODE_INFO_ID"/>
+      <result property="t_code_id"		column="T_CODE_ID"/>
+      <result property="t_code_value"	    	column="T_CODE_VALUE"/>
+      <result property="rtn_code"		column="RTN_CODE"/> 
+      <result property="err_code_nm"		column="CODE_NM"/> 
+
+	</resultMap>
+	<select id="DBMatchingDAO.selectCodeCompList" resultMap="result-empCVO" parameterClass="codeInfoVO"><![CDATA[
+		SELECT
+			RN
+			, CODE_INFO_ID
+			, CODE_ID
+			, CODE_VALUE
+			, T_CODE_INFO_ID
+			, T_CODE_ID
+			, T_CODE_VALUE
+			, RTN_CODE
+			, CODE_NM
+		FROM (
+		      select rownum as RN ,t.CODE_INFO_ID, t.CODE_ID, t.CODE_VALUE, t.T_CODE_INFO_ID, t.T_CODE_ID, t.T_CODE_VALUE, t.RTN_CODE
+       ,c.CODE_NM
+  		from (select S.CODE_INFO_ID,
+               S.CODE_ID,
+               S.CODE_VALUE,
+               C.CODE_INFO_ID T_CODE_INFO_ID,
+               C.CODE_ID T_CODE_ID,
+               C.CODE_VALUE T_CODE_VALUE ,
+                       case
+                         when C.CODE_ID is not null
+           and S.CODE_ID is null then 'C20' 
+                         when C.CODE_ID is null then 'C40'
+                         ]]>
+			<isEqual property="checked" compareValue="N">
+			<![CDATA[ 
+	                         when C.CODE_ID is not null
+	           and S.CODE_ID is not null then 'C10'  /* '정상' */ 
+	           	]]>	
+			</isEqual>
+			<isEqual property="checked" compareValue="Y">
+			<![CDATA[ 
+	                         when C.CODE_ID is not null
+                      and S.CODE_ID is not null
+                      and S.CODE_ID=C.CODE_ID
+                      and S.CODE_VALUE=C.CODE_VALUE then 'C10' /* '정상' */ 
+                 when C.CODE_ID is not null
+                      and S.CODE_ID is not null
+                      and S.CODE_ID=C.CODE_ID
+                      and S.CODE_VALUE<>C.CODE_VALUE then 'C30' /* '오류(의미)'*/ 
+                      	]]>	
+             </isEqual>        
+             <![CDATA[ 
+                       end RTN_CODE
+          from (SELECT distinct 2 AS CODE_INFO_ID,
+                       CODE_ID,
+                       CODE_VALUE 
+                  from TNCODEVALUEINFO
+                 where CODE_INFO_ID=#t_code_info_id#
+                       ) C left outer join 
+               (select distinct 1 AS CODE_INFO_ID,
+                       CODE_ID,
+                       CODE_VALUE
+                  from TNCODEVALUEINFO
+                 where CODE_INFO_ID=#code_info_id# 
+                       ) S on (S.CODE_ID=C.CODE_ID) ) t left outer join (select b.CODE, b.CODE_NM
+          from COMTCCMMNCODE a, COMTCCMMNDETAILCODE b
+         where a.CODE_ID=b.CODE_ID
+           and a.CL_CODE='PQC'
+           and a.CODE_ID='T800'
+           and a.USE_AT='Y'
+           and b.USE_AT='Y') c on (t.RTN_CODE=c.CODE)
+           						]]>
+		<isNotEmpty prepend="where" property="rtn_code">
+				<![CDATA[ RTN_CODE= #rtn_code# ]]>
+		</isNotEmpty>
+ 		   order by t.T_CODE_ID 
+		    )
+		WHERE RN BETWEEN (#firstIndex# + 1) AND (#firstIndex# + #recordCountPerPage#)
+
+	</select>
+	
+	<select id="DBMatchingDAO.selectCodeCompCnt" resultClass="int" parameterClass="codeInfoVO"><![CDATA[
+		select count(*) 
+		from 
+		(
+			select t.RTN_CODE
+	  		from (select S.CODE_INFO_ID,
+	               S.CODE_ID,
+	               S.CODE_VALUE,
+	               C.CODE_INFO_ID T_CODE_INFO_ID,
+	               C.CODE_ID T_CODE_ID,
+	               C.CODE_VALUE T_CODE_VALUE ,
+	                       case
+	                         when C.CODE_ID is not null
+	           and S.CODE_ID is null then 'C20'   /* '오류' */ 
+	                         when C.CODE_ID is null then 'C40'
+	                  				]]>		
+			<isEqual property="checked" compareValue="N">
+			<![CDATA[ 
+	                         when C.CODE_ID is not null
+	           and S.CODE_ID is not null then 'C10'  /* '정상' */ 
+	           	]]>	
+			</isEqual>
+			<isEqual property="checked" compareValue="Y">
+			<![CDATA[ 
+	                         when C.CODE_ID is not null
+                      and S.CODE_ID is not null
+                      and S.CODE_ID=C.CODE_ID
+                      and S.CODE_VALUE=C.CODE_VALUE then 'C10' /* '정상' */ 
+                 when C.CODE_ID is not null
+                      and S.CODE_ID is not null
+                      and S.CODE_ID=C.CODE_ID
+                      and S.CODE_VALUE<>C.CODE_VALUE then 'C30' /* '오류(의미)'*/ 
+                      	]]>	
+             </isEqual>        
+             <![CDATA[ 
+	                       end RTN_CODE
+	          from (SELECT distinct 2 AS CODE_INFO_ID,
+	                       CODE_ID,
+	                       CODE_VALUE 
+	                  from TNCODEVALUEINFO
+	                 where CODE_INFO_ID=#t_code_info_id#
+	                       ) C left outer join 
+	               (select distinct 1 AS CODE_INFO_ID,
+	                       CODE_ID,
+	                       CODE_VALUE
+	                  from TNCODEVALUEINFO
+	                 where CODE_INFO_ID=#code_info_id#
+	                       ) S on (S.CODE_ID=C.CODE_ID) ) t left outer join (select b.CODE, b.CODE_NM
+	          from COMTCCMMNCODE a, COMTCCMMNDETAILCODE b
+	         where a.CODE_ID=b.CODE_ID
+	           and a.CL_CODE='PQC'
+	           and a.CODE_ID='T800'
+	           and a.USE_AT='Y'
+	           and b.USE_AT='Y') c on (t.RTN_CODE=c.CODE)
+		)where 1=1
+				]]>		
+		<isNotEmpty prepend="AND" property="rtn_code">
+				<![CDATA[ RTN_CODE= #rtn_code# ]]>
+		</isNotEmpty>
+        </select>
+	<!-- 코드분석 결과 엑셀 다운로드 -->
+	<select id="DBMatchingDAO.selectCodeCompExl" resultMap="result-empCVO" parameterClass="codeInfoVO"><![CDATA[
+
+		select
+			rownum as RN
+			, t.CODE_INFO_ID, t.CODE_ID, t.CODE_VALUE
+			, t.T_CODE_INFO_ID, t.T_CODE_ID, t.T_CODE_VALUE
+			, t.RTN_CODE, c.CODE_NM
+  		from (
+  				select
+  					S.CODE_INFO_ID
+    				, S.CODE_ID
+    				, S.CODE_VALUE
+    				, C.CODE_INFO_ID as T_CODE_INFO_ID
+    				, C.CODE_ID as T_CODE_ID
+    				, C.CODE_VALUE as T_CODE_VALUE
+            		, case
+              			when C.CODE_ID is not null and S.CODE_ID is null then 'C20' 
+              			when C.CODE_ID is null then 'C40'
+					]]>
+				<isEqual property="checked" compareValue="N">
+					<![CDATA[ 
+	                    when C.CODE_ID is not null and S.CODE_ID is not null then 'C10'  /* '정상' */ 
+	           		]]>	
+				</isEqual>
+				<isEqual property="checked" compareValue="Y">
+					<![CDATA[ 
+	                    when (
+	                    		C.CODE_ID is not null and S.CODE_ID is not null
+                      			and S.CODE_ID = C.CODE_ID
+                      			and S.CODE_VALUE = C.CODE_VALUE
+							) then 'C10' /* '정상' */ 
+                 		when (
+                 				C.CODE_ID is not null and S.CODE_ID is not null
+                      			and S.CODE_ID = C.CODE_ID and S.CODE_VALUE <> C.CODE_VALUE
+							) then 'C30' /* '오류(의미)'*/ 
+					]]>	
+             	</isEqual>        
+             	<![CDATA[ 
+					end RTN_CODE
+  				from (
+  						SELECT distinct
+  							2 AS CODE_INFO_ID,
+                       		CODE_ID,
+                       		CODE_VALUE 
+                  		from TNCODEVALUEINFO
+                 		where CODE_INFO_ID=#t_code_info_id#
+					) C left outer join 
+               		(
+               			select distinct
+               				1 AS CODE_INFO_ID,
+                       		CODE_ID,
+                       		CODE_VALUE
+                  		from TNCODEVALUEINFO
+                 		where CODE_INFO_ID=#code_info_id# 
+					) S
+						on (S.CODE_ID=C.CODE_ID)
+  			) t left outer join (
+  				select b.CODE, b.CODE_NM
+          		from COMTCCMMNCODE a, COMTCCMMNDETAILCODE b
+         		where a.CODE_ID=b.CODE_ID
+           			and a.CL_CODE='PQC'
+           			and a.CODE_ID='T800'
+           			and a.USE_AT='Y'
+           			and b.USE_AT='Y'
+			) c on (t.RTN_CODE=c.CODE)
+             	]]>
+		<isNotEmpty prepend="where" property="rtn_code">
+				<![CDATA[ RTN_CODE= #rtn_code# ]]>
+		</isNotEmpty>
+  		order by t.T_CODE_ID
+	</select>
+	
+	<resultMap id="result-target" class="codeInfoVO">
+	    <result property="database_nm"	            column="database_nm"/>
+	    <result property="code_info_nm"		    column="code_info_nm"/> 
+	    <result property="code_info_id"		    column="code_info_id"/> 
+	    <result property="t_database_nm"		    column="t_database_nm"/> 
+	    <result property="t_code_info_nm"		    column="t_code_info_nm"/> 
+	    <result property="t_code_info_id"		    column="t_code_info_id"/> 
+	</resultMap>
+	<select id="DBMatchingDAO.codeCompTagetList" resultMap="result-target" parameterClass="codeInfoVO"><![CDATA[
+	SELECT MAX(D1) AS database_nm ,MAX(D2) AS code_info_nm ,MAX(D3) AS code_info_id
+		 , MAX(T1)AS t_database_nm ,MAX(T2) AS t_code_info_nm ,MAX(T3) AS t_code_info_id
+	FROM 
+	(
+		SELECT A.DATABASE_NM AS D1 , B.CODE_INFO_NM AS D2 , B.CODE_INFO_ID AS D3, NULL AS T1,NULL AS T2, NULL AS T3
+		FROM TNDATABASEMANAGE A 
+		    LEFT OUTER JOIN TNCODEMANAGE B
+		    ON A.DATABASE_ID = B.DATABASE_ID
+		    AND B.CODE_INFO_ID=#code_info_id#
+		WHERE B.CODE_INFO_ID IS NOT NULL
+		UNION ALL
+		SELECT NULL,NULL,NULL,A.DATABASE_NM, B.CODE_INFO_NM ,B.CODE_INFO_ID
+		FROM TNDATABASEMANAGE A 
+		    LEFT OUTER JOIN TNCODEMANAGE B
+		    ON A.DATABASE_ID = B.DATABASE_ID
+		    AND B.CODE_INFO_ID=#t_code_info_id#
+		WHERE B.CODE_INFO_ID IS NOT NULL
+	)
+	]]></select>
+	
+	<resultMap id="result-errCode" class="codeInfoVO">
+	    <result property="rtn_code"	            column="CODE"/>
+	    <result property="err_code_nm"		    column="CODE_NM"/> 
+	</resultMap>
+	<select id="DBMatchingDAO.errCodeList" resultMap="result-errCode" parameterClass="codeInfoVO"><![CDATA[
+		select b.CODE AS CODE,b.CODE_NM AS CODE_NM
+		from COMTCCMMNCODE a, COMTCCMMNDETAILCODE b
+		where a.CODE_ID=b.CODE_ID
+		and a.CL_CODE='PQC'
+		and a.CODE_ID='T800'
+		and a.USE_AT='Y'
+		and b.USE_AT='Y'
+		order by b.CODE
+	]]></select>
+</sqlMap>

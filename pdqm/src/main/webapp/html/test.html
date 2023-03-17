@@ -1,0 +1,383 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title> 공공정보 품질관리 지원센터 </title>
+	<link href="/pdqm/css/pdqm/admin/admin.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript">
+	<!--
+jQuery(function($){
+	// List Tab Navigation
+	var tab_list = $('div.tab.list');
+	var tab_list_i = tab_list.find('>ul>li');
+	tab_list.removeClass('jx');
+	tab_list_i.find('>dl').hide();
+	tab_list.find('>ul>li:first-child').find('>dl').show();
+	tab_list.css('height', tab_list.find('>ul>li:first-child>dl').height()+40);
+	tab_list.find('>ul>li:first-child').addClass('on');
+	function listTabMenuToggle(event){
+		var t = $(this);
+		tab_list_i.find('>dl').hide();
+		t.next('dl').show();
+		tab_list_i.removeClass('on');
+		t.parent('li').addClass('on');
+		tab_list.css('height', t.next('dl').height()+40);
+		return false;
+	}
+	tab_list_i.find('>a[href=#]').click(listTabMenuToggle).focus(listTabMenuToggle);
+});
+
+	//-->
+	</script>
+
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+	function devIng(){
+		alert("서비스 준비중입니다 .");
+	}
+	
+</script>
+<div id="wrapper">
+	<!-- Skip -->
+	<ul id="topSkip">
+		<li><a href="#cntArea">본문으로 바로가기</a></li>
+		<li><a href="#secNavi">서브메뉴로 바로가기</a></li>
+	</ul>
+	<hr />
+	
+	<!-- topArea:Start -->
+	<div id="topArea">
+		<div class="topWrap">
+			<h1 class="logo"><a href="#"><img src="/pdqm/images/pdqm/admin/logo.gif" alt="공공정보 품질관리 지원센터" /></a></h1>
+			<p class="topBtn">
+				<a href="/pdqm/cop/com/selectBBSUseInfs.do" style="text-decoration:none;cursor:none;">&nbsp;&nbsp;&nbsp;&nbsp;</a>	
+				관리자님 환영합니다. <a href="/pdqm/index.do">[공공정보 품질관리 지원센터 바로가기]</a>
+				<a href="/pdqm/uat/uia/actionLogout.do">로그아웃</a></p>
+		</div>
+	</div>
+	<hr />
+	<!-- topArea:End -->
+
+	<!-- cntWrap:Start -->
+	<div id="cntWrap">
+		<div id="secNavi">
+			<p><img src="/pdqm/images/pdqm/admin/secNavi_tit.gif" alt="관리자(admin)" /></p>
+			<ul class="leftMenu">
+				<li class="on"><a href="/pdqm/uss/umt/EgovMberManage.do">회원정보조회</a></li>
+				<li><a href="/pdqm/uss/ion/bnr/selectBannerList.do">팝업존/서비스 바로가기 관리</a></li>
+				<li>콘텐츠관리
+					<ul class="depth2">
+						<li><a href="/pdqm/uss/olh/faq/FaqListInqire.do">자주하는질문 관리</a></li>
+						<li><a href="/pdqm/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000000211">뉴스레터 관리</a></li>
+						<li><a href="/pdqm/cop/ems/selectSndngMailList.do">메일발송내역 조회</a></li>
+					</ul>
+				</li>
+				<li>품질수준 자가진단 관리
+					<ul class="depth2">
+						<li>관리수준 자가진단
+							<ul class="depth3">
+								<li><a href="/pdqm/support/diagnosis/selectDiagnosisLevelMngList.do" >진단대상 및 관점 관리</a></li>
+								<li><a href="#" onclick="devIng();">관리수준 문항 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/level/selectScoreDgnssTrgetList.do" >관리수준 결과(진단대상) 점수 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/level/selectScoreViewPointList.do" >관리수준 결과(진단관점) 점수 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/level/selectResultExplainList.do" >관리수준 결과 설명 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/level/selectSelfDiagnosisList.do" >관리수준 자가진단 관리</a></li>
+							</ul>
+						</li>
+						<li>지표별 자가진단
+							<ul class="depth3">
+								<li><a href="/pdqm/support/diagnosis/selectDiagnosisIdxMngList.do">지표 및 특성 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/idx/selectIdxDbTypeList.do">데이터베이스유형 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/idx/diagnoIdxDbTypePMngList.do" >데이터베이스유형별 중점지표 관리</a></li>
+								<li><a href="/pdqm/support/diagnosis/idx/wghtval/diagnoWghtvalIdxMngList.do" >가중치 관리</a></li>
+								<li><a href="#" onclick="devIng();">지표별 문항 관리</a></li>
+								<li><a href="#" onclick="devIng();">지표별 결과 점수 관리</a></li>
+								<li><a href="#" onclick="devIng();">지표별 결과 설명 관리</a></li>
+								<li><a href="#" onclick="devIng();">지표별 자가진단 관리</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>통계
+					<ul class="depth2">
+						<li><a href="/pdqm/admin/stats/selectJoinCountView.do" >가입통계</a></li>
+						<li><a href="/pdqm/admin/stats/selectAccessCountView.do" >접속통계</a></li>
+						<li><a href="/pdqm/admin/stats/selectUseCountView.do" >서비스별 이용 현황</a></li>
+					</ul>
+				</li>
+				<li>공통코드관리
+					<ul class="depth2">
+						<li><a href="/pdqm/sym/ccm/ccc/EgovCcmCmmnClCodeList.do">공통분류코드관리</a></li>
+						<li><a href="/pdqm/sym/ccm/cca/EgovCcmCmmnCodeList.do">공통코드관리</a></li>
+						<li><a href="/pdqm/sym/ccm/cde/EgovCcmCmmnDetailCodeList.do">공통상세코드관리</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<hr />
+
+
+		<!-- Contents Area:Start -->
+		<div id="cntArea">
+
+<script type="text/javascript" src="/pdqm/js/egovframework/com/cmm/utl/EgovCmmUtl.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+<script type="text/javaScript" language="javascript">
+/* ********************************************************
+ * 저장처리화면
+ ******************************************************** */
+function fn_insert(){
+	
+	var modifyform=document.modifyform;
+	
+			var optionlength=$("#resultviewright").attr("options").length;
+			var strtemp="";
+			for(var i=0;i<optionlength;i++){
+				var index = $("#resultviewright option:eq("+i+")").val(); 
+				//alert(index);
+				//alert(i);
+				strtemp+="/"+index;	
+				//	strtemp+=
+				
+			}
+			//alert(strtemp);
+					
+			
+			modifyform.SRIDXNM.value=strtemp;
+				modifyform.action = "/pdqm/support/diagnosis/viewDiagnoIdxPMnginsert.do";
+		   	modifyform.submit();
+	
+		
+}
+
+function fn_fomrValidate(frm){
+	if (document.form.dgnssTrgetNm.value == ""){
+		alert("진단대상을 입력 하십시오.");
+		document.form.dgnssTrgetNm.focus();	
+		return false;
+	}
+	
+	return true;
+
+}
+
+/* ********************************************************
+ * 목록 으로 가기
+ ******************************************************** */
+function fn_list(){
+	var modifyform=document.modifyform;
+	modifyform.action = "/pdqm/support/diagnosis/insertDiagnoIdxPMngView.do";
+   	modifyform.submit();
+
+	
+}
+	
+	
+	
+function LeftColumn(){
+	
+	
+	var strtemp;
+	
+	var id=$("#resultviewleft option:selected").val();
+	var name=$(" #resultviewleft option:selected").text();
+	if(id !=undefined){
+		
+	
+	var addOpt = document.createElement('option');
+	addOpt.value=id;
+	addOpt.appendChild(document.createTextNode(name));
+	var optionlength=$("#resultviewright").attr("options").length;
+	var strtemp="";
+	for(var i=0;i<optionlength;i++){
+		var index = $("#resultviewright option:eq("+i+")").val(); 
+		
+	}
+		
+	
+	
+	$("#resultviewright").append(addOpt); // 옵션을 추가한다.
+
+	  $("#resultviewleft option[selected='true']").remove(); 
+
+	}
+	
+}
+
+function RightColumn(){
+	
+	
+	var id=$("#resultviewright option:selected").val();
+	var name=$(" #resultviewright option:selected").text();
+	
+	
+	if(id !=undefined){
+		
+	
+	var addOpt = document.createElement('option');
+	addOpt.value=id;
+	addOpt.appendChild(document.createTextNode(name));
+	  $("#resultviewleft").append(addOpt); // 옵션을 추가한다.
+
+	  $("#resultviewright option[selected='true']").remove(); 
+	}	
+}
+
+
+
+function fn_Cancel(){
+	
+	location.href =  "/pdqm/support/diagnosis/idx/diagnoIdxDbTypePMngList.do";
+	
+	
+	/*
+	var modifyform=document.modifyform;
+	modifyform.action = "/pdqm/support/diagnosis/insertDiagnoIdxPMngView.do";
+   	modifyform.submit();
+*/
+	
+}
+
+function fn_init(){
+	
+	var modifyform=document.modifyform;
+	modifyform.action = "/pdqm/support/diagnosis/insertDiagnoIdxPMngView.do";
+   	modifyform.submit();
+
+	
+	
+	
+	
+	
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+
+<form id="searchVO" name="modifyform" action="/pdqm/support/diagnosis/insertDiagnoIdxPMngView.do" method="post">
+
+<input type="hidden" name="SRIDXNM">
+<!-- contents: Start -->
+	<div class="title">
+		<div class="locationMap">데이터베이스유형별 중점 지표 등록/조회/수정</div>
+		<h2>데이터베이스유형별 중점 지표 등록/조회/수정</h2>
+	</div>
+
+	<table class="viewType1" summary="검색조건 테이블입니다.">
+		<colgroup>
+			<col width="20%"/>
+			<col width="auto"/>
+		</colgroup>
+		<tr>
+			<th label for="search1">데이터베이스유형</label></th>
+			<td>
+				          <select id="HDATABASETYID" name="HDATABASETYID" class="text" onchange="fn_list()">
+          	
+	               	<option value="1" selected="selected">자체생성형</option>
+      			
+	               	<option value="2">수집형</option>
+      			
+	               	<option value="3">제공형</option>
+      			
+	               	<option value="4">복합형</option>
+      			    
+          
+                   </select>
+		
+		  
+          
+		
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="multi_sel">
+				<div>
+					<h3>지표</h3>
+					
+				
+						          <select id="resultviewleft" name="LIDXNM" title="지표 선택" ondblclick="LeftColumn()" class="multiple" multiple="multiple">
+          					
+	               	<option value="2">완전성</option>
+      			
+	               	<option value="3">일관성</option>
+      			
+	               	<option value="6">보안성</option>
+      			    
+          
+                   </select><input type="hidden" name="_LIDXNM" value="1"/>
+		
+				
+				
+				</div>
+				<div class="sel_btn">
+					<span class="button"  title="중점관리대상 지표로 이동"> ▶</span>
+					<br>
+					
+					<span class="button" title="지표로 이동">◀</span>
+				</div>
+
+				<div>
+					<h3>중점관리대상 지표</h3>
+				
+				
+				          <select id="resultviewright" name="RIDXNM" title="중점관리대상 지표 선택" ondblclick="RightColumn()" class="multiple" multiple="multiple">
+          					
+	               	<option value="4">정확성</option>
+      			
+	               	<option value="7">적시성</option>
+      			
+	               	<option value="8">유용성</option>
+      			    
+          
+                   </select><input type="hidden" name="_RIDXNM" value="1"/>
+				
+				
+				</div>
+
+			</td>
+		</tr>
+	</table>
+
+	<!-- 버튼영역 -->
+	<div class="btnArea btn_taR">
+		<span class="button"><input type="button" value="등록"  onClick="fn_insert()"/></span>
+		<span class="button"><input type="button" value="목록" onClick="fn_Cancel()" /></span>
+		<span class="button"><input type="button" value="초기화" onClick="fn_init()" /></span>
+	
+	</div>
+	<!--// 버튼영역 -->
+</form>
+
+<!-- contents: End -->
+
+		</div>
+	</div>
+	<ul id="bottomSkip">
+		<li><a href="#cntArea">본문으로 바로가기</a></li>
+		<li><a href="#topNavi">메인메뉴로 바로가기</a></li>
+		<li><a href="#secNavi">서브메뉴로 바로가기</a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+

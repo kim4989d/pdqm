@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisLevelMng">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisLevelMngVO" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelMngVO"/>
+	<typeAlias  alias="diagnosisLevelMng" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelMng"/>
+
+	<select id="diagnosisLevelMngDAO.selectDiagnosisLevelMngList" parameterClass="diagnosisLevelMngVO" resultClass="egovMap">
+		<![CDATA[
+	
+			SELECT d.DGNSS_TRGET_ID,
+			       d.UPPER_DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_LEVEL ,
+			       d.DGNSS_TRGET_DC,
+			       d.DGNSS_TRGET_STTUS_CODE,
+			       p3.CODE_NM DGNSS_TRGET_STTUS_CODE_NM,
+			       d.SORT_ORDR ,
+			       DECODE(d.DGNSS_TRGET_LEVEL,1,p.QESITM_COUNT,2,p2.QESITM_COUNT,0) QESITM_COUNT ,
+			       TO_char(d.FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM,
+			       (SELECT mber_nm FROM COMTNGNRLMBER WHERE ESNTL_ID = FRST_REGISTER_ID) mber_nm
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT e.UPPER_DGNSS_TRGET_ID DGNSS_TRGET_ID,
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.UPPER_DGNSS_TRGET_ID 
+			       ) p 
+			       ON (
+			           d.DGNSS_TRGET_ID=p.DGNSS_TRGET_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT e.DGNSS_TRGET_ID DGNSS_TRGET_ID,
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.DGNSS_TRGET_ID 
+			       ) p2 
+			       ON (
+			           d.DGNSS_TRGET_ID=p2.DGNSS_TRGET_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT b.CODE,
+			              b.CODE_NM 
+			         FROM COMTCCMMNCODE a, 
+			              COMTCCMMNDETAILCODE b 
+			        WHERE a.CODE_ID=b.CODE_ID 
+			              AND a.CL_CODE='PQC' 
+			              AND a.CODE_ID='T600' 
+			              AND a.USE_AT='Y' 
+			              AND b.USE_AT='Y' 
+			       ) p3 
+			       ON (
+			           d.DGNSS_TRGET_STTUS_CODE=p3.CODE
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			 
+		    
+		]]>		    
+ 		  <isNotEmpty  prepend="and" property="searchSttusCode">
+		      d.DGNSS_TRGET_STTUS_CODE = #searchSttusCode# 
+		  </isNotEmpty>		
+ 		  <isNotEmpty  property="searchTrgetNm">
+ 		      AND d.DGNSS_TRGET_LEVEL = 1
+		      AND d.DGNSS_TRGET_NM like #searchTrgetNm# || '%'
+		  </isNotEmpty>			  	    
+
+			 START WITH d.DGNSS_TRGET_ID = 0 
+			  CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			 ORDER siblings BY d.SORT_ORDR 
+
+	</select>
+	
+	<select id="diagnosisLevelMngDAO.selectDiagnosisLevelMngListTotCnt" parameterClass="diagnosisLevelMngVO" resultClass="int">
+		<![CDATA[
+		SELECT COUNT(*) totcnt
+		 FROM TNDGNSSTRGETINFO
+		 WHERE uSE_AT = 'Y'
+		]]>
+ 		  <isNotEmpty  prepend="and" property="searchSttusCode">
+		      DGNSS_TRGET_STTUS_CODE = #searchSttusCode#
+		  </isNotEmpty>		
+ 		  <isNotEmpty  property="searchTrgetNm">
+ 		      AND DGNSS_TRGET_LEVEL = 1
+		      AND DGNSS_TRGET_NM like #searchTrgetNm# || '%'
+		  </isNotEmpty>				  	
+	</select>
+
+	<update id="diagnosisLevelMngDAO.updateSortOrder">
+		<![CDATA[
+		
+			UPDATE TNDGNSSTRGETINFO
+		]]>
+	         <isEqual  property="state" compareValue="insert">
+	            SET SORT_ORDR = SORT_ORDR + 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="updateUp">
+	            SET SORT_ORDR = SORT_ORDR - 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="updateDown">
+	            SET SORT_ORDR = SORT_ORDR + 1
+	         </isEqual>
+
+	         <isEqual  property="state" compareValue="delete">
+	            SET SORT_ORDR = SORT_ORDR - 1
+	         </isEqual>
+	         	         	         		         
+		<![CDATA[
+			  
+			  where DGNSS_TRGET_LEVEL = #dgnssTrgetLevel#
+		]]>			  
+			  <isEqual  property="state" compareValue="insert">
+			  <![CDATA[
+			  	  and SORT_ORDR >= #sortOrdr#
+			  ]]>
+			  </isEqual>
+			  
+			  <isEqual  property="state" compareValue="updateUp">
+			  <![CDATA[
+				  and SORT_ORDR > #oldSortOrdr#
+				  and SORT_ORDR <= #sortOrdr#
+			  ]]>
+			  </isEqual>
+
+			  <isEqual  property="state" compareValue="updateDown">
+			  <![CDATA[
+				  and SORT_ORDR >= #sortOrdr#
+				  and SORT_ORDR < #oldSortOrdr#
+			  ]]>
+			  </isEqual>
+
+			  <isEqual  property="state" compareValue="delete">
+			  <![CDATA[
+				  and SORT_ORDR > #oldSortOrdr#
+			  ]]>
+			  </isEqual>
+			  <isEqual  property="dgnssTrgetLevel" compareValue="2">
+			  <![CDATA[
+				  and UPPER_DGNSS_TRGET_ID = #viewDgnssTrgetId#
+			  ]]>
+			  </isEqual>
+			  			  			  
+	</update>
+	
+	<insert id="diagnosisLevelMngDAO.insertDiagnosisLevelMng">
+		  <selectKey resultClass="java.lang.String" keyProperty="dgnssTrgetId">
+		   	SELECT  NVL(MAX(DGNSS_TRGET_ID),0) + 1 FROM TNDGNSSTRGETINFO
+		  </selectKey>   
+		<![CDATA[
+			INSERT INTO TNDGNSSTRGETINFO
+				( 
+   			     DGNSS_TRGET_ID
+			    ,UPPER_DGNSS_TRGET_ID
+		   	    ,DGNSS_TRGET_NM
+			    ,DGNSS_TRGET_LEVEL
+			    ,DGNSS_TRGET_DC
+			    ,DGNSS_TRGET_STTUS_CODE
+			    ,SORT_ORDR
+			    ,uSE_AT
+       			
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+
+				
+				  )
+			VALUES (
+				#dgnssTrgetId#
+				,0
+				,#dgnssTrgetNm#
+				,1
+				,#dgnssTrgetDc#
+				,#dgnssTrgetSttusCode#
+				,#sortOrdr#	
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+
+	<insert id="diagnosisLevelMngDAO.insertLevelScore">
+
+		<![CDATA[
+			INSERT 
+			  INTO TNLEVELSCOREMANAGE 
+			       ( 
+			           CODE_ID, 
+			           CODE, 
+			           DGNSS_TRGET_ID, 
+			           DGNSS_TRGET_LEVEL, 
+			           MUMM, 
+			           MXMM,
+			           RESULT_DC,
+			           FRST_REGIST_PNTTM,
+			           FRST_REGISTER_ID
+			       ) 
+			SELECT CODE_ID, 
+			       CODE,  
+			       #dgnssTrgetId#, 
+			       (SELECT DGNSS_TRGET_LEVEL FROM TNDGNSSTRGETINFO WHERE DGNSS_TRGET_ID = #dgnssTrgetId#) , 
+			       0, 
+			       0,
+			       '',
+			       SYSDATE,
+			       #frstRegisterId#        
+			  FROM COMTCCMMNDETAILCODE 
+			 WHERE CODE_ID = 'LVL100'
+		]]>
+	</insert>
+	
+	<resultMap id="result-updateDiagnosisLevelMngView" class="diagnosisLevelMng">
+        <result property="dgnssTrgetId"                column="DGNSS_TRGET_ID"/>
+        <result property="upperDgnssTrgetId"              column="UPPER_DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+		<result property="dgnssTrgetLevel"          column="DGNSS_TRGET_LEVEL"/>
+		<result property="dgnssTrgetDc"              column="DGNSS_TRGET_DC"/>
+		<result property="dgnssTrgetSttusCode"              column="DGNSS_TRGET_STTUS_CODE"/>
+		<result property="sortOrdr"              column="SORT_ORDR"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelMngDAO.updateDiagnosisLevelMngView" parameterClass="diagnosisLevelMng" resultMap="result-updateDiagnosisLevelMngView">
+		<![CDATA[
+		  SELECT 
+			   DGNSS_TRGET_ID
+			  ,UPPER_DGNSS_TRGET_ID
+			  ,DGNSS_TRGET_NM
+			  ,DGNSS_TRGET_LEVEL
+			  ,DGNSS_TRGET_DC
+			  ,DGNSS_TRGET_STTUS_CODE
+			  ,SORT_ORDR
+			  ,USE_AT
+		   FROM TNDGNSSTRGETINFO
+		    WHERE USE_AT = 'Y'
+		      AND DGNSS_TRGET_ID = #dgnssTrgetId#
+		]]>
+	</select>
+
+	<update id="diagnosisLevelMngDAO.updateDiagnosisLevelMng">
+		<![CDATA[
+		
+			UPDATE TNDGNSSTRGETINFO
+			  SET DGNSS_TRGET_NM = #dgnssTrgetNm#
+			  	 ,DGNSS_TRGET_DC = #dgnssTrgetDc#
+			  	 ,DGNSS_TRGET_STTUS_CODE = #dgnssTrgetSttusCode#
+			  	 ,SORT_ORDR =#sortOrdr#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where DGNSS_TRGET_ID = #dgnssTrgetId#
+		]]>
+	</update>
+
+	<update id="diagnosisLevelMngDAO.deleteDiagnosisLevelMng">
+		<![CDATA[
+		
+			UPDATE TNDGNSSTRGETINFO
+			  SET USE_AT = 'N'
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where DGNSS_TRGET_ID = #dgnssTrgetId#
+		]]>
+	</update>
+
+	<resultMap id="result-selectDgnssLevelMasterList" class="diagnosisLevelMng">
+        <result property="dgnssTrgetId"                column="DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelMngDAO.selectDgnssLevelMasterList"  resultMap="result-selectDgnssLevelMasterList">
+		<![CDATA[
+		  SELECT 
+			   DGNSS_TRGET_ID
+			  ,DGNSS_TRGET_NM
+		   FROM TNDGNSSTRGETINFO
+		    WHERE USE_AT = 'Y'
+		      AND DGNSS_TRGET_LEVEL = 1
+		      ORDER BY SORT_ORDR
+		]]>
+	</select>
+	
+	<insert id="diagnosisLevelMngDAO.insertDiagnosisLevelViewPoint">
+		  <selectKey resultClass="java.lang.String" keyProperty="dgnssTrgetId">
+		   	SELECT  NVL(MAX(DGNSS_TRGET_ID),0) + 1 FROM TNDGNSSTRGETINFO
+		  </selectKey> 	
+	
+		<![CDATA[
+			INSERT INTO TNDGNSSTRGETINFO
+				( 
+   			     DGNSS_TRGET_ID
+			    ,UPPER_DGNSS_TRGET_ID
+		   	    ,DGNSS_TRGET_NM
+			    ,DGNSS_TRGET_LEVEL
+			    ,DGNSS_TRGET_DC
+			    ,DGNSS_TRGET_STTUS_CODE
+			    ,SORT_ORDR
+			    ,uSE_AT
+       			
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+
+				
+				  )
+			VALUES (
+				#dgnssTrgetId#
+				,#upperDgnssTrgetId#
+				,#dgnssTrgetNm#
+				,2
+				,#dgnssTrgetDc#
+				,#dgnssTrgetSttusCode#
+				,#sortOrdr#	
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+
+	<resultMap id="result-updateDiagnosisLevelViewPointView" class="diagnosisLevelMng">
+        <result property="dgnssTrgetId"                column="DGNSS_TRGET_ID"/>
+        <result property="upperDgnssTrgetId"              column="UPPER_DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+		<result property="dgnssTrgetLevel"          column="DGNSS_TRGET_LEVEL"/>
+		<result property="dgnssTrgetDc"              column="DGNSS_TRGET_DC"/>
+		<result property="dgnssTrgetSttusCode"              column="DGNSS_TRGET_STTUS_CODE"/>
+		<result property="sortOrdr"              column="SORT_ORDR"/>
+		<result property="upperDgnssTrgetNm"              column="UPPER_DGNSS_TRGET_NM"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelMngDAO.updateDiagnosisLevelViewPointView" parameterClass="diagnosisLevelMng" resultMap="result-updateDiagnosisLevelViewPointView">
+		<![CDATA[
+		  SELECT 
+			   A.DGNSS_TRGET_ID
+			  ,A.UPPER_DGNSS_TRGET_ID
+			  ,A.DGNSS_TRGET_NM
+			  ,A.DGNSS_TRGET_LEVEL
+			  ,A.DGNSS_TRGET_DC
+			  ,A.DGNSS_TRGET_STTUS_CODE
+			  ,A.SORT_ORDR
+			  ,A.USE_AT
+			  ,(SELECT DGNSS_TRGET_NM FROM TNDGNSSTRGETINFO WHERE DGNSS_TRGET_ID = A.UPPER_DGNSS_TRGET_ID) UPPER_DGNSS_TRGET_NM
+		   FROM TNDGNSSTRGETINFO A
+		    WHERE A.USE_AT = 'Y'
+		      AND A.DGNSS_TRGET_ID = #dgnssTrgetId#
+		]]>
+	</select>
+
+	<resultMap id="result-selectDgnssDetailList" class="diagnosisLevelMng">
+        <result property="dgnssTrgetId"                column="DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+	</resultMap>		
+
+<!--  (select UPPER_DGNSS_TRGET_ID 
+  from TNDGNSSTRGETINFO
+  where DGNSS_TRGET_ID =  #viewDgnssTrgetId#) -->
+		                                   
+	<select id="diagnosisLevelMngDAO.selectDgnssDetailList"  parameterClass="diagnosisLevelMng" resultMap="result-selectDgnssDetailList">
+		<![CDATA[
+		  SELECT 
+			   DGNSS_TRGET_ID
+			  ,DGNSS_TRGET_NM
+		   FROM TNDGNSSTRGETINFO
+		    WHERE USE_AT = 'Y'
+		      AND UPPER_DGNSS_TRGET_ID = #viewDgnssTrgetId#
+		      
+		     
+		    order by SORT_ORDR
+		]]>
+	</select>
+			
+</sqlMap>

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/pdqm/!svn/ver/132/pdqm/src/script/tibero/ddl
+END
+uss.olh.faq_create_tibero.sql
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/pdqm/!svn/ver/132/pdqm/src/script/tibero/ddl/uss.olh.faq_create_tibero.sql
+END
+cop.ems_create_tibero.sql
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/pdqm/!svn/ver/17/pdqm/src/script/tibero/ddl/cop.ems_create_tibero.sql
+END

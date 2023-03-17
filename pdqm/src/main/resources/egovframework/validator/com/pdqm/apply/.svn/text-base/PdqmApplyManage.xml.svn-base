@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+
+        <form name="pdqmApply"> 
+        
+            <field property="name" depends="required, maxlength">
+                <arg0 key="성명" resource="false"/>
+                <arg1 key="20" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>20</var-value>
+                </var>
+            </field>
+
+         	<field property="pstinst" depends="required, maxlength">
+                <arg0 key="소속기관" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="dept" depends="required, maxlength">
+                <arg0 key="부서" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+
+            <field property="ofcps" depends="required, maxlength">
+                <arg0 key="직위" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="offmMiddleTelno" depends="required, maxlength, integer">
+                <arg0 key="사무실전화 중간번호" resource="false"/>
+                <arg1 key="4" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>4</var-value>
+                </var>
+            </field>
+            <field property="offmEndTelno" depends="required, maxlength, integer">
+                <arg0 key="사무실전화 끝번호" resource="false"/>
+                <arg1 key="4" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>4</var-value>
+                </var>
+            </field>
+
+            <field property="offmEndTelno" depends="required, maxlength, integer">
+                <arg0 key="휴대전화 중간번호" resource="false"/>
+                <arg1 key="4" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>4</var-value>
+                </var>
+            </field>
+            
+            <field property="endTelno" depends="required, maxlength, integer">
+                <arg0 key="휴대전화 끝번호" resource="false"/>
+                <arg1 key="4" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>4</var-value>
+                </var>
+            </field>
+
+            <field property="emailAdres" depends="required, email, maxlength">
+                <arg0 key="이메일주소" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+	                <var-name>maxlength</var-name>
+	                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="dbmsNm" depends="required, maxlength">
+                <arg0 key="DB명" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+ 
+            <field property="dbmsMainCn" depends="required, maxlength">
+                <arg0 key="DB주요내용" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+			
+			<field property="infoCntcPrcuseInstt" depends="required, maxlength">
+                <arg0 key="정보연계활용기관" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="srcInfoHoldInstt" depends="required, maxlength">
+                <arg0 key="원천정보보유기관" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="infoOthbcAt" depends="required, maxlength">
+                <arg0 key="정보공개여부" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+       
+            <field property="emplyrPrcuseLevel" depends="required, maxlength">
+                <arg0 key="사용자활용수준" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+            <field property="qlityImprvmExpcEffect" depends="required, maxlength">
+                <arg0 key="품질개선기대효과" resource="false"/>
+                <arg1 key="50" resource="false"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>50</var-value>
+                </var>
+            </field>
+            
+			 
+        </form>
+        
+    </formset>
+
+</form-validation>

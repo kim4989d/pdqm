@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/425/pdqm/src/main/java/egovframework/com/cmm/service/impl
+END
+CmmUseDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/165/pdqm/src/main/java/egovframework/com/cmm/service/impl/CmmUseDAO.java
+END
+EgovUserDetailsSessionServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/326/pdqm/src/main/java/egovframework/com/cmm/service/impl/EgovUserDetailsSessionServiceImpl.java
+END
+EgovTestUserDetailsServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/274/pdqm/src/main/java/egovframework/com/cmm/service/impl/EgovTestUserDetailsServiceImpl.java
+END
+EgovComAbstractDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/service/impl/EgovComAbstractDAO.java
+END
+EgovCmmUseServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/174/pdqm/src/main/java/egovframework/com/cmm/service/impl/EgovCmmUseServiceImpl.java
+END
+EgovFileMngServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/pdqm/!svn/ver/425/pdqm/src/main/java/egovframework/com/cmm/service/impl/EgovFileMngServiceImpl.java
+END
+FileManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/421/pdqm/src/main/java/egovframework/com/cmm/service/impl/FileManageDAO.java
+END

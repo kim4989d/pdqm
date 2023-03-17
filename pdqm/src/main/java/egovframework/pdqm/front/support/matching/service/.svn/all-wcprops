@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/2134/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service
+END
+DBMatchingModifyService.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/1490/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service/DBMatchingModifyService.java
+END
+MatchingCmmService.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/pdqm/!svn/ver/1734/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service/MatchingCmmService.java
+END
+MatchingCodeInfoService.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/1788/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service/MatchingCodeInfoService.java
+END
+DBMatchingService.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/1439/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service/DBMatchingService.java
+END
+CompareCodeService.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/pdqm/!svn/ver/1626/pdqm/src/main/java/egovframework/pdqm/front/support/matching/service/CompareCodeService.java
+END

@@ -1,0 +1,114 @@
+@charset "utf-8";
+
+/* 게시판여백 */
+.tbSpace1{margin-top:25px !important;}
+.tbSpace2{margin-top:15px !important;}
+.brBn{border-bottom:none !important;}
+.ta_r{text-align:right !important;}
+.ta_l{text-align:left !important;}
+.mal_10{margin-left:10px;}
+.fc_blue1{color:#567acc;}
+table .ta_l a{color:#567acc;}
+table .ta_l a:hover{text-decoration:underline;}
+
+/*  */
+.tbType1{width:100%;margin-bottom:10px;background:url('/pdqm/images/pdqm/common/bbs/bg_th.gif') no-repeat 0 0;}
+.tbType1 td{background:none;}
+.tbType1 th{height:31px;padding-left:2px;padding-right:2px;font-size:9pt;color:#2f4db3;font-weight:bold;background:url('/pdqm/images/pdqm/common/bbs/img_th_line.gif') no-repeat 0 center;}
+.tbType1 td{height:27px;padding-left:10px;padding-right:10px;color:#666;text-align:center;border-bottom:#e2e2e2 1px solid;}
+/*  */
+.sns{text-align:right;}
+.tbType1_view{width:100%;background:url('/pdqm/images/pdqm/common/bbs/bg_th.gif') no-repeat 0 0;}
+.tbType1_view th, .tbType1_view td{padding:5px 10px;}
+.tbType1_view th{font-size:9pt;color:#2f4db3;font-weight:bold;}
+.tbType1_view th:first-child{background:none !important;}
+.tbType1_view th, .tbType1_view td{height:28px;padding-left:10px;padding-right:5px;border-bottom:1px solid #e2e2e2;background:url('/pdqm/images/pdqm/common/bbs/img_th_line.gif') no-repeat 0 center;}
+.tbType1_view th.subject, .tbType1_view td.subject{height:31px;border-bottom:0 none;}
+.tbType1_view td.subject{color:#2f4db3 !important;}
+.tbType1_view td.con{min-height:200px;*height:200px;padding:10px;vertical-align:top;}
+.tbType1_view .file li{padding:2px 0;color:#999;}
+.tbType1_view .file li em{color:#567acc;font-weight:bold;}
+.tbType1_view .file li a{margin-right:10px;}
+/* 이전글다음글 테이블 */
+.viewType1{margin-top:25px;border-top:1px solid #98b2e6;border-bottom:1px solid #98b2e6;}
+.viewType1 th, .viewType1 td{height:28px;padding-left:10px;font-size:9pt;}
+.viewType1 tr.bg1 th, .viewType1 tr.bg1 td{border-bottom:1px solid #e2e2e2;}
+.viewType1 th{color:#2f4db3;font-weight:bold;}
+.viewType1 th.prev{background:url('/pdqm/images/pdqm/common/icon/icon_prev.gif') no-repeat 10px 12px;}
+.viewType1 th.next{background:url('/pdqm/images/pdqm/common/icon/icon_next.gif') no-repeat 10px 12px;}
+.viewType1 td{background:url('/pdqm/images/pdqm/common/bbs/img_th_line.gif') no-repeat 0 8px;}
+
+/* 우수사례공유, 전문가컬럼 */
+.tbType2{width:100%;}
+.tbType2 a img{vertical-align:middle;}
+.tbType2 dt{overflow:hidden;padding:6px 10px;line-height:150%;color:#000;border-top:2px solid #92ade5;border-bottom:1px solid #e2e2e2;background-color:#f8f8f8;}
+.tbType2 dt strong, .tbType2 dt input{float:left;margin-right:5px;}
+.tbType2 dt em{float:right;color:#284e85;font-weight:bold;}
+.tbType2 dd{padding:7px 10px;border-bottom:1px solid #e2e2e2;}
+.tbType2 .con{line-height:180%;padding:20px !important;}
+.tbType2 .file span{margin-left:10px;color:#999;}
+.tbType2 .file em{color:#5978cb;font-weight:bold;}
+.tbType2 .blog{margin-top:30px;padding-left:40px;font-size:8pt;background:#fff url('/pdqm/images/pdqm/common/icon/icon_blog.gif') no-repeat 0 2px;}
+.tbType2 .blog img{vertical-align:middle;}
+
+/* 뉴스와동향, 보도자료 */
+.tbType3{width:100%;border-top:2px solid #92ade5;}
+.tbType3 a img, .type3Search img{vertical-align:middle;}
+.tbType3 dl{border-bottom:1px solid #e2e2e2;}
+.tbType3 dt{overflow:hidden;padding:6px 10px;line-height:150%;background-color:#f8f8f8;}
+.tbType3 dt strong, .tbType3 dt input{float:left;margin-right:5px;font-size:11pt;color:#284e85;letter-spacing:-0.05em;}
+.tbType3 dt em{float:right;color:#999;font-size:9pt !important;font-weight:normal;}
+.tbType3 dd{overflow:hidden;zoom:1;padding:7px 10px;border-top:1px solid #f1f1f1;}
+.tbType3 .con{line-height:180%;padding:20px !important;border-top:1px solid #e2e2e2;}
+.tbType3 .ori{padding-top:20px;text-align:right;}
+.tbType3 .part li{float:left;width:300px;font-size:8pt;color:#567acc;}
+.tbType3 .part li a{width:400px;font-size:8pt;color:#999;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overow:ellipsis;}
+.tbType3 .part li img{margin-right:5px;vertical-align:middle;}
+
+.type3Search{position:relative;margin-bottom:10px;text-align:right;}
+.type3Search .select_part{position:absolute;left:0;}
+
+/* 상세보기_글쓰기 타입 */
+.registTable{border-top:2px solid #92ade5;}
+.registTable th, .registTable td{padding:5px 10px;border-bottom:1px solid #ddd;}
+.registTable th{color:#666;text-align:center;font-weight:bold;border-right:1px solid #ddd;background-color:#f8f8f8;}
+
+/* 테이블검색박스 */
+.searchBox{height:40px;line-height:40px;margin-top:30px;text-align:center;background:url('/pdqm/images/pdqm/common/bbs/bg_searchBox.gif') no-repeat 0 0;}
+.searchBox input.btn{border:0 none;}
+
+/* 자주하는질문 */
+.faq dt, .faq dd{line-height:150%;border-bottom:1px solid #eee;}
+.faq dt{padding:7px 5px 4px 40px;background:#f8f8f8 url('/pdqm/images/pdqm/common/icon/icon_q.gif') no-repeat 10px 5px;}
+.faq dt a{color:#284e85;font-weight:bold;}
+.faq dt a:hover{text-decoration:underline;}
+.faq dd{padding:15px 15px 15px 40px;background:url('/pdqm/images/pdqm/common/icon/icon_a.gif') no-repeat 10px 10px;}
+
+/* 버튼영역 */
+.btnArea{position:relative;margin-top:10px;}
+.btn_pr{position:absolute;top:0;right:0;}
+.btn_ar{text-align:right;}
+/* 버튼타입 */
+.sbtn_modify{width:38px;height:18px;text-indent:-100000px;border:0 none;background:url('/pdqm/images/pdqm/common/btn/btn_s_modify.gif') no-repeat 0 0;}
+.sbtn_del{width:38px;height:18px;text-indent:-100000px;border:0 none;background:url('/pdqm/images/pdqm/common/btn/btn_s_del.gif') no-repeat 0 0;}
+.calendar{width:18px;height:20px;text-indent:-100000px;border:0 none;background:url('/pdqm/images/pdqm/common/btn/btn_s_calendar.gif') no-repeat 0 0;}
+.sbtn_close{width:11px;height:11px;margin-left:5px;text-indent:-100000px;border:0 none;background:url('/pdqm/images/pdqm/common/btn/btn_s_close.gif') no-repeat 0 0;}
+
+.pagenate_btn{position:relative;width:100%;height:24px;}
+
+/* 페이지리스트 */
+.paging{padding-top:5px;color:#666;font-size:9pt;text-align:center;}
+.paging img{vertical-align:middle;}
+.paging strong{color:#8ba5e6;}
+
+/* tab */
+.tabArea{overflow:hidden;zoom:1;width:100%;margin:0;background:url('/pdqm/images/pdqm/common/tab/tab_faqBg.gif') repeat-x 0 0;}
+.tabArea li{float:left;margin-right:2px;}
+
+
+#divinputfile{width:284px;height:22px;margin:0;background:url('/pdqm/images/pdqm/common/bbs/upload_file.gif') no-repeat 100% 1px;}
+#divinputfile #egovComFileUploader{opacity:0.0;-moz-opacity:0.0;filter:alpha(opacity=00);cursor:pointer;_cursor:hand;}
+#fakeinputfile{margin-top:-20px;margin-left:2px;}
+#fakeinputfile #fakefilepc{width:210px;height:16px;border:0 none;}
+
+

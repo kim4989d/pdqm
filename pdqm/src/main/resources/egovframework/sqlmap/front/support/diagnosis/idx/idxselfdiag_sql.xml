@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+
+<sqlMap namespace="idxSelfDiag">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="idxSelfDiagVO" type="egovframework.pdqm.front.support.diagnosis.idx.model.IdxSelfDiagVO"/>
+	<typeAlias  alias="idxSelfDiag" type="egovframework.pdqm.front.support.diagnosis.idx.model.IdxSelfDiag"/>
+
+
+	<resultMap id="result-selectIngIdxDgnssId" class="idxSelfDiag">
+        <result property="idxDgnssId"        column="IDX_DGNSS_ID"/>
+        <result property="idxDgnssNm"        column="IDX_DGNSS_NM"/>
+        <result property="databaseTyId"      column="DATABASE_TY_ID"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectIngIdxDgnssId" resultMap="result-selectIngIdxDgnssId"><![CDATA[
+	SELECT A.IDX_DGNSS_ID
+		, A.IDX_DGNSS_NM
+		, A.DATABASE_TY_ID
+	FROM (
+		SELECT A.*
+			, CASE WHEN A.NTCE_TY_CODE = 'N20' AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) > SYSDATE
+				THEN 'S30'
+				WHEN A.NTCE_TY_CODE = 'N20' AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) <= SYSDATE
+					AND TO_DATE( A.NTCE_END_DT, 'YYYYMMDDHH24MISS' ) >= SYSDATE
+				THEN 'S20'
+				WHEN A.NTCE_TY_CODE = 'N20' AND A.NTCE_BEGIN_DT IS NOT NULL
+					AND A.NTCE_END_DT IS NOT NULL
+					AND TO_DATE( A.NTCE_BEGIN_DT, 'YYYYMMDDHH24MISS' ) < SYSDATE
+					AND TO_DATE( A.NTCE_END_DT, 'YYYYMMDDHH24MISS' ) < SYSDATE
+				THEN 'S50'
+				ELSE 'S40'
+				END NTCE_TY_CODE_2
+		FROM TNIDXDGNSSMANAGE A
+		WHERE A.USE_AT = 'Y'
+			AND A.DATABASE_TY_ID = #databaseTyId#
+	) A
+	WHERE A.NTCE_TY_CODE_2 = 'S20'
+	]]></select>
+	
+	
+	<resultMap id="result-selectCntIdxDec" class="idxSelfDiag">
+	    <result property="databaseTyId"     column="DATABASE_TY_ID"/>
+        <result property="databaseTyNm"     column="DATABASE_TY_NM"/>
+        <result property="idxId"        	column="IDX_ID"/>
+        <result property="idxNm"      		column="IDX_NM"/>
+        <result property="idxDc"      		column="IDX_DC"/>
+        <result property="idxLevel"      	column="IDX_LEVEL"/>
+        <result property="qesitmCount"      column="QESITM_COUNT"/>
+        <result property="idxDgnssId"      	column="IDX_DGNSS_ID"/>
+        <result property="idxDgnssNm"      	column="IDX_DGNSS_NM"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectCntIdxDec" resultMap="result-selectCntIdxDec"><![CDATA[
+	SELECT A.DATABASE_TY_ID
+		, D.DATABASE_TY_NM
+		, A.IDX_ID
+		, C.IDX_NM
+		, C.IDX_DC
+		, A.IDX_LEVEL 
+		, NVL( P.QESITM_COUNT, 0 ) QESITM_COUNT
+		, P.IDX_DGNSS_ID
+		, P.IDX_DGNSS_NM
+	FROM TNDATABASETYIDXWGHTVAL A
+	LEFT OUTER JOIN TNIDXINFO C ON ( A.IDX_ID = C.IDX_ID AND C.USE_AT = 'Y' AND C.IDX_STTUS_CODE = 'U' )
+	LEFT OUTER JOIN TNDATABASETYMANAGE D ON ( A.DATABASE_TY_ID = D.DATABASE_TY_ID AND D.USE_AT = 'Y' )
+	LEFT OUTER JOIN (
+		SELECT E.UPPER_IDX_ID IDX_ID
+			, COUNT( A.IDX_ID ) QESITM_COUNT
+			, C.DATABASE_TY_ID
+			, C.IDX_DGNSS_ID
+			, C.IDX_DGNSS_NM
+		FROM TNIDXQESITMPOOL A
+			, TNIDXDGNSSQESITM B
+			, TNIDXDGNSSMANAGE C
+			, TNDATABASETYIDXWGHTVAL E
+		WHERE A.QESITM_ID = B.QESITM_ID
+			AND A.USE_AT = 'Y'
+			AND A.IDX_ID = E.IDX_ID
+			AND B.IDX_DGNSS_ID = C.IDX_DGNSS_ID
+			AND C.USE_AT = 'Y'
+			AND B.DATABASE_TY_ID = C.DATABASE_TY_ID
+			AND C.DATABASE_TY_ID = E.DATABASE_TY_ID
+			AND C.IDX_DGNSS_ID = #idxDgnssId#
+			AND C.DATABASE_TY_ID = #databaseTyId#
+		GROUP BY E.UPPER_IDX_ID, C.DATABASE_TY_ID, C.IDX_DGNSS_ID, C.IDX_DGNSS_NM
+		) P ON ( A.IDX_ID = P.IDX_ID AND A.DATABASE_TY_ID = P.DATABASE_TY_ID )
+	WHERE A.DATABASE_TY_ID = #databaseTyId#
+		AND A.UPPER_IDX_ID IS NOT NULL
+		AND A.IDX_LEVEL = 1
+	START WITH A.IDX_ID = 0
+	CONNECT BY PRIOR A.IDX_ID = A.UPPER_IDX_ID
+		AND A.DATABASE_TY_ID = #databaseTyId# 
+		AND A.IDX_LEVEL=1
+	ORDER SIBLINGS BY A.SORT_ORDR
+	]]></select>
+	
+	
+	<resultMap id="result-selectIdxDgnssList" class="idxSelfDiag">
+        <result property="databaseTyId"     column="DATABASE_TY_ID"/>
+        <result property="idxId"        	column="IDX_ID"/>
+        <result property="idxNm"        	column="IDX_NM"/>
+        <result property="upperIdxId"       column="UPPER_IDX_ID"/>
+        <result property="idxLevel"       	column="IDX_LEVEL"/>
+        <result property="idxWghtval"       column="IDX_WGHTVAL"/>
+        <result property="emphsIdxId"       column="EMPHS_IDX_ID"/>
+        <result property="qesitmNo"        	column="QESITM_NO"/>
+        <result property="qesitmId"        	column="QESITM_ID"/>
+        <result property="qesitm"       	column="QESITM"/>
+        <result property="answerTyCode"     column="ANSWER_TY_CODE"/>
+        <result property="sortOrdrQ"        column="Q_SORT_ORDR"/>
+        <result property="answerId"        	column="ANSWER_ID"/>
+        <result property="answer"        	column="ANSWER"/>
+        <result property="answerStdr"       column="ANSWER_STDR"/>
+        <result property="allot"        	column="ALLOT"/>
+        <result property="sortOrdrA"        column="A_SORT_ORDR"/>
+        <result property="idxDgnssId"       column="IDX_DGNSS_ID"/>
+        <result property="idxDgnssNm"       column="IDX_DGNSS_NM"/>
+        <result property="qesitmCount"      column="QESITM_COUNT_2"/>
+        <result property="answerCnt"      	column="ANSWER_CNT"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectIdxDgnssList" resultMap="result-selectIdxDgnssList"><![CDATA[
+	SELECT A.DATABASE_TY_ID
+		, A.IDX_ID
+		, C.IDX_NM
+		, A.UPPER_IDX_ID
+		, A.IDX_LEVEL
+		, A.IDX_WGHTVAL 
+		, CASE WHEN E.IDX_ID IS NOT NULL
+			THEN 'true'
+			ELSE 'false'
+			END EMPHS_IDX_ID
+		, P.QESITM_NO
+		, P.QESITM_ID
+		, P.QESITM
+		, P.ANSWER_TY_CODE
+		, P.Q_SORT_ORDR
+		, P.ANSWER_ID
+		, P.ANSWER
+		, P.ANSWER_STDR
+		, P.ALLOT
+		, P.A_SORT_ORDR
+		, P.IDX_DGNSS_ID
+		, P.IDX_DGNSS_NM
+		, NVL( P2.QESITM_COUNT_2, 0 ) QESITM_COUNT_2
+		, COUNT( P.ANSWER_ID ) OVER ( PARTITION BY P.QESITM_ID ) AS ANSWER_CNT
+	FROM TNDATABASETYIDXWGHTVAL A
+	LEFT OUTER JOIN TNIDXINFO C ON ( A.IDX_ID = C.IDX_ID AND C.USE_AT = 'Y' AND C.IDX_STTUS_CODE = 'U' )
+	LEFT OUTER JOIN TNDATABASETYMANAGE D ON ( A.DATABASE_TY_ID = D.DATABASE_TY_ID AND D.USE_AT = 'Y' )
+	LEFT OUTER JOIN TNEMPHSIDXMANAGE E ON ( A.DATABASE_TY_ID = E.DATABASE_TY_ID AND A.IDX_ID = E.IDX_ID )
+	LEFT OUTER JOIN (
+		SELECT A.QESITM_ID
+			, A.IDX_ID
+			, A.QESITM
+			, A.ANSWER_TY_CODE
+			, A.SORT_ORDR Q_SORT_ORDR
+			, B.QESITM_NO
+			, D.ANSWER_ID
+			, D.ANSWER
+			, D.ANSWER_STDR
+			, D.ALLOT
+			, D.SORT_ORDR A_SORT_ORDR
+			, C.IDX_DGNSS_ID
+			, C.IDX_DGNSS_NM
+			, C.NTCE_TY_CODE
+			, C.NTCE_BEGIN_DT
+			, C.NTCE_END_DT
+			, C.QESITM_CO
+			, C.DATABASE_TY_ID
+		FROM TNIDXQESITMPOOL A, TNIDXDGNSSQESITM B, TNIDXDGNSSMANAGE C, TNIDXQESITMPOOLANSWER D
+		WHERE A.QESITM_ID = B.QESITM_ID
+			AND B.QESITM_ID = D.QESITM_ID
+			AND A.USE_AT = 'Y'
+			AND D.USE_AT = 'Y'
+			AND B.IDX_DGNSS_ID = C.IDX_DGNSS_ID
+			AND C.USE_AT = 'Y'
+			and B.DATABASE_TY_ID = C.DATABASE_TY_ID
+			AND C.IDX_DGNSS_ID = #idxDgnssId#
+			AND C.DATABASE_TY_ID = #databaseTyId#
+		) P ON ( A.IDX_ID = P.IDX_ID AND A.DATABASE_TY_ID = P.DATABASE_TY_ID )
+	LEFT OUTER JOIN (
+		SELECT E.IDX_ID IDX_ID
+			, COUNT( A.IDX_ID ) QESITM_COUNT_2
+			, C.DATABASE_TY_ID
+			, C.IDX_DGNSS_ID
+			, C.IDX_DGNSS_NM
+		FROM TNIDXQESITMPOOL a, TNIDXDGNSSQESITM b, TNIDXDGNSSMANAGE c, TNDATABASETYIDXWGHTVAL e
+		WHERE A.QESITM_ID = B.QESITM_ID
+			AND A.USE_AT = 'Y'
+			AND A.IDX_ID = E.IDX_ID
+			AND B.IDX_DGNSS_ID = C.IDX_DGNSS_ID
+			AND C.USE_AT = 'Y'
+			AND B.DATABASE_TY_ID = C.DATABASE_TY_ID
+			AND C.DATABASE_TY_ID = E.DATABASE_TY_ID
+			AND C.IDX_DGNSS_ID = #idxDgnssId#
+			AND C.DATABASE_TY_ID = #databaseTyId#
+		GROUP BY E.IDX_ID, C.DATABASE_TY_ID, C.IDX_DGNSS_ID, C.IDX_DGNSS_NM
+		) P2 ON ( A.IDX_ID = P2.IDX_ID AND A.DATABASE_TY_ID = P2.DATABASE_TY_ID )
+	WHERE A.DATABASE_TY_ID = #databaseTyId#
+		AND A.UPPER_IDX_ID IS NOT NULL
+	START WITH A.IDX_ID = 0
+	CONNECT BY PRIOR A.IDX_ID = A.UPPER_IDX_ID AND A.DATABASE_TY_ID = #databaseTyId#
+	ORDER SIBLINGS BY A.SORT_ORDR, P.Q_SORT_ORDR, P.A_SORT_ORDR
+	]]></select>
+	
+	
+	
+	<resultMap id="result-getNewIdxResultId" class="idxSelfDiag">
+        <result property="idxResultId"       column="IDX_RESULT_ID"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.getNewIdxResultId" resultMap="result-getNewIdxResultId"><![CDATA[
+	SELECT SEQ_D_IDXDGNSSRESULTID.NEXTVAL AS IDX_RESULT_ID
+	FROM DUAL
+	]]></select>
+	
+	
+	<insert id="idxSelfDiagDAO.insertIdxDgnss1Result" >
+	<![CDATA[
+	INSERT INTO TNIDXDGNSSRESULT (
+		  IDX_RESULT_ID
+		, IDX_DGNSS_ID
+		, DATABASE_TY_ID
+		, INSTT_NM
+		, UPPER_INSTT_SE_CODE
+		, INSTT_SE_CODE
+		, DATABASE_NM
+		, DATABASE_SCALE_CODE
+		, USER_IP
+		, DGNSS_DT
+	) VALUES (
+		  #idxResultId#
+		, #idxDgnssId#
+		, #databaseTyId#
+		, #insttNm#
+		, #upperInsttSeCode#
+		, #insttSeCode#
+		, #databaseNm#
+		, #databaseScaleCode#
+		, #userIp#
+		, TO_CHAR( SYSDATE, 'YYYYMMDDHHMISS' )
+	)
+	]]>
+	</insert>
+	
+	
+	<insert id="idxSelfDiagDAO.insertIdxDgnss2Result" >
+	<![CDATA[
+	INSERT INTO TNIDXDGNSSANSWERRESULT (
+		  IDX_RESULT_ID
+		, IDX_DGNSS_ID
+		, DATABASE_TY_ID
+		, QESITM_ID
+		, ANSWER_ID
+		, QESITM_NO
+		, ANSWER_TY_CODE
+		, IDX_ID
+		, UPPER_IDX_ID
+		, ALLOT
+	) VALUES (
+		  #idxResultId#
+		, #idxDgnssId#
+		, #databaseTyId#
+		, #qesitmId#
+		, #answerId#
+		, #qesitmNo#
+		, #answerTyCode#
+		, #idxId#
+		, #upperIdxId#
+		, #allot#
+	)
+	]]>
+	</insert>
+	
+
+	<insert id="idxSelfDiagDAO.insertIdxDgnss3Result"><![CDATA[
+	INSERT INTO TNIDXDGNSSQESITMRESULT
+	SELECT T.IDX_RESULT_ID
+		, T.IDX_DGNSS_ID
+		, T.DATABASE_TY_ID
+		, T.QESITM_ID
+		, T.IDX_ID
+		, T.UPPER_IDX_ID
+		, SUM( NVL( CNVRSN_SCORE, 0 ) ) SCORE
+	FROM (
+		SELECT A.IDX_RESULT_ID
+			, A.IDX_DGNSS_ID
+			, A.DATABASE_TY_ID
+			, A.QESITM_ID
+			, A.IDX_ID
+			, A.UPPER_IDX_ID
+			, CASE WHEN A.ANSWER_TY_CODE <> 'T6000' THEN
+					( TO_NUMBER( NVL( B.CODE_NM, '40' ) ) + ( ( NVL( A.ALLOT, 1 ) - 1 ) * ( ( TO_NUMBER( NVL( C.CODE_NM, '100' ) ) - TO_NUMBER( NVL( B.CODE_NM, '40' ) ) ) / ( TO_NUMBER( NVL( E.MAX_ALLOT, '1' ) ) - 1 ) ) ) ) 
+				ELSE A.ALLOT
+				END CNVRSN_SCORE
+		FROM TNIDXDGNSSANSWERRESULT A
+		LEFT OUTER JOIN (
+			SELECT B.CODE_ID, COUNT( B.CODE ) MAX_ALLOT
+			FROM COMTCCMMNCODE A, COMTCCMMNDETAILCODE B
+			WHERE A.CODE_ID = B.CODE_ID
+				AND A.CL_CODE = 'PQC'
+				AND A.CODE_ID IN ( 'T1000', 'T2000', 'T3000', 'T4000', 'T5000' )
+				AND A.USE_AT = 'Y'
+				AND B.USE_AT = 'Y'
+			GROUP BY B.CODE_ID
+		) E ON ( A.ANSWER_TY_CODE = E.CODE_ID )
+		, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+	WHERE IDX_RESULT_ID = #idxResultId#
+		AND IDX_DGNSS_ID = #idxDgnssId#
+		AND DATABASE_TY_ID = #databaseTyId#
+		AND B.CODE_ID = 'T40'
+		AND B.USE_AT = 'Y'
+		AND B.CODE = 'MUMM'
+		AND C.CODE_ID = 'T50'
+		AND C.USE_AT = 'Y'
+		AND C.CODE = 'MXMM'
+	) T
+	GROUP BY T.IDX_RESULT_ID, T.IDX_DGNSS_ID, T.DATABASE_TY_ID, T.QESITM_ID, T.IDX_ID, T.UPPER_IDX_ID
+	]]></insert>
+	
+
+	<insert id="idxSelfDiagDAO.insertIdxDgnss4Result"><![CDATA[
+	INSERT INTO TNIDXDGNSSCHARTRRESULT
+	SELECT S.IDX_RESULT_ID
+		, S.IDX_DGNSS_ID
+		, S.DATABASE_TY_ID
+		, S.IDX_ID
+		, S.UPPER_IDX_ID
+		, ROUND( ( S.AVG_SCORE * B.IDX_WGHTVAL / 100 ), 3 ) SCORE
+	FROM
+	(
+		SELECT IDX_RESULT_ID
+			, IDX_DGNSS_ID
+			, DATABASE_TY_ID
+			, IDX_ID
+			, UPPER_IDX_ID
+			, AVG( SCORE ) AVG_SCORE
+		FROM TNIDXDGNSSQESITMRESULT 
+		WHERE IDX_DGNSS_ID = #idxDgnssId#
+			AND IDX_RESULT_ID = #idxResultId#
+			AND DATABASE_TY_ID = #databaseTyId#
+		GROUP BY IDX_RESULT_ID, IDX_DGNSS_ID, DATABASE_TY_ID, IDX_ID, UPPER_IDX_ID
+	) S
+	LEFT OUTER JOIN TNDATABASETYIDXWGHTVAL B ON ( S.IDX_ID = B.IDX_ID AND S.DATABASE_TY_ID = b.DATABASE_TY_ID AND B.IDX_LEVEL = 2 )
+	]]></insert>
+	
+	<insert id="idxSelfDiagDAO.insertIdxDgnss5Result"><![CDATA[
+	INSERT INTO TNIDXDGNSSIDXRESULT
+	SELECT S.IDX_RESULT_ID
+		, S.IDX_DGNSS_ID
+		, S.DATABASE_TY_ID
+		, S.UPPER_IDX_ID
+		, S.AVG_SCORE
+		, B.CODE
+	FROM
+	(
+		SELECT IDX_RESULT_ID
+			, IDX_DGNSS_ID
+			, DATABASE_TY_ID
+			, UPPER_IDX_ID
+			, SUM( NVL( SCORE, 0 ) ) AVG_SCORE
+		FROM TNIDXDGNSSCHARTRRESULT
+		WHERE IDX_DGNSS_ID = #idxDgnssId#
+			AND IDX_RESULT_ID = #idxResultId#
+			AND DATABASE_TY_ID = #databaseTyId#
+		GROUP BY IDX_RESULT_ID, IDX_DGNSS_ID, DATABASE_TY_ID, UPPER_IDX_ID
+	) S
+	LEFT OUTER JOIN TNIDXSCOREMANAGE B ON ( S.UPPER_IDX_ID = B.IDX_ID AND B.IDX_LEVEL = 1
+		AND S.AVG_SCORE > B.MUMM AND S.AVG_SCORE <= B.MXMM AND S.DATABASE_TY_ID=b.DATABASE_TY_ID ) 
+	]]></insert>
+	
+	<update id="idxSelfDiagDAO.updateIdxDgnss6Result"><![CDATA[
+	UPDATE TNIDXDGNSSRESULT SET SCORE = (
+		SELECT SUM( ROUND( ( S.SCORE * B.IDX_WGHTVAL / 100 ), 3 ) ) SCORE
+		FROM TNIDXDGNSSIDXRESULT S
+		LEFT OUTER JOIN TNDATABASETYIDXWGHTVAL B ON ( S.IDX_ID = B.IDX_ID AND S.DATABASE_TY_ID = B.DATABASE_TY_ID AND B.IDX_LEVEL = 1 )
+		WHERE S.IDX_RESULT_ID = #idxResultId#
+			AND S.IDX_DGNSS_ID = #idxDgnssId#
+			AND S.DATABASE_TY_ID = #databaseTyId#
+		)
+	WHERE IDX_RESULT_ID = 1
+	]]></update>
+	
+
+	<resultMap id="result-selectIdxDgnss1Result" class="idxSelfDiag">
+        <result property="idxResultId"        	column="IDX_RESULT_ID"/>
+        <result property="idxDgnssId"        	column="IDX_DGNSS_ID"/>
+        <result property="databaseTyId"        	column="DATABASE_TY_ID"/>
+        <result property="databaseTyNm"        	column="DATABASE_TY_NM"/>
+        <result property="insttNm"       		column="INSTT_NM"/>
+        <result property="upperInsttSeCode"     column="UPPER_INSTT_SE_CODE"/>
+        <result property="upperInsttSeCodeNm"   column="UPPER_INSTT_SE_CODE_NM"/>
+        <result property="insttSeCode"        	column="INSTT_SE_CODE"/>
+        <result property="insttSeCodeNm"       	column="INSTT_SE_CODE_NM"/>
+        <result property="databaseNm"        	column="DATABASE_NM"/>
+        <result property="databaseScaleCode"    column="DATABASE_SCALE_CODE"/>
+        <result property="databaseScaleCodeNm"  column="DATABASE_SCALE_CODE_NM"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectIdxDgnss1Result" resultMap="result-selectIdxDgnss1Result"><![CDATA[
+	SELECT A.IDX_RESULT_ID
+		, A.IDX_DGNSS_ID
+		, A.DATABASE_TY_ID
+		, E.DATABASE_TY_NM
+		, A.INSTT_NM
+		, A.UPPER_INSTT_SE_CODE
+		, B.CODE_NM UPPER_INSTT_SE_CODE_NM
+		, A.INSTT_SE_CODE
+		, C.CODE_NM INSTT_SE_CODE_NM
+		, A.DATABASE_NM
+		, A.DATABASE_SCALE_CODE
+		, D.CODE_NM DATABASE_SCALE_CODE_NM
+	FROM TNIDXDGNSSRESULT A
+	LEFT OUTER JOIN COMTCCMMNDETAILCODE B ON ( B.CODE_ID = 'T300' AND A.UPPER_INSTT_SE_CODE = B.CODE )
+	LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( A.UPPER_INSTT_SE_CODE = C.CODE_ID and a.INSTT_SE_CODE = C.CODE )
+	LEFT OUTER JOIN COMTCCMMNDETAILCODE D ON ( D.CODE_ID = 'T700' AND A.DATABASE_SCALE_CODE = D.CODE ) 
+	LEFT OUTER JOIN TNDATABASETYMANAGE  E ON ( A.DATABASE_TY_ID = E.DATABASE_TY_ID )
+	WHERE A.IDX_RESULT_ID = #idxResultId#
+	]]></select>
+	
+	
+	<resultMap id="result-selectIdxDgnss2Result" class="idxSelfDiag">
+        <result property="idxResultId"        	column="IDX_RESULT_ID"/>
+        <result property="databaseTyId"        	column="DATABASE_TY_ID"/>
+        <result property="databaseTyNm"     	column="DATABASE_TY_NM"/>
+        <result property="resultDc"    			column="RESULT_DC"/>
+        <result property="referDc"  			column="REFER_DC"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectIdxDgnss2Result" resultMap="result-selectIdxDgnss2Result"><![CDATA[
+	SELECT A.IDX_RESULT_ID
+		, A.DATABASE_TY_ID
+		, E.DATABASE_TY_NM
+		, E.RESULT_DC
+		, E.REFER_DC
+	FROM TNIDXDGNSSRESULT A
+	LEFT OUTER JOIN TNDATABASETYMANAGE E ON ( A.DATABASE_TY_ID = E.DATABASE_TY_ID )
+	WHERE A.IDX_RESULT_ID = #idxResultId#
+	]]></select>
+		
+	
+	<resultMap id="result-selectIdxDgnss3Result" class="idxSelfDiag">
+        <result property="databaseTyId"        		column="DATABASE_TY_ID"/>
+        <result property="idxId"        			column="IDX_ID"/>
+        <result property="idxNm"     				column="IDX_NM"/>
+        <result property="idxLevel"    				column="IDX_LEVEL"/>
+        <result property="upperIdxId"  				column="UPPER_IDX_ID"/>
+        <result property="idxResultId"    			column="IDX_RESULT_ID"/>
+        <result property="idxDgnssId"    			column="IDX_DGNSS_ID"/>
+        <result property="dgnssResultClCode"    	column="DGNSS_RESULT_CL_CODE"/>
+        <result property="dgnssResultClCode2" 		column="DGNSS_RESULT_CL_CODE2" />
+        <result property="dgnssResultClCodeNm"    	column="DGNSS_RESULT_CL_CODE_NM"/>
+        <result property="resultDc"    				column="RESULT_DC"/>
+        <result property="emphsIdxId"    			column="EMPHS_IDX_ID"/>
+        <result property="qesitmCount"    			column="QESITM_COUNT"/>
+	</resultMap>
+	<select id="idxSelfDiagDAO.selectIdxDgnss3Result" resultMap="result-selectIdxDgnss3Result"><![CDATA[
+	SELECT A.DATABASE_TY_ID
+		, A.IDX_ID
+		, C.IDX_NM
+		, A.IDX_LEVEL
+		, A.UPPER_IDX_ID
+		, P.IDX_RESULT_ID
+		, P.IDX_DGNSS_ID
+		, P.DGNSS_RESULT_CL_CODE
+		, SUBSTR( P.DGNSS_RESULT_CL_CODE, 3, 3 ) DGNSS_RESULT_CL_CODE2
+		, P.DGNSS_RESULT_CL_CODE_NM
+		, P.RESULT_DC
+		, P.EMPHS_IDX_ID
+		, COUNT( A.IDX_ID ) OVER ( PARTITION BY A.IDX_LEVEL ) AS QESITM_COUNT
+	FROM TNDATABASETYIDXWGHTVAL A
+	LEFT OUTER JOIN TNIDXINFO C ON ( A.IDX_ID = C.IDX_ID AND C.USE_AT = 'Y' AND C.IDX_STTUS_CODE = 'U' )
+	LEFT OUTER JOIN (
+		SELECT S.IDX_RESULT_ID
+			, S.IDX_DGNSS_ID
+			, S.IDX_ID
+			, S.DGNSS_RESULT_CL_CODE
+			, S.DATABASE_TY_ID
+			, CASE WHEN E.IDX_ID IS NOT NULL THEN 'true' ELSE 'false' END EMPHS_IDX_ID
+			, CASE WHEN E.IDX_ID IS NOT NULL THEN B.EMPHS_IDX_RESULT_DC ELSE B.RESULT_DC END RESULT_DC
+			, C.CODE_NM DGNSS_RESULT_CL_CODE_NM
+		FROM TNIDXDGNSSIDXRESULT S
+		LEFT OUTER JOIN TNIDXSCOREMANAGE B ON ( S.DATABASE_TY_ID = B.DATABASE_TY_ID AND S.DGNSS_RESULT_CL_CODE = B.CODE AND S.IDX_ID = B.IDX_ID AND B.IDX_LEVEL = 1 )
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C ON ( C.CODE_ID = 'IDX100' AND S.DGNSS_RESULT_CL_CODE = C.CODE )
+		LEFT OUTER JOIN TNEMPHSIDXMANAGE E ON ( S.DATABASE_TY_ID = E.DATABASE_TY_ID AND S.IDX_ID = E.IDX_ID )
+		WHERE S.IDX_RESULT_ID = #idxResultId#
+			AND S.IDX_DGNSS_ID = #idxDgnssId#
+			AND S.DATABASE_TY_ID = #databaseTyId#
+	) P ON ( A.IDX_ID = P.IDX_ID AND A.DATABASE_TY_ID = P.DATABASE_TY_ID )
+	WHERE A.DATABASE_TY_ID = #databaseTyId#
+		AND A.UPPER_IDX_ID IS NOT NULL
+		AND A.IDX_LEVEL = 1
+	START WITH A.IDX_ID = 0
+	CONNECT BY PRIOR A.IDX_ID = A.UPPER_IDX_ID AND A.DATABASE_TY_ID = #databaseTyId#
+	ORDER SIBLINGS BY A.SORT_ORDR
+	]]></select>
+
+	
+</sqlMap>

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="dianoIdxSelfMngPVo">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="dianoIdxSelfMngPVo" type="egovframework.pdqm.admin.support.diagnosis.idx.model.dianoIdxSelfMngPVo"/>
+
+
+
+
+<resultMap id="result-selectDianoIdxSelfMngPList" class="dianoIdxSelfMngPVo">
+                                        
+		
+	  <result property="DATABASETYID" column="DATABASE_TY_ID"  />
+      <result property="DATABASETYNM" column="DATABASE_TY_NM"  />
+      <result property="IDXID" column="IDX_ID"          />
+      <result property="IDXNM" column="IDX_NM"          />
+      <result property="IDXLEVEL" column="IDX_LEVEL"       />
+      <result property="IDXWGHTVAL" column="IDX_WGHTVAL"     />
+      <result property="EMPHSIDXID" column="EMPHS_IDX_ID"    />
+      <result property="MUMM" column="MUMM"            />
+      <result property="CODE" column="CODE"            />
+      <result property="CODENM" column="CODE_NM"         />
+      <result property="MXMM" column="MXMM"            />
+		
+		
+	</resultMap>
+
+<resultMap id="result-selectDianoIdxSelfMngPView" class="dianoIdxSelfMngPVo">
+                                        
+		
+	  <result property="DATABASETYID" column="DATABASE_TY_ID"  />
+      <result property="IDXID" column="IDX_ID"          />
+      <result property="IDXLEVEL" column="IDX_LEVEL"       />
+      <result property="MUMM" column="MUMM"            />
+      <result property="CODE" column="CODE"            />
+      <result property="CODENM" column="CODE_NM"         />
+      <result property="MXMM" column="MXMM"            />
+	 <result property="LASTUPDTPNTTM" column="LAST_UPDT_PNTTM"            />
+	 <result property="LASTUPDUSRID" column="LAST_UPDUSR_ID"            />
+	<result property="RESULTDC" column="RESULT_DC"            />
+	 <result property="EMPHSIDXRESULTDC" column="EMPHS_IDX_RESULT_DC"            />
+	</resultMap>		
+
+
+
+<resultMap id="result-selectDianoIdxSelfMngbox" class="dianoIdxSelfMngPVo">
+                                        
+			<result property="DATABASETYID"		  column="DATABASE_TY_ID"      />
+			<result property="DATABASETYNM"        column="DATABASE_TY_NM"      />
+	</resultMap>		
+	
+
+
+<select id="dianoIdxSelfMngPDao.selectDianoIdxSelfMngbox" resultMap="result-selectDianoIdxSelfMngbox"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+
+				SELECT  
+ 					 DATABASE_TY_ID
+					,DATABASE_TY_NM
+				FROM TNDATABASETYMANAGE
+				WHERE USE_AT='Y'
+		
+
+		]]> 
+	
+	  	 
+	  	 
+	  	 
+	</select>
+
+
+
+<resultMap id="result-selectDianoIdxSelfMngboxResult" class="dianoIdxSelfMngPVo">
+                                        
+			<result property="CODE"		  column="CODE"      />
+			<result property="CODENM"        column="CODE_NM"      />
+			<result property="CODEID"        column="CODE_ID"      />
+
+
+	</resultMap>		
+
+
+
+
+<select id="dianoIdxSelfMngPDao.selectDianoIdxSelfMngboxResult" resultMap="result-selectDianoIdxSelfMngboxResult"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+
+
+		SELECT b.CODE 		AS CODE,
+			       b.CODE_NM 	AS CODE_NM, 
+			  	   b.CODE_ID        AS CODE_ID
+			  FROM COMTCCMMNCODE a, 
+			       COMTCCMMNDETAILCODE b 
+			 WHERE a.CODE_ID=b.CODE_ID 
+			       AND a.CL_CODE='PQC' 
+			       AND a.CODE_ID='IDX100' 
+			       AND a.USE_AT='Y' 
+			       AND b.USE_AT='Y'  
+
+
+		]]> 
+	
+	  	 
+	</select>
+
+
+<delete id="dianoIdxSelfMngPDao.DianoIdxSelfMngdelete">
+DELETE FROM TNIDXSCOREMANAGE  WHERE  DATABASE_TY_ID=#HDATABASETYID# AND IDX_ID=#HIDXID# AND CODE_ID='IDX100'
+</delete>
+
+
+
+<resultMap id="result-selectDianoIdxSelfMngboxIdx" class="dianoIdxSelfMngPVo">
+                                        
+			<result property="IDXNM"		  column="IDX_NM"      />
+			<result property="IDXID"        column="IDX_ID"      />
+	</resultMap>		
+
+
+
+<select id="dianoIdxSelfMngPDao.selectDianoIdxSelfMngboxIdx" resultMap="result-selectDianoIdxSelfMngboxIdx"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+
+	
+SELECT 
+	IDX_NM,
+    IDX_ID
+	FROM TNIDXINFO
+    WHERE USE_AT='Y' AND IDX_STTUS_CODE='U'
+    AND IDX_LEVEL=1 
+    
+    START 
+	WITH IDX_ID = 0 CONNECT BY PRIOR IDX_ID = UPPER_IDX_ID  
+	ORDER siblings BY SORT_ORDR
+	
+	
+	
+		]]> 
+	
+	  	 
+	</select>
+
+
+
+
+
+
+     
+
+<select id="dianoIdxSelfMngPDao.DianoIdxSelfMngView" resultMap="result-selectDianoIdxSelfMngPView"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+
+
+SELECT c.CODE_ID, 
+       c.CODE, 
+       c.CODE_NM , 
+       a.DATABASE_TY_ID, 
+       a.IDX_ID, 
+       a.IDX_LEVEL, 
+       nvl(a.MUMM,0) MUMM, 
+       nvl(a.MXMM,0) MXMM , 
+       a.LAST_UPDT_PNTTM, 
+       a.LAST_UPDUSR_ID, 
+       a.RESULT_DC RESULT_DC,
+       a.EMPHS_IDX_RESULT_DC EMPHS_IDX_RESULT_DC
+  
+  FROM COMTCCMMNDETAILCODE c 
+   LEFT OUTER JOIN TNIDXSCOREMANAGE a 
+       ON ( 
+           c.CODE_ID=a.CODE_ID 
+           AND c.CODE=a.CODE 
+           AND a.IDX_LEVEL=1  
+           AND a.IDX_ID=#IDXID# 
+           AND a.DATABASE_TY_ID=#DATABASETYID# 
+       )  
+ WHERE c.CODE_ID = 'IDX100' 
+ORDER BY c.CODE, 
+       a.MUMM desc 
+
+]]>
+
+</select>
+
+
+
+
+
+
+
+
+
+
+<select id="dianoIdxSelfMngPDao.selectDianoIdxSelfMngPList" resultMap="result-selectDianoIdxSelfMngPList"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+
+SELECT a.DATABASE_TY_ID  DATABASE_TY_ID,
+       d.DATABASE_TY_NM  DATABASE_TY_NM,
+       a.IDX_ID          IDX_ID,
+       c.IDX_NM                IDX_NM,
+       a.IDX_LEVEL       IDX_LEVEL,
+       a.IDX_WGHTVAL     IDX_WGHTVAL,
+       CASE 
+           WHEN e.IDX_ID IS NOT NULL 
+           THEN 'true' 
+           ELSE 'false' 
+       END EMPHS_IDX_ID ,
+       s.MUMM    MUMM,
+       s.CODE    CODE,
+       s.CODE_NM CODE_NM,
+       s.MXMM    MXMM 
+  FROM TNDATABASETYIDXWGHTVAL a 
+   LEFT OUTER JOIN TNIDXINFO c 
+       ON (
+           a.IDX_ID=c.IDX_ID 
+           AND c.IDX_STTUS_CODE='U'
+       ) 
+   LEFT OUTER JOIN TNDATABASETYMANAGE d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN TNEMPHSIDXMANAGE e 
+       ON (
+           a.DATABASE_TY_ID=e.DATABASE_TY_ID 
+           AND a.IDX_ID=e.IDX_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT c.CODE_ID,
+              c.CODE,
+              c.CODE_NM ,
+              a.DATABASE_TY_ID,
+              a.IDX_ID,
+              a.IDX_LEVEL,
+              a.MUMM,
+              a.MXMM,
+              a.RESULT_DC,
+              a.EMPHS_IDX_RESULT_DC,
+              a.FRST_REGIST_PNTTM,
+              a.FRST_REGISTER_ID,
+              a.LAST_UPDT_PNTTM,
+              a.LAST_UPDUSR_ID 
+         FROM COMTCCMMNDETAILCODE c 
+          LEFT OUTER JOIN TNIDXSCOREMANAGE a 
+              ON (
+                  c.CODE_ID=a.CODE_ID 
+                  AND c.CODE=a.CODE 
+                  AND a.IDX_LEVEL=1
+              ) 
+        WHERE c.CODE_ID = 'IDX100' 
+       ) s 
+       ON (
+           a.DATABASE_TY_ID=s.DATABASE_TY_ID 
+           AND a.IDX_ID=s.IDX_ID
+       ) 
+ WHERE a.UPPER_IDX_ID IS NOT NULL 
+       AND a.IDX_LEVEL=1 START 
+WITH a.IDX_ID = 0 CONNECT BY PRIOR a.IDX_ID = a.UPPER_IDX_ID  
+
+]]> 
+	
+	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      			A.DATABASE_TY_ID=#DATABASETYID#
+
+			  </isNotEmpty>
+				
+	<isNotEmpty  prepend=" AND " property="IDXID">
+			      			  A.IDX_ID=#IDXID#
+			      			
+			  </isNotEmpty>
+		<isNotEmpty  prepend=" AND " property="CODE">
+			      			 S.CODE=#CODE#
+			  </isNotEmpty>
+		
+	
+	<![CDATA[
+
+ 
+
+ORDER siblings BY d.SORT_ORDR,
+       a.SORT_ORDR,
+       s.MUMM DESC    
+		]]> 
+	
+	  	 
+	</select>
+	
+	
+	
+	
+	<select id="dianoIdxSelfMngPDao.selectDianoIdxSelfMngTotalcnt" resultClass="int"  parameterClass="dianoIdxSelfMngPVo">
+		<![CDATA[
+	
+	SELECT COUNT(*) FROM (
+	
+	SELECT a.DATABASE_TY_ID  DATABASE_TY_ID,
+       d.DATABASE_TY_NM  DATABASE_TY_NM,
+       a.IDX_ID          IDX_ID,
+       c.IDX_NM                IDX_NM,
+       a.IDX_LEVEL       IDX_LEVEL,
+       a.IDX_WGHTVAL     IDX_WGHTVAL,
+       CASE 
+           WHEN e.IDX_ID IS NOT NULL 
+           THEN 'true' 
+           ELSE 'false' 
+       END EMPHS_IDX_ID ,
+       s.MUMM    MUMM,
+       s.CODE    CODE,
+       s.CODE_NM CODE_NM,
+       s.MXMM    MXMM 
+  FROM TNDATABASETYIDXWGHTVAL a 
+   LEFT OUTER JOIN TNIDXINFO c 
+       ON (
+           a.IDX_ID=c.IDX_ID 
+           AND c.IDX_STTUS_CODE='U'
+       ) 
+   LEFT OUTER JOIN TNDATABASETYMANAGE d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN TNEMPHSIDXMANAGE e 
+       ON (
+           a.DATABASE_TY_ID=e.DATABASE_TY_ID 
+           AND a.IDX_ID=e.IDX_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT c.CODE_ID,
+              c.CODE,
+              c.CODE_NM ,
+              a.DATABASE_TY_ID,
+              a.IDX_ID,
+              a.IDX_LEVEL,
+              a.MUMM,
+              a.MXMM,
+              a.RESULT_DC,
+              a.EMPHS_IDX_RESULT_DC,
+              a.FRST_REGIST_PNTTM,
+              a.FRST_REGISTER_ID,
+              a.LAST_UPDT_PNTTM,
+              a.LAST_UPDUSR_ID 
+         FROM COMTCCMMNDETAILCODE c 
+          LEFT OUTER JOIN TNIDXSCOREMANAGE a 
+              ON (
+                  c.CODE_ID=a.CODE_ID 
+                  AND c.CODE=a.CODE 
+                  AND a.IDX_LEVEL=1
+              ) 
+        WHERE c.CODE_ID = 'IDX100' 
+       ) s 
+       ON (
+           a.DATABASE_TY_ID=s.DATABASE_TY_ID 
+           AND a.IDX_ID=s.IDX_ID
+       ) 
+ WHERE a.UPPER_IDX_ID IS NOT NULL 
+       AND a.IDX_LEVEL=1 START 
+WITH a.IDX_ID = 0 CONNECT BY PRIOR a.IDX_ID = a.UPPER_IDX_ID  
+
+]]> 
+	
+	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      			A.DATABASE_TY_ID=#DATABASETYID#
+
+			  </isNotEmpty>
+				
+	<isNotEmpty  prepend=" AND " property="IDXID">
+			      			  A.IDX_ID=#IDXID#
+			      			
+			  </isNotEmpty>
+		<isNotEmpty  prepend=" AND " property="CODE">
+			      			 S.CODE=#CODE#
+			  </isNotEmpty>
+		
+	
+	<![CDATA[
+
+ 
+
+ORDER siblings BY d.SORT_ORDR,
+       a.SORT_ORDR,
+       s.MUMM DESC    
+	   )
+
+		]]> 
+		</select>
+	
+	<insert id="dianoIdxSelfMngPDao.DianoIdxSelfMngInsert">
+	<![CDATA[
+		
+		
+	INSERT INTO TNIDXSCOREMANAGE 
+       ( 
+           DATABASE_TY_ID  
+           ,CODE_ID  
+           ,CODE 
+           ,IDX_ID 
+           ,IDX_LEVEL  
+           ,MUMM  
+           ,MXMM 
+           ,FRST_REGIST_PNTTM 
+           ,FRST_REGISTER_ID 
+           ,LAST_UPDT_PNTTM 
+           ,LAST_UPDUSR_ID 
+       	   ,RESULT_DC
+       	   ,EMPHS_IDX_RESULT_DC
+       
+       ) 
+       VALUES 
+       ( 
+           #HDATABASETYID# 
+           ,'IDX100' 
+           ,#CODE# 
+           ,#HIDXID# 
+           ,#IDXLEVEL# 
+           ,#MUMM# 
+           ,#MXMM# 
+           ,SYSDATE 
+           ,'POLL' 
+           ,SYSDATE 
+           ,'POLL' 
+       	   ,#RESULTDC#
+       	   ,#EMPHSIDXRESULTDC#
+       
+       )
+	
+	]]>
+	
+	</insert>
+
+	
+	
+		</sqlMap>

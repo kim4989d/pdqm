@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/2411/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web
+END
+DiagnosisIdxDbTypeController.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/pdqm/!svn/ver/1887/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DiagnosisIdxDbTypeController.java
+END
+MediaController.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/pdqm/!svn/ver/2751/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/MediaController.java
+END
+DianoIdxSelfMngExpController.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/pdqm/!svn/ver/2411/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DianoIdxSelfMngExpController.java
+END
+DiagnoIdxWghtvalMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/pdqm/!svn/ver/2350/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DiagnoIdxWghtvalMngController.java
+END
+DiaIdxDbTypePMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/1145/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DiaIdxDbTypePMngController.java
+END
+DiagnosisIdxMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/pdqm/!svn/ver/2145/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DiagnosisIdxMngController.java
+END
+DianoIdxSelfMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/pdqm/!svn/ver/2411/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DianoIdxSelfMngController.java
+END
+DianoIdxQesMngController.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/pdqm/!svn/ver/2045/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DianoIdxQesMngController.java
+END
+DianoIdxSelfMngPController.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/2052/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/web/DianoIdxSelfMngPController.java
+END

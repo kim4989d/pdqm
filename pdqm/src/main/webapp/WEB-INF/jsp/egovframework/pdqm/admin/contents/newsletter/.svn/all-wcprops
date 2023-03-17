@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/pdqm/!svn/ver/2403/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter
+END
+NewsletterList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/pdqm/!svn/ver/1979/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/NewsletterList.jsp
+END
+EmailDispatchHist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/pdqm/!svn/ver/2403/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/EmailDispatchHist.jsp
+END
+NewsletterInqire.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/pdqm/!svn/ver/2078/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/NewsletterInqire.jsp
+END
+formColumn.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/pdqm/!svn/ver/2392/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/formColumn.jsp
+END
+NewsletterRegist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/pdqm/!svn/ver/2078/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/NewsletterRegist.jsp
+END
+NewsletterUpdt.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/pdqm/!svn/ver/2307/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/NewsletterUpdt.jsp
+END
+formGeneral.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/pdqm/!svn/ver/2392/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/formGeneral.jsp
+END
+formEvent.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/2392/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/formEvent.jsp
+END
+NewsletterContentMng.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/pdqm/!svn/ver/2244/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/contents/newsletter/NewsletterContentMng.jsp
+END

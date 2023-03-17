@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt
+END
+EgovRoleManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt/EgovRoleManage_SQL_Oracle.xml
+END
+EgovRoleManage_SQL_Altibase.xml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt/EgovRoleManage_SQL_Altibase.xml
+END
+EgovRoleManage_SQL_Tibero.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt/EgovRoleManage_SQL_Tibero.xml
+END
+EgovRoleManage_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt/EgovRoleManage_SQL.xml
+END
+EgovRoleManage_SQL_Mysql.xml
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/sec/rmt/EgovRoleManage_SQL_Mysql.xml
+END

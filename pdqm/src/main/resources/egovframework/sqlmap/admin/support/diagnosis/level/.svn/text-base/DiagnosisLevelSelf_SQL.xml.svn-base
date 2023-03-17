@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisLevelSelf">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisLevelSelfVO" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelSelfVO"/>
+	<typeAlias  alias="diagnosisLevelSelf" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelSelf"/>
+
+	<select id="diagnosisLevelSelfDAO.selectSelfDiagnosisList" parameterClass="diagnosisLevelSelfVO" resultClass="egovMap">
+		<![CDATA[
+			SELECT a.LEVEL_DGNSS_ID,
+			       a.LEVEL_DGNSS_NM,
+			       a.NTCE_TY_CODE ,
+			       a.USE_AT,
+			       a.NTCE_TY_CODE_2,
+			       c.CODE_NM NTCE_TY_CODE_2_NM ,
+			       a.NTCE_BEGIN_DT,
+			       a.NTCE_END_DT,
+			       a.QESITM_CO,
+			       nvl(b.RESULT_CO,0) RESULT_CO
+			  FROM 
+			       (SELECT a.*, 
+			              CASE 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') > sysdate 
+			                  THEN 'S30' 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') <= sysdate 
+			                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') >= sysdate 
+			                  THEN 'S20' 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') < sysdate 
+			                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') < sysdate 
+			                  THEN 'S50' 
+			                  ELSE 'S40' 
+			              END NTCE_TY_CODE_2 
+			         FROM TNLEVELDGNSSMANAGE a 
+			        WHERE a.USE_AT='Y' 
+			       ) a 
+			   LEFT OUTER JOIN 
+			       (SELECT LEVEL_DGNSS_ID, 
+			              count(LEVEL_RESULT_ID) RESULT_CO 
+			         FROM TNLEVELDGNSSRESULT 
+			        GROUP BY LEVEL_DGNSS_ID 
+			       ) b 
+			       ON (
+			           a.LEVEL_DGNSS_ID=b.LEVEL_DGNSS_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT b.CODE,
+			              b.CODE_NM 
+			         FROM COMTCCMMNCODE a, 
+			              COMTCCMMNDETAILCODE b 
+			        WHERE a.CODE_ID=b.CODE_ID 
+			              AND a.CL_CODE='PQC' 
+			              AND a.CODE_ID='T250' 
+			              AND a.USE_AT='Y' 
+			              AND b.USE_AT='Y' 
+			       ) c 
+			       ON (
+			           a.NTCE_TY_CODE_2=c.CODE
+			       ) 
+			       
+		]]>
+				where 1=1
+				<isNotEmpty prepend="and"  property="searchNtceTyCode">
+				      a.NTCE_TY_CODE_2 = #searchNtceTyCode#
+				</isNotEmpty>	
+				<isNotEmpty prepend="and"  property="searchLevelDgnssNm">
+				      a.LEVEL_DGNSS_NM like #searchLevelDgnssNm# || '%'
+				</isNotEmpty>	
+				<isNotEmpty prepend="and"  property="searchBeginDt">
+				      a.NTCE_BEGIN_DT BETWEEN #searchBeginDt# AND #searchEndDt#
+				</isNotEmpty>					
+	</select>
+	  
+	<select id="diagnosisLevelSelfDAO.selectSelfDiagnosisListTotCnt" parameterClass="diagnosisLevelSelfVO" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) totcnt
+			  FROM 
+			       (SELECT a.*, 
+			              CASE 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') > sysdate 
+			                  THEN 'S30' 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') <= sysdate 
+			                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') >= sysdate 
+			                  THEN 'S20' 
+			                  WHEN a.NTCE_TY_CODE='N20' 
+			                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+			                      AND a.NTCE_END_DT IS NOT NULL 
+			                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') < sysdate 
+			                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') < sysdate 
+			                  THEN 'S50' 
+			                  ELSE 'S40' 
+			              END NTCE_TY_CODE_2 
+			         FROM TNLEVELDGNSSMANAGE a 
+			        WHERE a.USE_AT='Y' 
+			       ) a 
+			   LEFT OUTER JOIN 
+			       (SELECT LEVEL_DGNSS_ID, 
+			              count(LEVEL_RESULT_ID) RESULT_CO 
+			         FROM TNLEVELDGNSSRESULT 
+			        GROUP BY LEVEL_DGNSS_ID 
+			       ) b 
+			       ON (
+			           a.LEVEL_DGNSS_ID=b.LEVEL_DGNSS_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT b.CODE,
+			              b.CODE_NM 
+			         FROM COMTCCMMNCODE a, 
+			              COMTCCMMNDETAILCODE b 
+			        WHERE a.CODE_ID=b.CODE_ID 
+			              AND a.CL_CODE='PQC' 
+			              AND a.CODE_ID='T250' 
+			              AND a.USE_AT='Y' 
+			              AND b.USE_AT='Y' 
+			       ) c 
+			       ON (
+			           a.NTCE_TY_CODE_2=c.CODE
+			       ) 
+		]]>			       
+	</select>
+ 
+	<insert id="diagnosisLevelSelfDAO.insertSelfDiagnosis">
+		  <selectKey resultClass="java.lang.String" keyProperty="newLevelDgnssId">
+		   	SELECT NVL(MAX(LEVEL_DGNSS_ID),0) + 1 FROM TNLEVELDGNSSMANAGE
+		  </selectKey> 	
+		
+	
+		<![CDATA[
+			INSERT INTO TNLEVELDGNSSMANAGE
+				( 
+   			     LEVEL_DGNSS_ID
+			    ,LEVEL_DGNSS_NM
+		   	    ,NTCE_TY_CODE
+			    ,NTCE_BEGIN_DT
+			    ,NTCE_END_DT
+			    ,QESITM_CO
+			    ,USE_AT
+			   
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				  )
+			VALUES ( 
+				#newLevelDgnssId#
+				,#levelDgnssNm#
+				,#ntceTyCode#
+				,#ntceBeginDt#
+				,#ntceEndDt# 
+				,0
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+				  )
+				
+		]]>
+	</insert>
+
+	<resultMap id="result-updateSelfDiagnosisView" class="diagnosisLevelSelf">
+        <result property="levelDgnssId"                column="LEVEL_DGNSS_ID"/>
+	    <result property="levelDgnssNm"                   column="LEVEL_DGNSS_NM"/>
+	    <result property="ntceTyCode"                   column="NTCE_TY_CODE"/>
+	    <result property="ntceBeginDt"                   column="NTCE_BEGIN_DT"/>
+	    <result property="ntceEndDt"                   column="NTCE_END_DT"/>
+	     <result property="resultCo"                   column="RESULT_CO"/>
+	    
+	</resultMap>		
+
+	<select id="diagnosisLevelSelfDAO.updateSelfDiagnosisView"  resultMap="result-updateSelfDiagnosisView">
+		<![CDATA[
+		SELECT LEVEL_DGNSS_ID , 
+		       LEVEL_DGNSS_NM , 
+		       NTCE_TY_CODE , 
+		       NTCE_BEGIN_DT , 
+		       NTCE_END_DT , 
+		       QESITM_CO , 
+		       USE_AT , 
+		       FRST_REGIST_PNTTM , 
+		       FRST_REGISTER_ID ,
+		       (SELECT COUNT(*) FROM TNLEVELDGNSSRESULT WHERE LEVEL_DGNSS_ID=a.LEVEL_DGNSS_ID) RESULT_CO
+		  FROM TNLEVELDGNSSMANAGE  a
+		 where LEVEL_DGNSS_ID = #levelDgnssId#
+		]]>
+	</select>
+ 
+	<update id="diagnosisLevelSelfDAO.updateSelfDiagnosis">
+		<![CDATA[
+		
+			UPDATE TNLEVELDGNSSMANAGE 
+			  SET LEVEL_DGNSS_NM = #levelDgnssNm#
+			  	 ,NTCE_TY_CODE = #ntceTyCode#
+			  	 ,NTCE_BEGIN_DT = #ntceBeginDt#
+			  	 ,NTCE_END_DT = #ntceEndDt#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#			  	 
+			  where LEVEL_DGNSS_ID = #levelDgnssId#
+		]]>
+	</update>
+	
+	<update id="diagnosisLevelSelfDAO.deleteSelfDiagnosis">
+		<![CDATA[
+		 
+			UPDATE TNLEVELDGNSSMANAGE
+			  SET USE_AT = 'N'
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where LEVEL_DGNSS_ID = #levelDgnssId#
+		]]>
+	</update>
+
+	<insert id="diagnosisLevelSelfDAO.insertCompositionCopy">
+	
+		<![CDATA[
+			INSERT INTO TNLEVELDGNSSQESITM
+				( 
+   			     LEVEL_DGNSS_ID
+				 ,QESITM_ID
+				 ,QESITM_NO
+				  )
+			SELECT #newLevelDgnssId#
+			      ,QESITM_ID
+			      ,QESITM_NO
+			  FROM TNLEVELDGNSSQESITM
+			 WHERE LEVEL_DGNSS_ID = #levelDgnssId#
+		]]>
+	</insert> 
+
+	<resultMap id="result-selectCompositionTitleLis" class="diagnosisLevelSelf">
+	    <result property="dgnssCntTrgetId"          column="DGNSS_TRGET_ID"/>
+        <result property="dgnssCntTrgetNm"        	column="DGNSS_TRGET_NM"/>
+        <result property="dgnssCntTrgetDc"        	column="DGNSS_TRGET_DC"/>
+        <result property="dgnssCntQesitmCount1"      column="QESITM_COUNT_1"/>
+        <result property="dgnssCntQesitmCount2"      column="QESITM_COUNT_2"/>
+	</resultMap>
+	<select id="diagnosisLevelSelfDAO.selectCompositionTitleList" resultMap="result-selectCompositionTitleLis" >
+		<![CDATA[
+			SELECT d.DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_DC,
+			       nvl(p.QESITM_COUNT,0) QESITM_COUNT_1 ,
+			       nvl(p2.QESITM_COUNT,0) QESITM_COUNT_2 
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT e.UPPER_DGNSS_TRGET_ID DGNSS_TRGET_ID,
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.UPPER_DGNSS_TRGET_ID 
+			       ) p 
+			       ON (
+			           d.DGNSS_TRGET_ID=p.DGNSS_TRGET_ID
+			       )  
+			   LEFT OUTER JOIN 
+			       (SELECT e.UPPER_DGNSS_TRGET_ID DGNSS_TRGET_ID,
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNLEVELDGNSSQESITM b, 
+			              TNLEVELDGNSSMANAGE c, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.QESITM_ID=b.QESITM_ID 
+			              AND a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND b.LEVEL_DGNSS_ID=c.LEVEL_DGNSS_ID 
+			              AND c.USE_AT='Y' 
+			              AND c.LEVEL_DGNSS_ID=1 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U'  
+			        GROUP BY e.UPPER_DGNSS_TRGET_ID 
+			       ) p2 
+			       ON (
+			           d.DGNSS_TRGET_ID=p2.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=1 START 
+			WITH d.DGNSS_TRGET_ID=0 
+			       CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR
+			       
+		]]>
+				
+	</select>
+	   
+	  <select id="diagnosisLevelSelfDAO.selectCompositionList" parameterClass="diagnosisLevelSelf" resultClass="egovMap">
+		<![CDATA[
+			SELECT d.*,
+			       nvl(p2.QESITM_COUNT,0) QESITM_COUNT_1 ,
+			       nvl(p3.QESITM_COUNT,0) QESITM_COUNT_2 ,
+			       p.QESITM_ID,
+			       p.QESITM,
+			       p.ANSWER_TY_CODE,
+			       p.Q_SORT_ORDR ,
+			       p.ANSWER_ID,
+			       p.ANSWER,
+			       p.ANSWER_STDR,
+			       p.ALLOT,
+			       p.A_SORT_ORDR ,
+			       p.S_QESITM ,
+			       p.ANSWER_CO ,
+			       COUNT(  P.QESITM_ID ) OVER ( PARTITION BY d.DGNSS_TRGET_ID ) AS ANSWER_CNT
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT a.QESITM_ID,
+			              a.DGNSS_TRGET_ID,
+			              a.QESITM,
+			              a.ANSWER_TY_CODE,
+			              a.SORT_ORDR Q_SORT_ORDR ,
+			              d.ANSWER_ID,
+			              d.ANSWER,
+			              d.ANSWER_STDR,
+			              d.ALLOT,
+			              d.SORT_ORDR A_SORT_ORDR ,
+			              c.LEVEL_DGNSS_NM,
+			              c.NTCE_TY_CODE,
+			              c.NTCE_BEGIN_DT,
+			              c.NTCE_END_DT,
+			              c.QESITM_CO ,
+			              CASE 
+			                  WHEN c.QESITM_ID IS NULL 
+			                  THEN 'N' 
+			                  ELSE 'Y' 
+			              END S_QESITM 
+			              ,
+			              d.ANSWER_CO 
+			         FROM TNLEVELQESITMPOOL a 
+			          LEFT OUTER JOIN 
+			              (SELECT a.QESITM_ID,
+			                     a.QESITM_NO,
+			                     b.* 
+			                FROM TNLEVELDGNSSQESITM a, 
+			                     TNLEVELDGNSSMANAGE b 
+			               WHERE a.LEVEL_DGNSS_ID=b.LEVEL_DGNSS_ID 
+			                     AND b.USE_AT='Y' 
+			                     AND b.LEVEL_DGNSS_ID = #levelDgnssId#
+			              ) c 
+			              ON (
+			                  a.QESITM_ID=c.QESITM_ID
+			              ) 
+			              , 
+			              (SELECT b.QESITM_ID,
+			                     b.ANSWER_ID,
+			                     b.ANSWER,
+			                     b.ANSWER_STDR,
+			                     b.ALLOT,
+			                     b.SORT_ORDR,
+			                     c.ANSWER_CO 
+			                FROM TNLEVELQESITMPOOLANSWER b , 
+			                     (SELECT QESITM_ID,
+			                            COUNT(*) ANSWER_CO 
+			                       FROM TNLEVELQESITMPOOLANSWER 
+			                      WHERE USE_AT='Y' 
+			                      GROUP BY QESITM_ID
+			                     ) c 
+			               WHERE b.USE_AT='Y' 
+			                     AND b.QESITM_ID=c.QESITM_ID 
+			              ) d 
+			        WHERE a.QESITM_ID=d.QESITM_ID 
+			              AND a.USE_AT='Y' 
+			       ) p 
+			       ON (
+			           d.DGNSS_TRGET_ID=p.DGNSS_TRGET_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT e.DGNSS_TRGET_ID, 
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.DGNSS_TRGET_ID 
+			       ) p2 
+			       ON (
+			           d.DGNSS_TRGET_ID=p2.DGNSS_TRGET_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT e.DGNSS_TRGET_ID, 
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNLEVELDGNSSQESITM b, 
+			              TNLEVELDGNSSMANAGE c, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.QESITM_ID=b.QESITM_ID 
+			              AND a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND b.LEVEL_DGNSS_ID=c.LEVEL_DGNSS_ID 
+			              AND c.USE_AT='Y' 
+			              AND c.LEVEL_DGNSS_ID = #levelDgnssId#
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.DGNSS_TRGET_ID 
+			       ) p3 
+			       ON (
+			           d.DGNSS_TRGET_ID=p3.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       and d.DGNSS_TRGET_LEVEL=2 
+			       START 
+			WITH d.DGNSS_TRGET_ID=0 
+			       CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR,
+			       p.Q_SORT_ORDR,
+			       p.A_SORT_ORDR 
+			       
+		]]>
+				
+	</select>
+
+	<delete id="diagnosisLevelSelfDAO.deleteComposition">
+	
+		<![CDATA[
+			DELETE FROM TNLEVELDGNSSQESITM
+			WHERE LEVEL_DGNSS_ID = #levelDgnssId#
+
+		]]>
+	</delete> 
+
+	<insert id="diagnosisLevelSelfDAO.insertComposition">
+	
+		<![CDATA[
+			INSERT INTO TNLEVELDGNSSQESITM
+				( 
+   			     LEVEL_DGNSS_ID
+			    ,QESITM_ID
+		   	    ,QESITM_NO
+				  )
+			VALUES ( 
+				#levelDgnssId#
+				,#qesitmId#	
+				,#qesitmNo#			
+				  )
+		]]>
+	</insert> 		
+
+	<update id="diagnosisLevelSelfDAO.updateQesitmCo">
+	
+		<![CDATA[
+			UPDATE TNLEVELDGNSSMANAGE
+			  SET QESITM_CO = (SELECT COUNT(*) FROM TNLEVELDGNSSQESITM WHERE LEVEL_DGNSS_ID = #levelDgnssId# )
+		]]>
+				<isNotEmpty  property="newLevelDgnssId">
+				   WHERE   LEVEL_DGNSS_ID = #newLevelDgnssId#
+				</isNotEmpty>	
+
+				<isEmpty  property="newLevelDgnssId">
+				   WHERE   LEVEL_DGNSS_ID = #levelDgnssId#
+				</isEmpty>	
+										  
+			
+		
+	</update> 	
+		  
+</sqlMap>

@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DianoIdxSelfMngVo">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="dianoIdxSelfMngVo" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DianoIdxSelfMngVo"/>
+
+
+	<resultMap id="result-selectDianoIdxSelfMngList" class="dianoIdxSelfMngVo">
+
+		<result property="IDXDGNSSID"								column="IDX_DGNSS_ID"     />
+       <result property="IDXDGNSSNM"                column="IDX_DGNSS_NM"                       />
+       <result property="DATABASETYID"              column="DATABASE_TY_ID"                     />
+       <result property="DATABASETYNM"              column="DATABASE_TY_NM"                     />
+       <result property="NTCETYCODE"               column="NTCE_TY_CODE"                       />
+       <result property="USEAT"                     column="USE_AT"                             />
+       <result property="NTCETYCODE2NM"     		column="NTCE_TY_CODE_2_NM"          />
+       <result property="NTCEBEGINDT"               column="NTCE_BEGIN_DT"                      />
+       <result property="NTCEENDDT"                 column="NTCE_END_DT"                        />
+       <result property="QESITMCO"                  column="QESITM_CO"                          />
+       <result property="RESULTCO"                  column="RESULT_CO"                          />
+       <result property="NTCETYCODE2"                  column="NTCE_TY_CODE_2"                          />
+     	
+     
+     
+       
+</resultMap>
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngList" resultMap="result-selectDianoIdxSelfMngList"  parameterClass="dianoIdxSelfMngVo">
+		<![CDATA[
+
+
+		
+SELECT a.IDX_DGNSS_ID,
+       a.IDX_DGNSS_NM,
+       a.DATABASE_TY_ID,
+       d.DATABASE_TY_NM,
+       a.NTCE_TY_CODE ,
+       a.USE_AT,
+       a.NTCE_TY_CODE_2,
+       c.CODE_NM NTCE_TY_CODE_2_NM ,
+       TO_CHAR(TO_DATE(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') NTCE_BEGIN_DT, 
+     TO_CHAR(TO_DATE(a.NTCE_END_DT,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') NTCE_END_DT, 
+      nvl(e.QESITM_CO,0) QESITM_CO,
+       nvl(b.RESULT_CO,0) RESULT_CO 
+       
+       
+  FROM 
+       (SELECT a.*, 
+              CASE 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') > sysdate 
+                  THEN 'S30' 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') <= sysdate 
+                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') >= sysdate 
+                  THEN 'S20' 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') < sysdate 
+                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') < sysdate 
+                  THEN 'S50' 
+                  ELSE 'S40' 
+              END NTCE_TY_CODE_2 
+         FROM TNIDXDGNSSMANAGE a 
+        WHERE a.USE_AT='Y' 
+      
+      ]]>
+      
+      
+      
+      	  	  <isNotEmpty  prepend=" AND " property="searchBgnDeView">
+		     
+		    <![CDATA[ 
+		     a.NTCE_BEGIN_DT  >=  #searchBgnDeView#
+    	
+	   ]]>
+   		 	 
+			  </isNotEmpty>
+		
+      	
+      	
+      	  	  <isNotEmpty  prepend=" AND " property="searchEndDeView">
+		     
+		    <![CDATA[ 
+		        a.NTCE_BEGIN_DT < #searchEndDeView#
+	   ]]>
+   		 	 
+			  </isNotEmpty>
+		
+      	  	  <isNotEmpty  prepend=" AND " property="IDXDGNSSNM">
+			      						    a.IDX_DGNSS_NM   LIKE  #IDXDGNSSNM#||'%'
+			  </isNotEmpty>
+		
+		  
+	   
+     
+      	<![CDATA[
+      
+       ) a 
+   LEFT OUTER JOIN 
+       (SELECT IDX_DGNSS_ID,
+              DATABASE_TY_ID, 
+              count(IDX_RESULT_ID) RESULT_CO 
+         FROM TNIDXDGNSSRESULT 
+        GROUP BY IDX_DGNSS_ID,
+              DATABASE_TY_ID 
+       ) b 
+       ON (
+           a.IDX_DGNSS_ID=b.IDX_DGNSS_ID 
+           AND a.DATABASE_TY_ID=b.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT b.CODE,
+              b.CODE_NM 
+         FROM COMTCCMMNCODE a, 
+              COMTCCMMNDETAILCODE b 
+        WHERE a.CODE_ID=b.CODE_ID 
+              AND a.CL_CODE='PQC' 
+              AND a.CODE_ID='T250' 
+              AND a.USE_AT='Y' 
+              AND b.USE_AT='Y' 
+       ) c 
+       ON (
+           a.NTCE_TY_CODE_2=c.CODE
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT * 
+         FROM TNDATABASETYMANAGE 
+        WHERE USE_AT='Y' 
+       ) d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID
+       ) 		
+				
+				
+				   left outer join (
+select IDX_DGNSS_ID,DATABASE_TY_ID, count(QESITM_ID) QESITM_CO
+from TNIDXDGNSSQESITM
+group by IDX_DGNSS_ID,DATABASE_TY_ID
+) e on (a.IDX_DGNSS_ID=e.IDX_DGNSS_ID and a.DATABASE_TY_ID=e.DATABASE_TY_ID) 
+   
+				
+
+		]]> 
+		<dynamic prepend=" WHERE ">
+		  	  <isNotEmpty  prepend=" AND " property="NTCETYCODE2">
+			      						      A.NTCE_TY_CODE_2=#NTCETYCODE2#
+			  </isNotEmpty>
+		</dynamic>
+	
+	
+	  	 
+	</select>
+
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngTotalcnt" resultClass="int"  parameterClass="dianoIdxSelfMngVo">
+		<![CDATA[
+	
+	SELECT COUNT(*) FROM (
+	
+
+SELECT a.IDX_DGNSS_ID,
+       a.IDX_DGNSS_NM,
+       a.DATABASE_TY_ID,
+       d.DATABASE_TY_NM,
+       a.NTCE_TY_CODE ,
+       a.USE_AT,
+       a.NTCE_TY_CODE_2,
+       c.CODE_NM NTCE_TY_CODE_2_NM ,
+       TO_date(a.NTCE_BEGIN_DT,'YYYY-MM-DD-HH24:MI:SS') NTCE_BEGIN_DT,
+       TO_date(NVL(a.NTCE_END_DT,'20991231235959'),'YYYY-MM-DD-HH24:MI:SS') NTCE_END_DT,
+       nvl(e.QESITM_CO,0) QESITM_CO,
+       nvl(b.RESULT_CO,0) RESULT_CO 
+  FROM 
+       (SELECT a.*, 
+              CASE 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') > sysdate 
+                  THEN 'S30' 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') <= sysdate 
+                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') >= sysdate 
+                  THEN 'S20' 
+                  WHEN a.NTCE_TY_CODE='N20' 
+                      AND a.NTCE_BEGIN_DT IS NOT NULL 
+                      AND a.NTCE_END_DT IS NOT NULL 
+                      AND to_date(a.NTCE_BEGIN_DT,'YYYYMMDDHH24MISS') < sysdate 
+                      AND to_date(a.NTCE_END_DT,'YYYYMMDDHH24MISS') < sysdate 
+                  THEN 'S50' 
+                  ELSE 'S40' 
+              END NTCE_TY_CODE_2 
+         FROM TNIDXDGNSSMANAGE a 
+        WHERE a.USE_AT='Y' 
+       ) a 
+   LEFT OUTER JOIN 
+       (SELECT IDX_DGNSS_ID,
+              DATABASE_TY_ID, 
+              count(IDX_RESULT_ID) RESULT_CO 
+         FROM TNIDXDGNSSRESULT 
+        GROUP BY IDX_DGNSS_ID,
+              DATABASE_TY_ID 
+       ) b 
+       ON (
+           a.IDX_DGNSS_ID=b.IDX_DGNSS_ID 
+           AND a.DATABASE_TY_ID=b.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT b.CODE,
+              b.CODE_NM 
+         FROM COMTCCMMNCODE a, 
+              COMTCCMMNDETAILCODE b 
+        WHERE a.CODE_ID=b.CODE_ID 
+              AND a.CL_CODE='PQC' 
+              AND a.CODE_ID='T250' 
+              AND a.USE_AT='Y' 
+              AND b.USE_AT='Y' 
+       ) c 
+       ON (
+           a.NTCE_TY_CODE_2=c.CODE
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT * 
+         FROM TNDATABASETYMANAGE 
+        WHERE USE_AT='Y' 
+       ) d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID
+       ) 
+
+   left outer join (
+select IDX_DGNSS_ID,DATABASE_TY_ID, count(QESITM_ID) QESITM_CO
+from TNIDXDGNSSQESITM
+group by IDX_DGNSS_ID,DATABASE_TY_ID
+) e on (a.IDX_DGNSS_ID=e.IDX_DGNSS_ID and a.DATABASE_TY_ID=e.DATABASE_TY_ID) 
+     
+
+	 ]]>
+		
+			<dynamic prepend=" WHERE ">
+		  	  <isNotEmpty  prepend=" AND " property="NTCETYCODE2">
+			      						      A.NTCE_TY_CODE_2=#NTCETYCODE2#
+			  </isNotEmpty>
+		</dynamic>
+	
+	
+	
+	<![CDATA[
+	   )
+
+	]]>
+	
+		</select>
+
+<resultMap id="result-selectDianoIdxSelfMngSflag" class="dianoIdxSelfMngVo">
+
+		<result property="CODE"								column="CODE"     />
+		<result property="CODENM"								column="CODE_NM"     />
+
+</resultMap>
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngbox" resultMap="result-selectDianoIdxSelfMngSflag"  parameterClass="dianoIdxSelfMngVo">
+		<![CDATA[
+
+SELECT b.CODE,
+              b.CODE_NM 
+         FROM COMTCCMMNCODE a, 
+              COMTCCMMNDETAILCODE b 
+        WHERE a.CODE_ID=b.CODE_ID 
+              AND a.CL_CODE='PQC' 
+              AND a.CODE_ID='T250' 
+              AND a.USE_AT='Y' 
+              AND b.USE_AT='Y' 
+
+	]]> 
+	
+
+</select>
+
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngSflag" resultMap="result-selectDianoIdxSelfMngSflag"  parameterClass="dianoIdxSelfMngVo">
+		<![CDATA[
+
+SELECT b.CODE, 
+       b.CODE_NM 
+  FROM COMTCCMMNCODE a, 
+       COMTCCMMNDETAILCODE b 
+ WHERE a.CODE_ID=b.CODE_ID 
+       AND a.CL_CODE='PQC' 
+       AND a.CODE_ID='T200' 
+       AND a.USE_AT='Y' 
+       AND b.USE_AT='Y'
+       ]]> 
+	
+       
+</select>
+
+
+<resultMap id="result-selectDianoIdxSelfMngSDb" class="dianoIdxSelfMngVo">
+
+		<result property="DATABASETYID"								column="DATABASE_TY_ID"     />
+		<result property="DATABASETYNM"								column="DATABASE_TY_NM"     />
+
+</resultMap>
+
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngDb" resultMap="result-selectDianoIdxSelfMngSDb"  parameterClass="dianoIdxSelfMngVo">
+		<![CDATA[
+
+
+ 	             SELECT  
+ 					 DATABASE_TY_ID
+					,DATABASE_TY_NM
+				FROM TNDATABASETYMANAGE
+				WHERE USE_AT='Y'
+]]> 
+	
+       
+</select> 
+
+
+
+
+	<insert id="dianoIdxSelfMngDao.DianoIdxSelfMngCopySITM">
+	
+	
+ insert into TNIDXDGNSSQESITM
+SELECT
+#IDXDGNSSIDSITMTNT#,
+#DATABASETYID#,QESITM_ID,QESITM_NO
+from TNIDXDGNSSQESITM
+WHERE IDX_DGNSS_ID=#IDXDGNSSID#
+AND DATABASE_TY_ID=#NDATABASETYID#
+
+
+</insert>
+
+<select id="dianoIdxSelfMngDao.DianoIdxSelfMngSITMIdMax" resultClass="int" parameterClass="dianoIdxSelfMngVo">
+select MAX(idx_dgnss_id)+1 FROM TNIDXDGNSSQESITM
+
+</select>
+
+<select id="dianoIdxSelfMngDao.DianoIdxSelfMngMANAGEIdMax" resultClass="int" parameterClass="dianoIdxSelfMngVo">
+select MAX(idx_dgnss_id)+1 FROM TNIDXDGNSSMANAGE
+
+</select>
+
+
+	<insert id="dianoIdxSelfMngDao.DianoIdxSelfMngCopyMANAGE">
+	
+INSERT 
+  INTO TNIDXDGNSSMANAGE 
+SELECT 
+      
+		#IDXDGNSSIDMANAGETNT#,
+       #HDATABASETYID#,
+       #IDXDGNSSNM#,
+       'N10',
+       NTCE_BEGIN_DT,
+       NTCE_END_DT,
+       QESITM_CO,
+       USE_AT,
+       SYSDATE,
+       'POLL',
+		SYSDATE,
+       'POLL'
+  FROM TNIDXDGNSSMANAGE 
+ WHERE IDX_DGNSS_ID=#IDXDGNSSID#
+       AND DATABASE_TY_ID=#NDATABASETYID#  
+       
+
+
+</insert>
+
+
+
+
+
+
+
+<insert id="dianoIdxSelfMngDao.DianoIdxSelfMngCopyCheckMANAGE">
+
+
+INSERT 
+  INTO TNIDXDGNSSMANAGE 
+SELECT 
+      
+	#IDXDGNSSID#,
+      
+       #DATABASETYID#,
+       #IDXDGNSSNM#,
+       'N10',
+       NTCE_BEGIN_DT,
+       NTCE_END_DT,
+       QESITM_CO,
+       USE_AT,
+       SYSDATE,
+       'POLL',
+		SYSDATE,
+       'POLL'
+       
+  FROM TNIDXDGNSSMANAGE 
+ WHERE IDX_DGNSS_ID=#IDXDGNSSID#
+       AND DATABASE_TY_ID=#NDATABASETYID#
+       
+       
+</insert>
+
+<insert id="dianoIdxSelfMngDao.DianoIdxSelfMngCopyCheckSITM">
+
+INSERT 
+  INTO TNIDXDGNSSQESITM 
+SELECT 
+       #IDXDGNSSID#,
+       #DATABASETYID#,
+       QESITM_ID,
+       QESITM_NO 
+  FROM TNIDXDGNSSQESITM 
+ WHERE IDX_DGNSS_ID=  #IDXDGNSSID#
+       AND DATABASE_TY_ID= #NDATABASETYID#
+      
+
+
+</insert>
+
+
+	<resultMap id="result-selectDianoIdxSelfMngQList" class="dianoIdxSelfMngVo">
+
+		
+		 <result property="DATABASETYID"			column="DATABASE_TY_ID"    />
+       <result property="IDXID"             column="IDX_ID"    />
+       <result property="IDXNM"             column="IDX_NM"    />
+       <result property="IDXDC"             column="IDX_DC"    />
+       <result property="QESITMCOUNT1"     column="QESITM_COUNT_1"    />
+       <result property="QESITMCOUNT2"     column="QESITM_COUNT_2"    />
+      
+		
+
+</resultMap>
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngQList" resultMap="result-selectDianoIdxSelfMngQList"  parameterClass="dianoIdxSelfMngVo" >
+
+<![CDATA[
+
+
+SELECT a.DATABASE_TY_ID,
+       a.IDX_ID,
+       c.IDX_NM,
+       c.IDX_DC ,
+       nvl(p.QESITM_COUNT,0) QESITM_COUNT_1, 
+       nvl(p2.QESITM_COUNT,0) QESITM_COUNT_2 
+  FROM TNDATABASETYIDXWGHTVAL a 
+   LEFT OUTER JOIN TNIDXINFO c 
+       ON (
+           a.IDX_ID=c.IDX_ID 
+           AND c.USE_AT='Y' 
+           AND c.IDX_STTUS_CODE='U'
+       ) 
+   LEFT OUTER JOIN TNDATABASETYMANAGE d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID 
+           AND d.USE_AT='Y'
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT e.UPPER_IDX_ID IDX_ID,
+              e.DATABASE_TY_ID, 
+              count(a.IDX_ID) QESITM_COUNT 
+         FROM TNIDXQESITMPOOL a, 
+              TNIDXDGNSSMANAGE c, 
+              TNDATABASETYIDXWGHTVAL e 
+        WHERE a.IDX_ID=e.IDX_ID 
+              AND c.DATABASE_TY_ID=e.DATABASE_TY_ID 
+              AND a.USE_AT='Y' 
+              AND c.USE_AT='Y' 
+               
+          ]]> 
+            	  <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     c.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	
+        
+         	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						    
+			      						    e.DATABASE_TY_ID=#DATABASETYID#      
+			  </isNotEmpty>
+	
+        <![CDATA[
+        GROUP BY e.UPPER_IDX_ID, 
+              e.DATABASE_TY_ID 
+       ) p 
+       ON (
+           a.IDX_ID=p.IDX_ID 
+           AND a.DATABASE_TY_ID=p.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT e.UPPER_IDX_ID IDX_ID, 
+              e.DATABASE_TY_ID,
+              count(a.IDX_ID) QESITM_COUNT 
+         FROM TNIDXQESITMPOOL a, 
+              TNIDXDGNSSQESITM b, 
+              TNIDXDGNSSMANAGE c, 
+              TNDATABASETYIDXWGHTVAL e 
+        WHERE a.QESITM_ID=b.QESITM_ID 
+              AND a.IDX_ID=e.IDX_ID 
+              AND b.IDX_DGNSS_ID=c.IDX_DGNSS_ID 
+              AND b.DATABASE_TY_ID=c.DATABASE_TY_ID 
+              AND c.DATABASE_TY_ID=e.DATABASE_TY_ID 
+              AND c.USE_AT='Y' 
+               ]]> 
+            <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     c.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	
+           <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     c.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	    
+                 
+              	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						    
+			      						    e.DATABASE_TY_ID=#DATABASETYID#      
+			  </isNotEmpty>
+	
+            
+              <![CDATA[
+              AND a.USE_AT='Y' 
+        GROUP BY e.UPPER_IDX_ID, 
+              e.DATABASE_TY_ID 
+       ) p2 
+       ON (
+           a.IDX_ID=p2.IDX_ID 
+           AND a.DATABASE_TY_ID=p2.DATABASE_TY_ID
+       ) 
+ WHERE 
+      a.UPPER_IDX_ID IS NOT NULL
+     AND a.IDX_LEVEL=1
+       
+     ]]> 
+     <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						 a.DATABASE_TY_ID=#DATABASETYID# 
+			      						      
+			  </isNotEmpty>
+	  <![CDATA[
+ 
+      
+      
+        
+       
+        START 
+WITH a.IDX_ID = 0 CONNECT BY PRIOR a.IDX_ID = a.UPPER_IDX_ID 
+      
+       ]]> 
+       
+       
+        <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						 a.DATABASE_TY_ID=#DATABASETYID# 
+			      						      
+			  </isNotEmpty>
+	
+    
+
+	  <![CDATA[
+ORDER siblings BY a.SORT_ORDR 
+         ]]> 
+
+</select>
+
+
+
+
+
+	<insert id="dianoIdxSelfMngDao.DianoIdxSelfMngInsert">
+	
+
+
+INSERT 
+  INTO TNIDXDGNSSMANAGE VALUES
+       (
+           (SELECT MAX(IDX_DGNSS_ID)+1  FROM TNIDXDGNSSMANAGE),
+           #DATABASETYID#,
+           #IDXDGNSSNM#,
+           #HNTCETYCODE#,
+           #searchBgnDeView#, 
+           #searchEndDeView#, 
+            0,
+           'Y',
+           SYSDATE,
+           'POLL',
+           SYSDATE,
+           'POLL'
+       )
+</insert>
+
+
+<update id="dianoIdxSelfMngDao.DianoIdxSelfMngUpdate">
+update TNIDXDGNSSMANAGE
+			 SET DATABASE_TY_ID=#DATABASETYID#
+        	  ,IDX_DGNSS_ID=#IDXDGNSSID#
+	          ,IDX_DGNSS_NM=#HIDXDGNSSNM#
+	          ,NTCE_TY_CODE=#NTCETYCODE#
+	          ,NTCE_BEGIN_DT=#searchBgnDeView#
+	          ,NTCE_END_DT=#searchEndDeView#
+	     	  ,USE_AT='Y' 
+          	  ,LAST_UPDUSR_ID='POLL'
+          
+          	  WHERE  IDX_DGNSS_ID=#IDXDGNSSID#  AND DATABASE_TY_ID=#DATABASETYID#
+
+</update>
+
+
+
+
+
+
+
+
+
+<resultMap id="result-selectDianoIdxSelfMngQDetail" class="dianoIdxSelfMngVo">
+
+		
+		
+<result property="DATABASETYNM"      column="DATABASE_TY_NM"                   />
+<result property="IDXID"      		  	column="IDX_ID"                          />
+<result property="IDXNM"      column="IDX_NM"                                  />
+<result property="UPPERIDXID"      column="UPPER_IDX_ID"                       />
+<result property="IDXLEVEL"      column="IDX_LEVEL"                            />
+<result property="IDXWGHTVAL"      column="IDX_WGHTVAL"                        />
+<result property="EMPHSIDXID"      column="EMPHS_IDX_ID"                       />
+<result property="QESITMCOUNT1"      column="QESITM_COUNT_1"      />
+<result property="QESITMCOUNT2"      column="QESITM_COUNT_2"      />
+<result property="QESITMID"      column="QESITM_ID"                            />
+<result property="QESITM"      column="QESITM"                                 />
+<result property="SQESITM"      column="S_QESITM"                              />
+<result property="ANSWERTYCODE"      column="ANSWER_TY_CODE"                   />
+<result property="QSORTORDR"      column="Q_SORT_ORDR"                         />
+<result property="ANSWERID"      column="ANSWER_ID"                            />
+<result property="ANSWER"      column="ANSWER"                                 />
+<result property="ANSWERSTDR"      column="ANSWER_STDR"                        />
+<result property="ALLOT"      column="ALLOT"                                   />
+<result property="ASORTORDR"      column="A_SORT_ORDR"                         />
+<result property="IDXDGNSSID"      column="IDX_DGNSS_ID"                       />
+<result property="IDXDGNSSNM"      column="IDX_DGNSS_NM"                       />
+<result property="ANSWERCO"      column="ANSWER_CO"                            />
+		
+		
+</resultMap>
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngQDetail" resultMap="result-selectDianoIdxSelfMngQDetail"  parameterClass="dianoIdxSelfMngVo" >
+	  <![CDATA[
+
+SELECT a.DATABASE_TY_ID,
+       d.DATABASE_TY_NM,
+       a.IDX_ID,
+       c.IDX_NM,
+       a.UPPER_IDX_ID,
+       a.IDX_LEVEL,
+       a.IDX_WGHTVAL ,
+       CASE 
+           WHEN e.IDX_ID IS NOT NULL 
+           THEN 'true' 
+           ELSE 'false' 
+       END EMPHS_IDX_ID ,
+       NVL(p2.QESITM_COUNT,0) QESITM_COUNT_1,
+       NVL(p3.QESITM_COUNT,0) QESITM_COUNT_2 ,
+       p.QESITM_ID,
+       p.QESITM,
+       p.S_QESITM,
+       p.ANSWER_TY_CODE,
+       p.Q_SORT_ORDR,
+       p.ANSWER_ID,
+       p.ANSWER,
+       p.ANSWER_STDR ,
+       p.ALLOT,
+       p.A_SORT_ORDR,
+       p.IDX_DGNSS_ID,
+       p.IDX_DGNSS_NM ,
+       p.ANSWER_CO 
+  FROM TNDATABASETYIDXWGHTVAL a 
+   LEFT OUTER JOIN TNIDXINFO c 
+       ON (
+           a.IDX_ID=c.IDX_ID 
+           AND c.USE_AT='Y' 
+           AND c.IDX_STTUS_CODE='U'
+       ) 
+   LEFT OUTER JOIN TNDATABASETYMANAGE d 
+       ON (
+           a.DATABASE_TY_ID=d.DATABASE_TY_ID 
+           AND d.USE_AT='Y'
+       ) 
+   LEFT OUTER JOIN TNEMPHSIDXMANAGE e 
+       ON (
+           a.DATABASE_TY_ID=e.DATABASE_TY_ID 
+           AND a.IDX_ID=e.IDX_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT a.QESITM_ID,
+              a.IDX_ID,
+              a.QESITM,
+              a.ANSWER_TY_CODE,
+              a.SORT_ORDR Q_SORT_ORDR ,
+              b.ANSWER_ID,
+              b.ANSWER,
+              b.ANSWER_STDR,
+              b.ALLOT,
+              b.SORT_ORDR A_SORT_ORDR ,
+              c.DATABASE_TY_ID,
+              c.IDX_DGNSS_ID,
+              c.IDX_DGNSS_NM,
+              c.NTCE_TY_CODE,
+              c.NTCE_BEGIN_DT,
+              c.NTCE_END_DT,
+              c.QESITM_CO ,
+              c.S_QESITM ,
+              b.ANSWER_CO 
+         FROM TNIDXQESITMPOOL a 
+          LEFT OUTER JOIN 
+              (SELECT a.*,
+                     CASE 
+                         WHEN b.QESITM_ID IS NULL 
+                         THEN 'false' 
+                         ELSE 'true' 
+                     END S_QESITM 
+                FROM 
+                     (SELECT b.IDX_DGNSS_ID,
+                            b.DATABASE_TY_ID,
+                            b.IDX_DGNSS_NM,
+                            b.NTCE_TY_CODE,
+                            b.NTCE_BEGIN_DT,
+                            b.NTCE_END_DT,
+                            b.QESITM_CO,
+                            c.* 
+                       FROM TNIDXDGNSSMANAGE b, 
+                            TNIDXQESITMPOOL c 
+                      WHERE b.USE_AT='Y' 
+                         
+                          ]]> 
+            	  <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     b.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	
+        
+         	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						    
+			      						    b.DATABASE_TY_ID=#DATABASETYID#      
+			  </isNotEmpty>
+	
+        <![CDATA[
+                         
+                         
+                            AND c.USE_AT='Y' 
+                     ) a 
+                 LEFT OUTER JOIN TNIDXDGNSSQESITM b 
+                     ON (
+                         a.IDX_DGNSS_ID=b.IDX_DGNSS_ID 
+                         AND a.DATABASE_TY_ID=b.DATABASE_TY_ID 
+                         AND a.QESITM_ID=b.QESITM_ID
+                     ) 
+              ) c 
+              ON (
+                  a.QESITM_ID=c.QESITM_ID
+              ) 
+              , 
+              (SELECT b.QESITM_ID,
+                     b.ANSWER_ID,
+                     b.ANSWER,
+                     b.ANSWER_STDR,
+                     b.ALLOT,
+                     b.SORT_ORDR,
+                     c.ANSWER_CO 
+                FROM TNIDXQESITMPOOLANSWER b , 
+                     (SELECT QESITM_ID,
+                            COUNT(*) ANSWER_CO 
+                       FROM TNIDXQESITMPOOLANSWER 
+                      WHERE USE_AT='Y' 
+                      GROUP BY QESITM_ID
+                     ) c 
+               WHERE b.USE_AT='Y' 
+                     AND b.QESITM_ID=c.QESITM_ID 
+              ) b 
+        WHERE a.QESITM_ID=b.QESITM_ID 
+              AND a.USE_AT='Y'  
+       ) p 
+       ON (
+           a.IDX_ID=p.IDX_ID 
+           AND a.DATABASE_TY_ID=p.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT e.IDX_ID,
+              e.DATABASE_TY_ID, 
+              count(a.IDX_ID) QESITM_COUNT 
+         FROM TNIDXQESITMPOOL a, 
+              TNIDXDGNSSMANAGE c, 
+              TNDATABASETYIDXWGHTVAL e 
+        WHERE a.IDX_ID=e.IDX_ID 
+              AND c.DATABASE_TY_ID=e.DATABASE_TY_ID 
+              AND a.USE_AT='Y' 
+              AND c.USE_AT='Y' 
+             
+             
+        ]]> 
+            	  <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     c.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	
+        
+         	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						    
+			      						    e.DATABASE_TY_ID=#DATABASETYID#      
+			  </isNotEmpty>
+	
+        <![CDATA[      
+             
+           
+        GROUP BY e.IDX_ID, 
+              e.DATABASE_TY_ID 
+       ) p2 
+       ON (
+           a.IDX_ID=p2.IDX_ID 
+           AND a.DATABASE_TY_ID=p2.DATABASE_TY_ID
+       ) 
+   LEFT OUTER JOIN 
+       (SELECT e.IDX_ID, 
+              e.DATABASE_TY_ID,
+              count(a.IDX_ID) QESITM_COUNT 
+         FROM TNIDXQESITMPOOL a, 
+              TNIDXDGNSSQESITM b, 
+              TNIDXDGNSSMANAGE c, 
+              TNDATABASETYIDXWGHTVAL e 
+        WHERE a.QESITM_ID=b.QESITM_ID 
+              AND a.IDX_ID=e.IDX_ID 
+              AND b.IDX_DGNSS_ID=c.IDX_DGNSS_ID 
+              AND b.DATABASE_TY_ID=c.DATABASE_TY_ID 
+              AND c.DATABASE_TY_ID=e.DATABASE_TY_ID 
+              AND c.USE_AT='Y' 
+          
+          
+           ]]> 
+            	  <isNotEmpty  prepend=" AND " property="IDXDGNSSID">
+			      						     c.IDX_DGNSS_ID=#IDXDGNSSID#
+			      						      
+			  </isNotEmpty>
+	
+        
+         	  <isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						    
+			      						    e.DATABASE_TY_ID=#DATABASETYID#      
+			  </isNotEmpty>
+	
+        <![CDATA[
+          
+              AND a.USE_AT='Y' 
+        GROUP BY e.IDX_ID, 
+              e.DATABASE_TY_ID 
+       ) p3 
+       ON (
+           a.IDX_ID=p3.IDX_ID 
+           AND a.DATABASE_TY_ID=p3.DATABASE_TY_ID
+       ) 
+ WHERE 
+ 
+ 
+  ]]> 
+            	  <isNotEmpty  prepend="  " property="DATABASETYID">
+			      						     a.DATABASE_TY_ID=#DATABASETYID#
+			      						      
+			  </isNotEmpty>
+	
+        
+         	  <isNotEmpty  prepend=" AND " property="UPPERIDXID">
+			      						    a.UPPER_IDX_ID=#UPPERIDXID#      
+			  </isNotEmpty>
+	
+        <![CDATA[
+ 
+       START 
+WITH a.IDX_ID = 0 
+       CONNECT BY PRIOR a.IDX_ID = a.UPPER_IDX_ID 
+
+]]>
+
+<isNotEmpty  prepend=" AND " property="DATABASETYID">
+			      						       
+			   a.DATABASE_TY_ID=#DATABASETYID#
+			  </isNotEmpty>
+	
+	<![CDATA[
+	
+	ORDER siblings BY a.SORT_ORDR ,
+       p.Q_SORT_ORDR,
+       p.A_SORT_ORDR
+
+
+]]>
+
+
+
+</select>
+
+
+
+
+<select id="dianoIdxSelfMngDao.selectDianoIdxSelfMngCopyCheck"  resultClass="int"  parameterClass="dianoIdxSelfMngVo">
+
+
+SELECT count(*) FROM TNIDXDGNSSmanage 
+WHERE IDX_DGNSS_ID=#IDXDGNSSID#
+       AND DATABASE_TY_ID=#DATABASETYID#
+ 
+</select>
+
+
+
+<delete id="dianoIdxSelfMngDao.selectDianoIdxSelfMngCopyQDelete">
+DELETE FROM TNIDXDGNSSQESITM 
+ WHERE idx_dgnss_id=#IDXDGNSSID# 
+       AND database_ty_id=#DATABASETYID#  
+
+</delete>
+
+<insert id="dianoIdxSelfMngDao.selectDianoIdxSelfMngCopyQInsert">
+INSERT  INTO TNIDXDGNSSQESITM
+       (
+           IDX_DGNSS_ID,
+           DATABASE_TY_ID,
+           QESITM_ID,
+           QESITM_NO
+       )   
+       VALUES
+       (
+           #IDXDGNSSID#,
+           #DATABASETYID#,
+           #IDXID#,
+           #QESITMNO#
+       )
+
+</insert>
+
+
+	<delete id="dianoIdxSelfMngDao.selectDianoIdxSelfMngCopyDelete">
+	
+DELETE  TNIDXDGNSSMANAGE   WHERE IDX_DGNSS_ID=#IDXDGNSSID# AND DATABASE_TY_ID=#DATABASETYID#
+	
+	</delete>
+	
+
+	<delete id="dianoIdxSelfMngDao.selectDianoIdxSelfMngCopySITMDelete">
+	
+DELETE  TNIDXDGNSSQESITM   WHERE IDX_DGNSS_ID=#IDXDGNSSID# AND DATABASE_TY_ID=#DATABASETYID#
+	
+	</delete>
+	
+</sqlMap>
+
+
+
+

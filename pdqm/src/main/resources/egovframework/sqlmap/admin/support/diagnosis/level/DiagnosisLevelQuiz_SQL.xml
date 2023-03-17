@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisLevelQuiz">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisLevelQuiz" type="egovframework.pdqm.admin.support.diagnosis.level.model.DiagnosisLevelQuiz"/>
+
+	<resultMap id="result-selectQuizTitleLis" class="diagnosisLevelQuiz">
+	    <result property="dgnssCntTrgetId"          column="DGNSS_TRGET_ID"/>
+        <result property="dgnssCntTrgetNm"        	column="DGNSS_TRGET_NM"/>
+        <result property="dgnssCntTrgetDc"        	column="DGNSS_TRGET_DC"/>
+        <result property="dgnssCntQesitmCount"      column="QESITM_COUNT"/>
+	</resultMap>
+	<select id="diagnosisLevelQuizDAO.selectQuizTitleList" resultMap="result-selectQuizTitleLis" >
+		<![CDATA[
+			SELECT d.DGNSS_TRGET_ID,
+			       d.DGNSS_TRGET_NM,
+			       d.DGNSS_TRGET_DC,
+			       nvl(p.QESITM_COUNT,0) QESITM_COUNT 
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT e.UPPER_DGNSS_TRGET_ID DGNSS_TRGET_ID,
+			              count(a.DGNSS_TRGET_ID) QESITM_COUNT 
+			         FROM TNLEVELQESITMPOOL a, 
+			              TNDGNSSTRGETINFO e 
+			        WHERE a.DGNSS_TRGET_ID=e.DGNSS_TRGET_ID 
+			              AND a.USE_AT='Y' 
+			              AND e.USE_AT='Y' 
+			              AND e.DGNSS_TRGET_STTUS_CODE='U' 
+			        GROUP BY e.UPPER_DGNSS_TRGET_ID 
+			       ) p 
+			       ON (
+			           d.DGNSS_TRGET_ID=p.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' 
+			       AND d.DGNSS_TRGET_LEVEL=1 START 
+			WITH d.DGNSS_TRGET_ID=0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR
+						       
+		]]>
+				
+	</select>
+	   
+	  <select id="diagnosisLevelQuizDAO.selectQuizList"  resultClass="egovMap">
+		<![CDATA[
+			SELECT d.*,
+			       p.QESITM_ID,
+			       p.QESITM,
+			       p.ANSWER_TY_CODE,
+			       p.Q_SORT_ORDR ,
+			       p.ANSWER_ID,
+			       p.ANSWER,
+			       p.ANSWER_STDR,
+			       p.ALLOT,
+			       p.A_SORT_ORDR ,
+			       p2.QESITM_CO,
+			       p.ANSWER_CO ,
+			       COUNT(  P.QESITM_ID ) OVER ( PARTITION BY d.DGNSS_TRGET_ID ) AS ANSWER_CNT
+			  FROM TNDGNSSTRGETINFO d 
+			   LEFT OUTER JOIN 
+			       (SELECT a.QESITM_ID,
+			              a.DGNSS_TRGET_ID,
+			              a.QESITM,
+			              a.ANSWER_TY_CODE,
+			              a.SORT_ORDR Q_SORT_ORDR ,
+			              b.ANSWER_ID,
+			              b.ANSWER,
+			              b.ANSWER_STDR,
+			              b.ALLOT,
+			              b.SORT_ORDR A_SORT_ORDR,
+			              b.ANSWER_CO 
+			         FROM TNLEVELQESITMPOOL a, 
+			              (SELECT b.QESITM_ID,
+			                     b.ANSWER_ID,
+			                     b.ANSWER,
+			                     b.ANSWER_STDR,
+			                     b.ALLOT,
+			                     b.SORT_ORDR,
+			                     c.ANSWER_CO 
+			                FROM TNLEVELQESITMPOOLANSWER b , 
+			                     (SELECT QESITM_ID,
+			                            COUNT(*) ANSWER_CO 
+			                       FROM TNLEVELQESITMPOOLANSWER 
+			                      WHERE USE_AT='Y' 
+			                      GROUP BY QESITM_ID
+			                     ) c 
+			               WHERE b.USE_AT='Y' 
+			                     AND b.QESITM_ID=c.QESITM_ID 
+			              ) b 
+			        WHERE a.QESITM_ID=b.QESITM_ID 
+			              AND a.USE_AT='Y' 
+			       ) p 
+			       ON (
+			           d.DGNSS_TRGET_ID=p.DGNSS_TRGET_ID
+			       ) 
+			   LEFT OUTER JOIN 
+			       (SELECT DGNSS_TRGET_ID, 
+			              count(QESITM_ID) QESITM_CO 
+			         FROM TNLEVELQESITMPOOL 
+			        WHERE USE_AT='Y' 
+			        GROUP BY DGNSS_TRGET_ID 
+			       ) p2 
+			       ON (
+			           d.DGNSS_TRGET_ID=p2.DGNSS_TRGET_ID
+			       ) 
+			 WHERE d.USE_AT='Y' 
+			       AND d.DGNSS_TRGET_STTUS_CODE='U' START 
+			WITH d.DGNSS_TRGET_ID = 0 CONNECT BY PRIOR d.DGNSS_TRGET_ID = d.UPPER_DGNSS_TRGET_ID 
+			ORDER siblings BY d.SORT_ORDR,
+			       p.Q_SORT_ORDR,
+			       p.A_SORT_ORDR
+			       
+		]]>
+				
+	</select>
+
+
+	<insert id="diagnosisLevelQuizDAO.insertQuiz">
+		  <selectKey resultClass="java.lang.String" keyProperty="qesitmId">
+		   	SELECT NVL(MAX(QESITM_ID),0) + 1 FROM TNLEVELQESITMPOOL
+		  </selectKey>   
+		<![CDATA[
+			INSERT INTO TNLEVELQESITMPOOL
+				( 
+   			     QESITM_ID
+			    ,DGNSS_TRGET_ID
+		   	    ,QESITM
+			    ,ANSWER_TY_CODE
+			    ,SORT_ORDR
+			    ,USE_AT
+       			
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				
+				  )
+			VALUES (
+				#qesitmId#
+				,#dgnssTrgetId#
+				,#qesitm#
+				,#answerTyCode#
+				,(select NVL(MAX(SORT_ORDR),0) + 1 from TNLEVELQESITMPOOL where DGNSS_TRGET_ID = #dgnssTrgetId#)
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+
+	<insert id="diagnosisLevelQuizDAO.insertQuizAnswer">
+		  <selectKey resultClass="java.lang.String" keyProperty="answerId">
+		   	SELECT NVL(MAX(ANSWER_ID),0) + 1  FROM TNLEVELQESITMPOOLANSWER
+		  </selectKey>   
+		<![CDATA[
+			INSERT INTO TNLEVELQESITMPOOLANSWER
+				( 
+   			     QESITM_ID
+			    ,ANSWER_ID
+		   	    ,ANSWER
+			    ,ANSWER_STDR
+			    ,ALLOT
+			    ,SORT_ORDR
+			    ,USE_AT
+       			
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				
+				  )
+			VALUES (
+				#qesitmId#
+				,#answerId#
+				,#answer#
+				,#answerStdr#
+				,#allot#
+				,#sortOrdr#
+				,'Y'
+								
+				,SYSDATE
+				,#frstRegisterId#
+
+				  )
+		]]>
+	</insert>
+	
+	<resultMap id="result-updateQuizView" class="diagnosisLevelQuiz">
+        <result property="qesitmId"                column="QESITM_ID"/>
+	    <result property="dgnssTrgetId"                   column="DGNSS_TRGET_ID"/>
+	    <result property="dgnssTrgetNm"                   column="DGNSS_TRGET_NM"/>
+	    <result property="upperDgnssTrgetNm"                   column="UPPER_DGNSS_TRGET_NM"/>
+	    <result property="qesitm"                   column="QESITM"/>
+	    <result property="answerTyCode"                   column="ANSWER_TY_CODE"/>
+	</resultMap>		
+
+	<select id="diagnosisLevelQuizDAO.updateQuizView"  resultMap="result-updateQuizView">
+		<![CDATA[
+		SELECT 
+			 a.QESITM_ID
+			,a.DGNSS_TRGET_ID
+            ,b.DGNSS_TRGET_NM
+            ,(SELECT DGNSS_TRGET_NM FROM TNDGNSSTRGETINFO c WHERE c.DGNSS_TRGET_ID = b.UPPER_DGNSS_TRGET_ID) UPPER_DGNSS_TRGET_NM
+			,a.QESITM
+			,a.ANSWER_TY_CODE
+		FROM TNLEVELQESITMPOOL a,
+             TNDGNSSTRGETINFO b
+		WHERE a.DGNSS_TRGET_ID = b.DGNSS_TRGET_ID
+          AND QESITM_ID =  #qesitmId#
+		 
+		]]>
+	</select>
+
+	<update id="diagnosisLevelQuizDAO.updateQuiz">
+		<![CDATA[
+		
+			UPDATE TNLEVELQESITMPOOL
+			  SET QESITM = #qesitm#
+			     ,ANSWER_TY_CODE = #answerTyCode#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where QESITM_ID = #qesitmId#
+		]]>
+	</update>
+	<update id="diagnosisLevelQuizDAO.deleteQuiz">
+		<![CDATA[
+		
+			UPDATE TNLEVELQESITMPOOL
+			  SET USE_AT = 'N'
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where QESITM_ID = #qesitmId#
+		]]>
+	</update>		
+
+	<delete id="diagnosisLevelQuizDAO.deleteQuizAnswer">
+		<![CDATA[
+		
+			DELETE FROM TNLEVELQESITMPOOLANSWER
+			  where QESITM_ID = #qesitmId#
+		]]>
+	</delete>	
+		   
+	  <select id="diagnosisLevelQuizDAO.selectQuizAnswer"  resultClass="egovMap">
+		<![CDATA[
+
+		 SELECT *
+		  FROM
+		  (
+		  SELECT b.CODE,
+		         b.CODE_NM ,
+		         ROWNUM allot,
+		         '' answer_stdr
+		    FROM COMTCCMMNCODE a, 
+		         COMTCCMMNDETAILCODE b 
+		   WHERE a.CODE_ID=b.CODE_ID 
+		         AND a.CL_CODE='PQC' 
+		         AND a.CODE_ID=#searchAnswerTyCode#
+		         AND a.USE_AT='Y' 
+		         AND b.USE_AT='Y' 
+		  ORDER BY b.CODE desc
+			) x
+		ORDER BY x.CODE    
+
+		]]>
+				
+	</select>
+
+	  <select id="diagnosisLevelQuizDAO.selectQuizAnswer2"  resultClass="egovMap">
+		<![CDATA[
+
+			select answer_id code,
+			       answer code_nm,
+			       allot,
+			       answer_stdr
+			from TNLEVELQESITMPOOLANSWER 
+			where QESITM_ID=#qesitmId# 
+			order by SORT_ORDR
+
+
+		]]>
+				
+	</select>
+			
+</sqlMap>

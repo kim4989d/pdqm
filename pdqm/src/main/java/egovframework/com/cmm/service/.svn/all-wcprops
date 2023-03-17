@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/pdqm/!svn/ver/2163/pdqm/src/main/java/egovframework/com/cmm/service
+END
+Globals.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/pdqm/!svn/ver/691/pdqm/src/main/java/egovframework/com/cmm/service/Globals.java
+END
+EgovProperties.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/2163/pdqm/src/main/java/egovframework/com/cmm/service/EgovProperties.java
+END
+CmmnDetailCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/service/CmmnDetailCode.java
+END
+EgovCmmUseService.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/166/pdqm/src/main/java/egovframework/com/cmm/service/EgovCmmUseService.java
+END
+EgovUserDetailsService.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cmm/service/EgovUserDetailsService.java
+END
+FileVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/pdqm/!svn/ver/16/pdqm/src/main/java/egovframework/com/cmm/service/FileVO.java
+END
+EgovFileMngService.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/426/pdqm/src/main/java/egovframework/com/cmm/service/EgovFileMngService.java
+END
+EgovFileMngUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/1600/pdqm/src/main/java/egovframework/com/cmm/service/EgovFileMngUtil.java
+END

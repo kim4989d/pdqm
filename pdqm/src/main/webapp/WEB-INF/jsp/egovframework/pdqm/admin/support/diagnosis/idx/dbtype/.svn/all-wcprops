@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/2355/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype
+END
+DbTypePointMngList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/pdqm/!svn/ver/2354/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype/DbTypePointMngList.jsp
+END
+DbTypeRegist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/pdqm/!svn/ver/2339/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype/DbTypeRegist.jsp
+END
+DbTypeModity.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/pdqm/!svn/ver/2339/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype/DbTypeModity.jsp
+END
+DbTypePointMngRegist.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/pdqm/!svn/ver/2355/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype/DbTypePointMngRegist.jsp
+END
+DbTypeList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/2339/pdqm/src/main/webapp/WEB-INF/jsp/egovframework/pdqm/admin/support/diagnosis/idx/dbtype/DbTypeList.jsp
+END

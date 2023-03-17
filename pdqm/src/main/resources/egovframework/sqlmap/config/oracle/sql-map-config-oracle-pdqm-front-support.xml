@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<sqlMap resource="egovframework/sqlmap/front/support/diagnosis/level/selfdiag_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/front/support/diagnosis/idx/idxselfdiag_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/front/support/matching/matching_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/front/support/apply/Apply_SQL.xml" />
+
+</sqlMapConfig>

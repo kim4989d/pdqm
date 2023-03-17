@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/2399/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model
+END
+DBMatchingMappingCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/pdqm/!svn/ver/2008/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatchingMappingCode.java
+END
+DBInfoAllVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/1641/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBInfoAllVO.java
+END
+DBMatching.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/1425/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatching.java
+END
+CompareCodeVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/2399/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/CompareCodeVO.java
+END
+COLInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/1573/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/COLInfoVO.java
+END
+DBInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/pdqm/!svn/ver/1641/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBInfoVO.java
+END
+TBLInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/1515/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/TBLInfoVO.java
+END
+DBMatchingVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/1425/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatchingVO.java
+END
+CodeInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/pdqm/!svn/ver/1691/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/CodeInfoVO.java
+END
+CommonVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/pdqm/!svn/ver/1627/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/CommonVo.java
+END
+DBMatchingMapping.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/pdqm/!svn/ver/1996/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatchingMapping.java
+END
+DBMatchingInfoVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/1425/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatchingInfoVO.java
+END
+DBMatchingCVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/pdqm/!svn/ver/1564/pdqm/src/main/java/egovframework/pdqm/front/support/matching/model/DBMatchingCVO.java
+END

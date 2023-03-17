@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/pdqm/!svn/ver/2340/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/level
+END
+DiagnosisLevelQuiz_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/1379/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelQuiz_SQL.xml
+END
+DiagnosisLevelSelf_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/2340/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelSelf_SQL.xml
+END
+DiagnosisLevelScore_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/pdqm/!svn/ver/2107/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelScore_SQL.xml
+END
+DiagnosisLevelMng_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/pdqm/!svn/ver/2143/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelMng_SQL.xml
+END

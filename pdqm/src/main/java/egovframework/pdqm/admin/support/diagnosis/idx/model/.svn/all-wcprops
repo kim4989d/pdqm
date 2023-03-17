@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/2076/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model
+END
+DiagnosisIdxCommonVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/1879/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnosisIdxCommonVo.java
+END
+DianoIdxQesMngVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/pdqm/!svn/ver/1671/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DianoIdxQesMngVo.java
+END
+dianoIdxSelfMngPVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/pdqm/!svn/ver/1884/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/dianoIdxSelfMngPVo.java
+END
+DiagnosisIdxDbTypeVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/1886/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnosisIdxDbTypeVO.java
+END
+MediaVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/pdqm/!svn/ver/2751/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/MediaVo.java
+END
+DianoIdxSelfMngExpVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/pdqm/!svn/ver/1801/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DianoIdxSelfMngExpVo.java
+END
+DiagnoIdxDbTypePMngSelect.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/877/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnoIdxDbTypePMngSelect.java
+END
+DiagnoIdxWghtvalMngVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/pdqm/!svn/ver/1149/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnoIdxWghtvalMngVo.java
+END
+DiagnosisIdxMng.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/pdqm/!svn/ver/2076/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnosisIdxMng.java
+END
+DiagnoIdxDbTypePMngVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/pdqm/!svn/ver/1143/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnoIdxDbTypePMngVo.java
+END
+DianoIdxSelfMngDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/pdqm/!svn/ver/1877/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DianoIdxSelfMngDao.java
+END
+DiagnosisIdxDbType.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/pdqm/!svn/ver/552/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnosisIdxDbType.java
+END
+DiagnosisIdxMngVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/pdqm/!svn/ver/1878/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DiagnosisIdxMngVO.java
+END
+DianoIdxSelfMngVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/pdqm/!svn/ver/1974/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/idx/model/DianoIdxSelfMngVo.java
+END

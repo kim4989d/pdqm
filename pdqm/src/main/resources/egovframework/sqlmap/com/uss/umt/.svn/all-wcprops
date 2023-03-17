@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/pdqm/!svn/ver/1364/pdqm/src/main/resources/egovframework/sqlmap/com/uss/umt
+END
+EgovEntrprsManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/uss/umt/EgovEntrprsManage_SQL_Oracle.xml
+END
+EgovDeptManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/uss/umt/EgovDeptManage_SQL_Oracle.xml
+END
+EgovMberManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/pdqm/!svn/ver/1364/pdqm/src/main/resources/egovframework/sqlmap/com/uss/umt/EgovMberManage_SQL_Oracle.xml
+END
+EgovUserManage_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/uss/umt/EgovUserManage_SQL_Oracle.xml
+END

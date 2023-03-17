@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Apply">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="applyVO" type="egovframework.pdqm.front.support.apply.model.ApplyVO"/>
+
+	<resultMap id="result-selectApplyDate" class="applyVO">
+		<result property="reqstYn"                column="REQST_YN" />
+		<result property="dmandExaminNm"           column="DMAND_EXAMIN_NM"/>			
+	</resultMap>
+			
+	<select id="applyDAO.selectApplyDate" parameterClass="applyVO" resultMap="result-selectApplyDate">
+		<![CDATA[
+			SELECT DECODE(count(*),1,'Y','N') REQST_YN, 
+			       (SELECT DMAND_EXAMIN_NM 
+			         FROM TNBSNSREQSTPD 
+			        WHERE reqst_pd_yn = 'Y'
+			       ) DMAND_EXAMIN_NM 
+			  FROM TNBSNSREQSTPD 
+			 WHERE reqst_pd_yn = 'Y' 
+			       AND SYSDATE BETWEEN TO_DATE(REQST_BGNDE,'yyyymmdd') AND TO_DATE(REQST_ENDDE ,'yyyymmdd')
+			       			  
+  			]]>		
+
+	</select>
+	
+	<insert id="applyDAO.insertPdqmApply">
+	
+		<![CDATA[
+			INSERT INTO TNBSNSREQST
+				( 
+				SN
+				,REQST_DE
+				,NAME
+				,PSTINST
+				,DEPT
+				,OFCPS
+				
+				,OFFM_AREA_NO
+				,OFFM_MIDDLE_TELNO
+				,OFFM_END_TELNO
+				,AREA_NO
+				,MIDDLE_TELNO
+				,END_TELNO
+				
+			
+				
+				,EMAIL_ADRES
+				
+				,DMAND_EXAMIN_NM
+				
+				,DBMS_NM
+				,DBMS_MAIN_CN
+				,DBMS_YP_CREAT_AT
+				,DBMS_YP_COLCT_AT
+				,DBMS_YP_PROVD_AT
+				,DBMS_YP_CMPUN_AT
+				
+				,INFO_DMAND_INSTT_AT
+				,INFO_DMAND_PBLINSTT_AT
+				,INFO_DMAND_PRVATE_AT
+				,INFO_DMAND_GNRL_AT
+				,INFO_CNTC_PRCUSE_INSTT
+				,SRC_INFO_HOLD_INSTT
+				,INFO_OTHBC_AT
+				,EMPLYR_PRCUSE_LEVEL
+				,QLITY_ISSUE_DATA_AT
+				,QLITY_ISSUE_DATABASE_AT
+				,QLITY_ISSUE_APLCTN_AT
+				,QLITY_ISSUE_CNFRMTY_AT
+				,QLITY_ISSUE_WHTAX_AT
+				,QLITY_ISSUE_QLITY_AT
+				,QLITY_ISSUE_ETC_AT
+				,QLITY_IMPRVM_NEED
+				,QLITY_IMPRVM_EXPC_EFFECT
+
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				  )
+			VALUES ( 
+			    (SELECT NVL(MAX(SN),0) + 1 FROM TNBSNSREQST)
+			    ,TO_CHAR(SYSDATE, 'yyyymmdd')
+				,#name#
+				,#pstinst#
+				,#dept#
+				,#ofcps#
+				
+				,#offmAreaNo#
+				,#offmMiddleTelno#
+				,#offmEndTelno#
+				,#areaNo#
+				,#middleTelno#
+				,#endTelno#
+				,#emailAdres#
+				
+				,#dmandExaminNm#
+				,#dbmsNm#
+				,#dbmsMainCn#
+				,#dbmsYpCreatAt#
+				,#dbmsYpColctAt#
+				,#dbmsYpProvdAt#
+				,#dbmsYpCmpunAt#
+				
+				,#infoDmandInsttAt#
+				,#infoDmandPblinsttAt#
+				,#infoDmandPrvateAt#
+				,#infoDmandGnrlAt#
+				,#infoCntcPrcuseInstt#
+				,#srcInfoHoldInstt#
+				,#infoOthbcAt#
+				,#emplyrPrcuseLevel#
+				,#qlityIssueDataAt#
+				,#qlityIssueDatabaseAt#
+				,#qlityIssueAplctnAt#
+				,#qlityIssueCnfrmtyAt#
+				,#qlityIssueWhtaxAt#
+				,#qlityIssueQlityAt#
+				,#qlityIssueEtcAt#
+				,#qlityImprvmNeed#
+				,#qlityImprvmExpcEffect#
+								
+				,SYSDATE
+				,#frstRegisterId#
+				  )
+		]]>
+	</insert>
+	
+	
+		
+</sqlMap>

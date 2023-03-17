@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Mber">
+
+    <typeAlias  alias="egovMap"      type = "egovframework.rte.psl.dataaccess.util.EgovMap"/>
+    <typeAlias  alias="userSearchVO" type = "egovframework.com.uss.umt.service.UserDefaultVO"/>
+    <typeAlias  alias="mberVO"       type = "egovframework.com.uss.umt.service.MberManageVO"/>
+
+    <resultMap id="stplatMap" class="egovframework.com.uss.umt.service.StplatVO">
+        <result property="useStplatId"         column="USE_STPLAT_ID"          columnIndex="1"/>
+        <result property="useStplatCn"         column="USE_STPLAT_CN"          columnIndex="2"/>
+        <result property="infoProvdAgeCn"      column="INFO_PROVD_AGRE_CN"     columnIndex="3"/>
+    </resultMap>
+    
+ <select id="mberManageDAO.selectMberList" parameterClass="userSearchVO" resultClass="egovMap">
+ 		/* mberManageDAO.selectMberList */
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+		    SELECT 
+		        ESNTL_ID              as "uniqId",
+		        'USR01'               as "userTy",
+		        MBER_ID               as "userId",
+		        MBER_NM               as "userNm",
+		        MBER_EMAIL_ADRES      as "emailAdres",
+		        AREA_NO               as "areaNo",
+		        MIDDLE_TELNO          as "middleTelno",
+		        END_TELNO             as "endTelno",
+		        MBTLNUM               as "moblphonNo",
+		        GROUP_ID              as "groupId",
+		        MBER_STTUS            as "sttus",
+		        TO_CHAR(SBSCRB_DE, 'YYYY-MM-DD')             as "sbscrbDe",
+		        MBER_TYPE             as "mberType",
+		        MBER_GRP              as "mberGrp",
+				PROF_YN               as "profYn",
+				DEPARTMENT_NAME		  as "departmentName"
+		    FROM    COMTNGNRLMBER
+		    WHERE 1=1
+		<isNotEmpty prepend="AND" property="dateFrom" >
+			<isNotEmpty property="dateTo" >
+				<![CDATA[ TO_char(SBSCRB_DE,'YYYYMMDD') between #dateFrom# and #dateTo# ]]>
+			</isNotEmpty>
+		</isNotEmpty>
+		    
+        <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+            MBER_STTUS LIKE  #sbscrbSttus#
+        </isNotEqual>
+        <isNotEmpty prepend="AND" property="searchMberType" >
+            MBER_TYPE =  #searchMberType#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="searchMberGrp" >
+            MBER_GRP =  #searchMberGrp#
+        </isNotEmpty>
+        <isEqual prepend="AND" property="searchCondition" compareValue="0">
+            MBER_ID LIKE #searchKeyword#
+        </isEqual>
+        <isEqual prepend="AND" property="searchCondition" compareValue="1">
+            MBER_NM LIKE '%' ||#searchKeyword#|| '%'
+        </isEqual>
+        ORDER BY 12 DESC
+        ) TB ) WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+    </select>
+    
+    
+        <select id="mberManageDAO.selectMberListTotCnt" parameterClass="userSearchVO" resultClass="int">
+	/* mberManageDAO.selectMberListTotCnt */        
+            SELECT COUNT(1) totcnt
+            FROM   COMTNGNRLMBER
+            WHERE 1=1
+			<isNotEmpty prepend="AND" property="dateFrom" >
+				<isNotEmpty property="dateTo" >
+					<![CDATA[ TO_char(SBSCRB_DE,'YYYYMMDD') between #dateFrom# and #dateTo# ]]>
+				</isNotEmpty>
+			</isNotEmpty>
+            <isNotEqual prepend="AND" property="sbscrbSttus" compareValue="0">
+                MBER_STTUS LIKE  #sbscrbSttus#
+            </isNotEqual>
+	        <isNotEmpty prepend="AND" property="searchMberType" >
+	            MBER_TYPE =  #searchMberType#
+	        </isNotEmpty>
+	        <isNotEmpty prepend="AND" property="searchMberGrp" >
+	            MBER_GRP =  #searchMberGrp#
+	        </isNotEmpty>
+            <isEqual prepend="AND" property="searchCondition" compareValue="0">
+                MBER_ID LIKE #searchKeyword#
+            </isEqual>
+            <isEqual prepend="AND" property="searchCondition" compareValue="1">
+                MBER_NM LIKE '%' ||#searchKeyword#|| '%'
+            </isEqual>
+    </select>
+    
+    <insert id="mberManageDAO.insertMber_S">
+        <![CDATA[
+        /* mberManageDAO.insertMber_S */
+            INSERT INTO COMTNGNRLMBER 
+                (   
+                    ESNTL_ID          ,
+                    MBER_ID          ,
+                    MBER_NM          ,
+                    PASSWORD         ,
+                    PASSWORD_HINT    ,
+                    PASSWORD_CNSR    ,
+                    IHIDNUM          ,
+                    SEXDSTN_CODE     ,
+                    ZIP              ,
+                    ADRES            ,
+                    AREA_NO          ,
+                    MBER_STTUS       ,
+                    DETAIL_ADRES     ,
+                    END_TELNO        ,
+                    MBTLNUM      ,
+                    MBER_FXNUM       ,
+                    MBER_EMAIL_ADRES ,
+                    MIDDLE_TELNO     ,
+                    SBSCRB_DE        ,
+                    MBER_TYPE		 ,
+					MBER_GRP		 ,
+					PROF_YN          ,
+					COMPANY_NAME,		
+					DEPARTMENT_NAME,
+					ACCESS_DE,      
+					NEWSLETTER_YN   
+					)
+              VALUES(
+                    #uniqId#,
+                    #mberId#,
+                    #mberNm#,
+                    #password#,
+                    #passwordHint#,
+                    #passwordCnsr#,
+                    #ihidnum#,
+                    #sexdstnCode#,
+                    #zip#,
+                    #adres#,
+                    #areaNo#,
+                    #mberSttus#,
+                    #detailAdres#,
+                    #endTelno#,
+                    #moblphonNo#,
+                    #mberFxnum#,
+                    #mberEmailAdres#,
+                    #middleTelno#,
+                    sysdate,
+                    #mberType#		 ,
+					#mberGrp#		 ,
+					#profYn#  , 
+					#companyName# , 		
+					#departmentName#, 
+					sysdate 	,		
+					#newsletterYn# 	
+					)              
+        ]]>
+    </insert>
+    
+    <delete id="mberManageDAO.deleteMber_S">
+        <![CDATA[
+        /* mberManageDAO.deleteMber_S */
+            DELETE FROM COMTNGNRLMBER 
+            WHERE ESNTL_ID=#delId#
+        ]]>
+    </delete>
+    
+    <select id="mberManageDAO.selectMber_S" resultClass="mberVO">
+    /* mberManageDAO.selectMber_S */
+        <![CDATA[
+            SELECT
+                ESNTL_ID          uniqId,
+                'USR01'          userTy,
+                MBER_ID          mberId,
+                MBER_NM          mberNm,
+                PASSWORD         password,
+                PASSWORD_HINT    passwordHint,
+                PASSWORD_CNSR    passwordCnsr,
+                IHIDNUM          ihidnum,
+                SEXDSTN_CODE     sexdstnCode,
+                ZIP              zip,
+                ADRES            adres,
+                AREA_NO          areaNo,
+                MBER_STTUS       mberSttus,
+                DETAIL_ADRES     detailAdres,
+                END_TELNO        endTelno,
+                MBTLNUM      moblphonNo,
+                GROUP_ID         groupId,
+                MBER_FXNUM       mberFxnum,
+                MBER_EMAIL_ADRES mberEmailAdres,
+                MIDDLE_TELNO     middleTelno,
+                SBSCRB_DE        sbscrbDe,
+                MBER_TYPE        mberType,
+                MBER_GRP         mberGrp,
+                PROF_YN          profYn,
+				COMPANY_NAME	 companyName,		
+				DEPARTMENT_NAME  departmentName,
+				ACCESS_DE		 accessDe,      
+				NEWSLETTER_YN	 newsletterYn   
+            FROM COMTNGNRLMBER
+            WHERE ESNTL_ID=#uniqId#
+        ]]>
+    </select>
+    
+    <update id="mberManageDAO.updateMber_S">
+        <![CDATA[
+        /* mberManageDAO.updateMber_S */
+            UPDATE COMTNGNRLMBER 
+            SET MBER_ID          = #mberId#,
+                MBER_NM          = #mberNm#,
+                PASSWORD_HINT    = #passwordHint#,
+                PASSWORD_CNSR    = #passwordCnsr#,
+                IHIDNUM          = #ihidnum#,
+                SEXDSTN_CODE     = #sexdstnCode#,
+                ZIP              = #zip#,
+                ADRES            = #adres#,
+                AREA_NO          = #areaNo#,
+                MBER_STTUS       = #mberSttus#,
+                MBER_TYPE        = #mberType#,
+                MBER_GRP         = #mberGrp#,                
+                DETAIL_ADRES     = #detailAdres#,
+                END_TELNO        = #endTelno#,
+                MBTLNUM      	 = #moblphonNo#,
+                GROUP_ID         = #groupId#,
+                MBER_FXNUM       = #mberFxnum#,
+                MBER_EMAIL_ADRES = #mberEmailAdres#,
+                MIDDLE_TELNO     = #middleTelno#
+            WHERE ESNTL_ID=#uniqId#
+        ]]>
+    </update>
+    <update id="mberManageDAO.updateMber_Admin">
+        <![CDATA[
+        /* mberManageDAO.updateMber_Admin */
+            UPDATE COMTNGNRLMBER 
+            SET AREA_NO          = #areaNo#,
+                MBER_TYPE        = #mberType#,
+                MBER_GRP         = #mberGrp#,                
+                END_TELNO        = #endTelno#,
+                MIDDLE_TELNO     = #middleTelno#
+            WHERE ESNTL_ID=#uniqId#
+        ]]>
+    </update>
+    <update id="mberManageDAO.mberSelectUpdt">
+        <![CDATA[
+        /* mberManageDAO.mberSelectUpdt */
+            UPDATE COMTNGNRLMBER 
+            SET MBER_EMAIL_ADRES = #mberEmailAdres#,
+            	NEWSLETTER_YN    = #newsletterYn#, 
+            	COMPANY_NAME	 = #companyName#,
+            	DEPARTMENT_NAME  = #departmentName#,
+            	AREA_NO          = #areaNo#,
+            	MIDDLE_TELNO     = #middleTelno#,
+            	END_TELNO        = #endTelno#,
+            	PASSWORD		 = #password#
+            WHERE ESNTL_ID       = #uniqId#
+        ]]>
+    </update>
+
+    <update id="mberManageDAO.updateMberGrp">
+        <![CDATA[
+        /* mberManageDAO.updateMberGrp */
+            UPDATE COMTNGNRLMBER 
+            SET MBER_GRP          = #mberGrp#
+            WHERE ESNTL_ID		  = #uniqId#
+        ]]>
+    </update>   
+    <!-- 회원탈퇴시 회원 상태  업데이트  D:삭제-->
+    <update id="mberManageDAO.updateMberSttus">
+        <![CDATA[
+        /* mberManageDAO.updateMberSttus */
+            UPDATE COMTNGNRLMBER 
+            SET MBER_STTUS          = 'D'
+            WHERE ESNTL_ID		  = #uniqId#
+        ]]>
+    </update>
+    <!-- 회원탈퇴시 게시판  업데이트  N:사용여부-->    
+    <update id="mberManageDAO.updateBbsUseAt">
+        <![CDATA[
+        /* mberManageDAO.updateBbsUseAt */
+            UPDATE COMTNBBS 
+            SET USE_AT = 'N',
+            	LAST_UPDT_PNTTM = sysdate,
+            	LAST_UPDUSR_ID = #uniqId#
+            WHERE FRST_REGISTER_ID		  = #uniqId#
+        ]]>
+    </update>            
+    <select id="mberManageDAO.selectStplat_S" resultMap="stplatMap">
+        <![CDATA[
+        /* mberManageDAO.selectStplat_S */
+            SELECT
+                USE_STPLAT_ID           ,
+                USE_STPLAT_CN           ,
+                INFO_PROVD_AGRE_CN      
+            FROM COMTNSTPLATINFO
+            WHERE USE_STPLAT_ID=#stplatId#
+        ]]>
+    </select>
+    
+    <update id="mberManageDAO.updatePassword_S">
+        <![CDATA[
+        /* mberManageDAO.updatePassword_S */
+            UPDATE COMTNGNRLMBER 
+            SET 
+                   PASSWORD   =  #password#
+            WHERE  ESNTL_ID  = #uniqId#
+        ]]>
+    </update>
+    
+    <select id="mberManageDAO.selectPassword_S" resultClass="mberVO">
+        <![CDATA[
+        /* mberManageDAO.selectPassword_S */
+            SELECT
+                    PASSWORD          password 
+            FROM    COMTNGNRLMBER
+            WHERE   ESNTL_ID=#uniqId#
+        ]]>
+    </select>
+    <resultMap id="emailMap" class="mberVO">
+        <result property="mberEmailAdres"         column="MBER_EMAIL_ADRES"          columnIndex="1"/>
+    </resultMap>
+    <!-- 본인인증시 체크 -->
+    <select id="mberManageDAO.selectEmail" resultMap="emailMap">
+        <![CDATA[
+        /* mberManageDAO.selectEmail */
+ 			SELECT
+                    count(MBER_EMAIL_ADRES)  MBER_EMAIL_ADRES
+            FROM    COMTNGNRLMBER
+            WHERE   MBER_EMAIL_ADRES = #mberEmailAdres#
+            AND     ROWNUM < 2
+        ]]>
+    </select>    
+</sqlMap>

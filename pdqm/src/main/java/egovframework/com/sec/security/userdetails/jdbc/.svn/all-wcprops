@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/security/userdetails/jdbc
+END
+EgovJdbcUserDetailsManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/security/userdetails/jdbc/EgovJdbcUserDetailsManager.java
+END
+EgovUsersByUsernameMapping.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/sec/security/userdetails/jdbc/EgovUsersByUsernameMapping.java
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/pdqm/!svn/ver/1655/pdqm/src/main/resources/egovframework/message
+END
+key-common_en_US.properties
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/message/key-common_en_US.properties
+END
+key-common_ko_KR.properties
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/message/key-common_ko_KR.properties
+END
+message-common_en_US.properties
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/message/message-common_en_US.properties
+END
+message-common_ko_KR.properties
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/pdqm/!svn/ver/1655/pdqm/src/main/resources/egovframework/message/message-common_ko_KR.properties
+END

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/2251/pdqm/src/main/resources/egovframework/egovProps/conf
+END
+warnmessage.properties
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/warnmessage.properties
+END
+oas.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/oas.properties
+END
+pdqm.properties
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/2251/pdqm/src/main/resources/egovframework/egovProps/conf/pdqm.properties
+END
+errormessage.properties
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/errormessage.properties
+END
+SMEConfig.properties
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/SMEConfig.properties
+END
+client.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/client.properties
+END
+infomessage.properties
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/infomessage.properties
+END
+format.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/format.properties
+END
+gpki.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/gpki.properties
+END
+confirmmessage.properties
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/confirmmessage.properties
+END
+server.properties
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/1346/pdqm/src/main/resources/egovframework/egovProps/conf/server.properties
+END
+mms.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/mms.properties
+END
+mdi.properties
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/conf/mdi.properties
+END

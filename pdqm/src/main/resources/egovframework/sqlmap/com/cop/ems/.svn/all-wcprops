@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/pdqm/!svn/ver/1162/pdqm/src/main/resources/egovframework/sqlmap/com/cop/ems
+END
+EgovSndngMailDtls_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/pdqm/!svn/ver/1162/pdqm/src/main/resources/egovframework/sqlmap/com/cop/ems/EgovSndngMailDtls_SQL_Oracle.xml
+END
+EgovSndngMailRegist_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/cop/ems/EgovSndngMailRegist_SQL_Oracle.xml
+END
+EgovSndngMailDetail_SQL_Oracle.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/sqlmap/com/cop/ems/EgovSndngMailDetail_SQL_Oracle.xml
+END

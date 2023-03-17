@@ -1,0 +1,10 @@
+#
+#Wed Oct 08 14:31:45 KST 2008
+LogPath=c:\\Log
+ManagerPassword=rexpert
+#LogType=ForEachDay
+#LogType=None
+LogType=None
+Version=1.0.0.150
+ServerCodePage=
+ClientCodePage=UTF-8/

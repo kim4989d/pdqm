@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/2144/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service
+END
+DiagnosisLevelQuizService.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/pdqm/!svn/ver/1380/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/DiagnosisLevelQuizService.java
+END
+DiagnosisLevelSelfService.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/pdqm/!svn/ver/1011/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/DiagnosisLevelSelfService.java
+END
+DiagnosisLevelScoreService.java
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/pdqm/!svn/ver/1937/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/DiagnosisLevelScoreService.java
+END
+DiagnosisLevelMngService.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/pdqm/!svn/ver/493/pdqm/src/main/java/egovframework/pdqm/admin/support/diagnosis/level/service/DiagnosisLevelMngService.java
+END

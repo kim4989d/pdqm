@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/pdqm/!svn/ver/1091/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl
+END
+EgovBBSLoneMasterServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSLoneMasterServiceImpl.java
+END
+EgovBBSAttributeManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSAttributeManageServiceImpl.java
+END
+BBSUseInfoManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/BBSUseInfoManageDAO.java
+END
+BBSManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/pdqm/!svn/ver/1061/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/BBSManageDAO.java
+END
+EgovBBSManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/pdqm/!svn/ver/1091/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSManageServiceImpl.java
+END
+EgovBBSUseInfoManageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSUseInfoManageServiceImpl.java
+END
+BBSAttributeManageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/BBSAttributeManageDAO.java
+END
+BBSLoneMasterDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/BBSLoneMasterDAO.java
+END
+BBSAddedOptionsDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/cop/bbs/service/impl/BBSAddedOptionsDAO.java
+END

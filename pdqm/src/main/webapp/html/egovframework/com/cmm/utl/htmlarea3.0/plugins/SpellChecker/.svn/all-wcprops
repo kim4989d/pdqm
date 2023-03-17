@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker
+END
+readme-tech.html
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/readme-tech.html
+END
+spell-checker.js
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/spell-checker.js
+END
+spell-check-ui.js
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/spell-check-ui.js
+END
+spell-check-logic.cgi
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/spell-check-logic.cgi
+END
+spell-check-ui.html
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/spell-check-ui.html
+END
+spell-check-style.css
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/pdqm/!svn/ver/235/pdqm/src/main/webapp/html/egovframework/com/cmm/utl/htmlarea3.0/plugins/SpellChecker/spell-check-style.css
+END

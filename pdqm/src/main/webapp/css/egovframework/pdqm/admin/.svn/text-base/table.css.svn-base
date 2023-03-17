@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.tblSpace{margin-top:30px;}/*table 상단 간격*/
+
+/* 목록형 테이블 */
+.tblType1{border-bottom:2px solid #ededed;position:relative;}
+.tblType1 thead tr th{height:auto !important;height:18px;min-height:18px;background:#6f99c6;font-weight:bold;color:#fff;padding:5px 0;font-size:90%;}
+.tblType1 tbody tr td{height:auto !important;height:18px;min-height:18px;text-align:center;font-size:100%;border-bottom:1px solid #ededed;padding:5px 0;}
+.tblType1 tbody tr td p{margin:5px 0 5px;}
+.tblType1 tbody tr td.title{font-size:1em;text-align:left;padding-left:10px;}
+.tblType1 tbody tr td.title a{font-size:1em;text-align:left;padding-left:10px;}
+.tblType1 tbody tr td.title a:hover, .tblType1 tbody tr td.title a:active, .tblType1 tbody tr td.title a.on{color:#f37020 !important;text-decoration:none;}
+.tblType1 tbody tr.first td{background:#FFF;}
+.tblType1 tbody tr.end td{border:none;}
+.tblType1 tbody tr td.noTxt{padding-top:19px;padding-bottom:21px;}
+/* tblType1 : 본문 데이터 나열형 테이블 */
+.tblType1 tbody tr td ul{margin:0 auto;overflow:hidden;padding-left:10px;}
+.tblType1 tbody tr td ul li{float:left;text-align:left;width:120px;}
+.tblType1 tbody tr th{height:auto !important;height:18px;min-height:18px;text-align:center;font-size:100%;border-bottom:1px solid #ededed;padding:5px 0;background:#eee;}
+
+
+/* 보기형 테이블 */
+.viewType1{position:relative;border-top:2px solid #6f99c6;border-bottom:2px solid #ededed;}
+.viewType1 th, .viewType1 td{padding:5px 10px;font-size:9pt;}
+.viewType1 th{color:#2f4db3;font-weight:bold;background:#f8f8f8;}
+.viewType1 th, .viewType1 td{height:28px;padding-left:10px;padding-right:5px;border-bottom:1px solid #e2e2e2;}
+
+
+/* Paging */
+.paging{overflow:hidden;margin:15px 0 0 0;text-align:center;font-size:100%;}
+.paging a{vertical-align:middle;}
+.paging span a{padding:0 4px 0 5px;vertical-align:top;color:#aaa;}
+.paging span a.first-child{background:none;}
+.paging span a.on{color:#0062c1;font-weight:bold;}
+
+/* btn */
+.btnArea{position:relative;margin:5px 0;text-align:center;}
+.btnArea .rightBtn{position:absolute;top:0;right:0;}
+.btnArea .leftBtn{position:absolute;top:0;left:0;}
+.btn_taR{text-align:right !important;}
+.btn_taL{text-align:left !important;}
+.pagingBtn{position: relative;margin-top:30px;}
+.pagingBtn .rightBtn{position:absolute;top:-5px;right:0;font-size: 1.1em;}

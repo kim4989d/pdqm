@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CompareCode">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<typeAlias  alias="compareCodeVO" type="egovframework.pdqm.front.support.matching.model.CompareCodeVO"/>
+
+
+	<resultMap id="rs-selectCodeList" class="compareCodeVO">                                        
+		<result property="code_info_id"				column="CODE_INFO_ID"  /> 
+		<result property="code_info_nm"				column="CODE_INFO_NM"  />
+		<result property="code_info_dc"				column="CODE_INFO_DC"  />
+		<result property="regist_pnttm"				column="REGIST_PNTTM"  />
+		<result property="register_id"				column="REGISTER_ID"  />
+		<result property="database_id"				column="DATABASE_ID"  />
+		<result property="database_nm"				column="DATABASE_NM"  />
+	</resultMap>		
+
+	<select id="compareCodeDAO.selectCodeList" resultMap="rs-selectCodeList"  parameterClass="compareCodeVO">
+		<![CDATA[
+			select a.CODE_INFO_ID,c.DATABASE_NM||'//'||a.CODE_INFO_NM as CODE_INFO_NM,a.CODE_INFO_DC,a.FILE_NM,to_char(a.REGIST_PNTTM,'YYYYMMDD') REGIST_PNTTM ,a.REGISTER_ID
+			,a.DATABASE_ID,c.DATABASE_NM
+			from TNCODEMANAGE a
+			, TNDATABASEMANAGE c
+			where a.DATABASE_ID = c.DATABASE_ID
+			and a.REGISTER_ID=#register_id#
+		]]> 
+	 	  <isNotEmpty  prepend="and" property="cond_code_info_nm">
+		      a.CODE_INFO_NM  like  #cond_code_info_nm# ||'%'
+		  </isNotEmpty>	
+		  <isNotEmpty  prepend="and" property="selected_Id_List">
+		      a.CODE_INFO_ID  in ( $selected_Id_List$ )
+		  </isNotEmpty>	
+		 <![CDATA[
+			ORDER BY a.CODE_INFO_NM
+		]]> 
+	</select>
+
+</sqlMap>

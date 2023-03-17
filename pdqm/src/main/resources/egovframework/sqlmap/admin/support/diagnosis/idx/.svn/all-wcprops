@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/pdqm/!svn/ver/2414/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/idx
+END
+DiagnosisIdxMng_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/pdqm/!svn/ver/2143/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/idx/DiagnosisIdxMng_SQL.xml
+END
+DianoIdxWvalMng_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/pdqm/!svn/ver/1888/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/idx/DianoIdxWvalMng_SQL.xml
+END
+DiagnosisIdxDbType_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/pdqm/!svn/ver/1371/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/idx/DiagnosisIdxDbType_SQL.xml
+END
+DiagnoIdxPMng_SQL.xml
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/pdqm/!svn/ver/1775/pdqm/src/main/resources/egovframework/sqlmap/admin/support/diagnosis/idx/DiagnoIdxPMng_SQL.xml
+END

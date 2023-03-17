@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelQuiz_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelScore_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/level/DiagnosisLevelSelf_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/DiagnosisIdxMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/DiagnosisIdxDbType_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/DiagnoIdxPMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/DianoIdxWvalMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/quiz/DianoIdxQesMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/result/DianoIdxSelfMng_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/result/DianoIdxSelfMngExp_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/admin/support/diagnosis/idx/self/DianoIdxSelfMng_SQL.xml"/>
+
+
+
+
+
+	<sqlMap resource="egovframework/sqlmap/admin/support/apply/SupportApplyMng_SQL.xml" /></sqlMapConfig>

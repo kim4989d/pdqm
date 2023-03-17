@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/pdqm/!svn/ver/1631/pdqm/src/main/java/egovframework/com/uss/umt/service
+END
+MberManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/1172/pdqm/src/main/java/egovframework/com/uss/umt/service/MberManageVO.java
+END
+EgovEntrprsManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/EgovEntrprsManageService.java
+END
+UserDefaultVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/pdqm/!svn/ver/1631/pdqm/src/main/java/egovframework/com/uss/umt/service/UserDefaultVO.java
+END
+EgovUserManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/EgovUserManageService.java
+END
+StplatVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/StplatVO.java
+END
+UserManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/UserManageVO.java
+END
+EntrprsManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/EntrprsManageVO.java
+END
+EgovMberManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/pdqm/!svn/ver/669/pdqm/src/main/java/egovframework/com/uss/umt/service/EgovMberManageService.java
+END
+DeptManageVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/DeptManageVO.java
+END
+EgovDeptManageService.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/pdqm/!svn/ver/5/pdqm/src/main/java/egovframework/com/uss/umt/service/EgovDeptManageService.java
+END

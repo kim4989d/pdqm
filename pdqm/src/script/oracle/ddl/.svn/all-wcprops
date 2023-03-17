@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/pdqm/!svn/ver/132/pdqm/src/script/oracle/ddl
+END
+cop.ems_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/pdqm/!svn/ver/17/pdqm/src/script/oracle/ddl/cop.ems_create_oracle.sql
+END
+uss.ion.rec_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uss.ion.rec_create_oracle.sql
+END
+sec.ram_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/sec.ram_create_oracle.sql
+END
+uss.umt_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uss.umt_create_oracle.sql
+END
+uss.sam.cpy_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uss.sam.cpy_create_oracle.sql
+END
+uss.ion.bnr_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uss.ion.bnr_create_oracle.sql
+END
+uss.sam.stp_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uss.sam.stp_create_oracle.sql
+END
+uat.uia_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/uat.uia_create_oracle.sql
+END
+cop.bbs_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/cop.bbs_create_oracle.sql
+END
+uss.olh.faq_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/pdqm/!svn/ver/132/pdqm/src/script/oracle/ddl/uss.olh.faq_create_oracle.sql
+END
+sym.ccm.cde_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/sym.ccm.cde_create_oracle.sql
+END
+sym.mnu_create_oracle.sql
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/pdqm/!svn/ver/5/pdqm/src/script/oracle/ddl/sym.mnu_create_oracle.sql
+END

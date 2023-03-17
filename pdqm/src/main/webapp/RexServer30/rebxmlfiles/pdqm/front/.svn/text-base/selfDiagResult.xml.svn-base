@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gubun>
+<rpt1>
+	<rexdataset>
+		<rexrow>
+			<INSTT_NM><![CDATA[테스트기관명]]></INSTT_NM>
+			<DATABASE_NM><![CDATA[테스트데이터베이스명]]></DATABASE_NM>
+			<UPPER_INSTT_SE_CODE_NM><![CDATA[공공기관]]></UPPER_INSTT_SE_CODE_NM>
+			<INSTT_SE_CODE_NM><![CDATA[정부투자기관 및 기타]]></INSTT_SE_CODE_NM>
+			<DATABASE_TY_NM><![CDATA[자체생성형]]></DATABASE_TY_NM>
+			<DATABASE_SCALE_CODE_NM><![CDATA[5만명 이상]]></DATABASE_SCALE_CODE_NM>
+		</rexrow>
+	</rexdataset>
+</rpt1>
+<rpt2>
+	<rexdataset>
+		<rexrow>
+			<DGNSS_TRGET_NM><![CDATA[값]]></DGNSS_TRGET_NM>
+			<DGNSS_RESULT_CL_CODE_COMP><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_COMP>
+			<DGNSS_RESULT_CL_CODE_NM_COMP><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_COMP>
+			<DGNSS_RESULT_CL_CODE_0><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_0>
+			<DGNSS_RESULT_CL_CODE_NM_0><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_0>
+			<DGNSS_RESULT_CL_CODE_1><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_1>
+			<DGNSS_RESULT_CL_CODE_NM_1><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_1>
+			<DGNSS_RESULT_CL_CODE_2><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_2>
+			<DGNSS_RESULT_CL_CODE_NM_2><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_2>
+			<DGNSS_RESULT_CL_CODE_3><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_3>
+			<DGNSS_RESULT_CL_CODE_NM_3><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_3>
+		</rexrow>
+		<rexrow>
+			<DGNSS_TRGET_NM><![CDATA[구조]]></DGNSS_TRGET_NM>
+			<DGNSS_RESULT_CL_CODE_COMP><![CDATA[LR200]]></DGNSS_RESULT_CL_CODE_COMP>
+			<DGNSS_RESULT_CL_CODE_NM_COMP><![CDATA[보통]]></DGNSS_RESULT_CL_CODE_NM_COMP>
+			<DGNSS_RESULT_CL_CODE_0><![CDATA[LR200]]></DGNSS_RESULT_CL_CODE_0>
+			<DGNSS_RESULT_CL_CODE_NM_0><![CDATA[보통]]></DGNSS_RESULT_CL_CODE_NM_0>
+			<DGNSS_RESULT_CL_CODE_1><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_1>
+			<DGNSS_RESULT_CL_CODE_NM_1><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_1>
+			<DGNSS_RESULT_CL_CODE_2><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_2>
+			<DGNSS_RESULT_CL_CODE_NM_2><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_2>
+			<DGNSS_RESULT_CL_CODE_3><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_3>
+			<DGNSS_RESULT_CL_CODE_NM_3><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_3>
+		</rexrow>
+		<rexrow>
+			<DGNSS_TRGET_NM><![CDATA[표준_테스트]]></DGNSS_TRGET_NM>
+			<DGNSS_RESULT_CL_CODE_COMP><![CDATA[LR200]]></DGNSS_RESULT_CL_CODE_COMP>
+			<DGNSS_RESULT_CL_CODE_NM_COMP><![CDATA[보통]]></DGNSS_RESULT_CL_CODE_NM_COMP>
+			<DGNSS_RESULT_CL_CODE_0><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_0>
+			<DGNSS_RESULT_CL_CODE_NM_0><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_0>
+			<DGNSS_RESULT_CL_CODE_1><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_1>
+			<DGNSS_RESULT_CL_CODE_NM_1><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_1>
+			<DGNSS_RESULT_CL_CODE_2><![CDATA[LR100]]></DGNSS_RESULT_CL_CODE_2>
+			<DGNSS_RESULT_CL_CODE_NM_2><![CDATA[적정]]></DGNSS_RESULT_CL_CODE_NM_2>
+			<DGNSS_RESULT_CL_CODE_3><![CDATA[LR300]]></DGNSS_RESULT_CL_CODE_3>
+			<DGNSS_RESULT_CL_CODE_NM_3><![CDATA[미흡]]></DGNSS_RESULT_CL_CODE_NM_3>
+		</rexrow>
+	</rexdataset>
+</rpt2>
+<rpt3>
+	<rexdataset>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[값]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[활용]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 값을 활용하는 관점에서 현재 적정한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[값]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[관리 프로세스]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 값을 관리하는 프로세스 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[값]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[지원도구]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 값에 대한 지원도구 관점에서 현재 적정한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[값]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[저장내용]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 값의 저장내용 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[구조]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[활용_test]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 구조를 활용하는 관점에서 현재 보통 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[구조]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[관리 프로세스]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 구조를 관리하는 프로세스 관점에서 현재 적정한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[구조]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[지원도구]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 구조에 대한 지원도구 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[구조]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[저장내용]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 구조의 저장내용 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[표준_테스트]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[활용]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 표준을 활용하는 관점에서 현재 적정한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[표준_테스트]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[관리 프로세스]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 표준을 관리하는 프로세스 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[표준_테스트]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[지원도구]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 표준에 대한 지원도구 관점에서 현재 적정한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+		<rexrow>
+			<UPPER_DGNSS_TRGET_NM><![CDATA[표준_테스트]]></UPPER_DGNSS_TRGET_NM>
+			<DGNSS_TRGET_NM><![CDATA[저장내용]]></DGNSS_TRGET_NM>
+			<RESULT_DC><![CDATA[데이터 표준의 저장내용 관점에서 현재 미흡한 수준입니다.]]></RESULT_DC>
+		</rexrow>
+	</rexdataset>
+</rpt3>
+</gubun>

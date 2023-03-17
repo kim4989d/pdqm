@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg
+END
+getDiskInfo.sh
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskInfo.sh
+END
+getDrctryByOwner.sh
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDrctryByOwner.sh
+END
+getDrctryAccess.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDrctryAccess.sh
+END
+getPrductVersion.sh
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getPrductVersion.sh
+END
+getDiskAttrb.bat
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskAttrb.bat
+END
+getDiskAttrb.sh
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskAttrb.sh
+END
+getPrductVersion.bat
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getPrductVersion.bat
+END
+getDrctryByOwner.bat
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDrctryByOwner.bat
+END
+getDiskInfo.bat
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskInfo.bat
+END
+getMountLc.sh
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getMountLc.sh
+END
+getDrctryOwner.sh
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDrctryOwner.sh
+END
+moveDrctry.sh
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/moveDrctry.sh
+END
+sh_001.bat
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/sh_001.bat
+END
+getDiskExst.bat
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskExst.bat
+END
+compileSchema.sh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/compileSchema.sh
+END
+getOSInfo.bat
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getOSInfo.bat
+END
+getDiskCpcty.bat
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskCpcty.bat
+END
+getPrductStatus.bat
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getPrductStatus.bat
+END
+getMoryInfo.bat
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getMoryInfo.bat
+END
+getMoryInfo.sh
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getMoryInfo.sh
+END
+getPrductStatus.sh
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getPrductStatus.sh
+END
+getDiskCpcty.sh
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskCpcty.sh
+END
+getOSInfo.sh
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getOSInfo.sh
+END
+compileSchema.bat
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/compileSchema.bat
+END
+getDiskExst.sh
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDiskExst.sh
+END
+getNetWorkInfo.sh
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getNetWorkInfo.sh
+END
+getDrctryOwner.bat
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/getDrctryOwner.bat
+END
+moveDrctry.bat
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/pdqm/!svn/ver/5/pdqm/src/main/resources/egovframework/egovProps/prg/moveDrctry.bat
+END

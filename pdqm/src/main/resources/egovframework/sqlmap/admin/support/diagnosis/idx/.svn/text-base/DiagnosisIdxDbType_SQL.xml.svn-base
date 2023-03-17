@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DiagnosisIdxDbType">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="diagnosisIdxDbTypeVO" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnosisIdxDbTypeVO"/>
+	<typeAlias  alias="diagnosisIdxDbType" type="egovframework.pdqm.admin.support.diagnosis.idx.model.DiagnosisIdxDbType"/>
+
+	<select id="diagnosisIdxDbTypeDAO.selectIdxDbTypeList" parameterClass="diagnosisIdxDbTypeVO" resultClass="egovMap">
+		<![CDATA[
+			SELECT DATABASE_TY_ID , 
+			       DATABASE_TY_NM , 
+			       DECODE(RESULT_DC,'','미등록','등록') RESULT_DC, 
+       			   DECODE(REFER_DC,'','미등록','등록') REFER_DC , 
+			       (SELECT mber_nm 
+			         FROM COMTNGNRLMBER 
+			        WHERE ESNTL_ID = FRST_REGISTER_ID 
+			       ) mber_nm , 
+			       TO_char(FRST_REGIST_PNTTM,'yyyy-mm-dd') FRST_REGIST_PNTTM 
+			  FROM TNDATABASETYMANAGE 
+			  WHERE use_at = 'Y'
+		]]>		    
+
+		
+		
+	</select>
+	
+	<select id="diagnosisIdxDbTypeDAO.selectIdxDbTypeListTotCnt" parameterClass="diagnosisIdxDbTypeVO" resultClass="int">
+		<![CDATA[
+		SELECT COUNT(*) totcnt
+		 FROM TNDATABASETYMANAGE
+		 WHERE uSE_AT = 'Y'
+		]]> 
+		  	
+	</select>
+	
+	<insert id="diagnosisIdxDbTypeDAO.insertIdxDbType">
+		<![CDATA[
+			INSERT INTO TNDATABASETYMANAGE
+				(  
+   			     DATABASE_TY_ID
+			    ,DATABASE_TY_NM
+		   	    ,RESULT_DC
+			    ,REFER_DC
+			    ,uSE_AT
+			    ,SORT_ORDR			    
+       			,FRST_REGIST_PNTTM
+                ,FRST_REGISTER_ID
+				  ) 
+			VALUES ( 
+				(select NVL(MAX(DATABASE_TY_ID),0) + 1 from TNDATABASETYMANAGE )
+				,#databaseTyNm#
+				,#resultDc#
+				,#referDc#
+				,'Y'
+				,(select NVL(MAX(SORT_ORDR),0) + 1 from TNDATABASETYMANAGE )
+				,SYSDATE
+				,#frstRegisterId#
+				  )
+		]]>
+	</insert>
+
+
+	<resultMap id="result-updateIdxDbTypeView" class="diagnosisIdxDbType">
+        <result property="databaseTyId"                column="DATABASE_TY_ID"/>
+        <result property="databaseTyNm"              column="DATABASE_TY_NM"/>
+	    <result property="resultDc"                   column="RESULT_DC"/>
+		<result property="referDc"          column="REFER_DC"/>
+	</resultMap>		
+
+	<select id="diagnosisIdxDbTypeDAO.updateIdxDbTypeView" parameterClass="diagnosisIdxDbType" resultMap="result-updateIdxDbTypeView">
+		<![CDATA[
+		  SELECT  
+			   DATABASE_TY_ID
+			  ,DATABASE_TY_NM
+			  ,RESULT_DC
+			  ,REFER_DC
+		   FROM TNDATABASETYMANAGE
+		    WHERE USE_AT = 'Y'
+		      AND DATABASE_TY_ID = #databaseTyId#
+		]]>
+	</select>
+
+
+	<update id="diagnosisIdxDbTypeDAO.updateIdxDbType">
+		<![CDATA[
+		
+			UPDATE TNDATABASETYMANAGE 
+			  SET DATABASE_TY_NM = #databaseTyNm#
+			  	 ,RESULT_DC = #resultDc#
+			  	 ,REFER_DC = #referDc#
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where DATABASE_TY_ID = #databaseTyId#
+		]]>
+	</update>
+
+	<update id="diagnosisIdxDbTypeDAO.deleteIdxDbType">
+		<![CDATA[
+		
+			UPDATE TNDATABASETYMANAGE
+			  SET USE_AT = 'N'
+			  	 ,LAST_UPDT_PNTTM = SYSDATE
+			  	 ,LAST_UPDUSR_ID = #lastUpdusrId#
+			  where DATABASE_TY_ID = #databaseTyId#
+		]]>
+	</update>
+	
+</sqlMap>
